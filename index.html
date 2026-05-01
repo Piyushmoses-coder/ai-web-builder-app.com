@@ -3,1218 +3,652 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NexusAI — Powered by Claude</title>
-<link href="https://fonts.googleapis.com/css2?family=Söhne:wght@300;400;500;600;700&family=Söhne+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>NexusAI — Your Personal AI Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* =============================================
-   NEXUSAI — ChatGPT-quality design
-   Real Claude API · Full markdown · No fake
-   ============================================= */
+/* ────────────────────────────────────────
+   NexusAI · ChatGPT-level design
+   Real Claude API · Clean · Professional
+─────────────────────────────────────── */
 :root{
-  /* Dark theme (default) */
-  --c-bg:#212121;
-  --c-sb:#171717;
-  --c-surface:#2f2f2f;
-  --c-surface2:#3a3a3a;
-  --c-hover:rgba(255,255,255,.06);
-  --c-border:rgba(255,255,255,.1);
-  --c-border2:rgba(255,255,255,.15);
-  --c-text:#ececec;
-  --c-text2:#acacac;
-  --c-text3:#6e6e6e;
-  --c-text4:#3e3e3e;
-  --c-accent:#10a37f;
-  --c-accent2:#1abc98;
-  --c-accent3:#0d8a6c;
-  --c-user-bg:#2f2f2f;
-  --c-code-bg:#1a1a1a;
-  --c-code-border:#333;
-  --c-code-header:#252525;
-  --c-err:#f87171;
-  --c-warn:#fbbf24;
-  --ff:'Söhne',ui-sans-serif,system-ui,-apple-system,sans-serif;
-  --fm:'Söhne Mono',ui-monospace,monospace;
+  --bg:#212121;
+  --sb:#171717;
+  --card:#2f2f2f;
+  --card2:#3a3a3a;
+  --hover:rgba(255,255,255,.07);
+  --bd:rgba(255,255,255,.1);
+  --bd2:rgba(255,255,255,.16);
+  --t1:#ececec;
+  --t2:#ababab;
+  --t3:#6b6b6b;
+  --t4:#3b3b3b;
+  --green:#10a37f;
+  --green2:#19c997;
+  --code-bg:#1e1e1e;
+  --ff:'Inter',system-ui,sans-serif;
+  --fm:'JetBrains Mono',monospace;
 }
-[data-theme=light]{
-  --c-bg:#f9f9f9;
-  --c-sb:#f0f0f0;
-  --c-surface:#ffffff;
-  --c-surface2:#ebebeb;
-  --c-hover:rgba(0,0,0,.05);
-  --c-border:rgba(0,0,0,.1);
-  --c-border2:rgba(0,0,0,.15);
-  --c-text:#0d0d0d;
-  --c-text2:#444;
-  --c-text3:#888;
-  --c-text4:#ccc;
-  --c-user-bg:#efefef;
-  --c-code-bg:#282c34;
-  --c-code-border:#3a3a3a;
-  --c-code-header:#21252b;
+[data-light]{
+  --bg:#f7f7f8;--sb:#ececec;--card:#ffffff;--card2:#f0f0f0;
+  --hover:rgba(0,0,0,.05);--bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
+  --t1:#0d0d0d;--t2:#444;--t3:#888;--t4:#ccc;
+  --code-bg:#282c34;
 }
-
-/* ── RESET ── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
-body{font-family:var(--ff);background:var(--c-bg);color:var(--c-text);font-size:16px;-webkit-font-smoothing:antialiased}
-button,input,textarea,select{font-family:inherit;border:none;outline:none;cursor:pointer;background:none;color:inherit}
-a{color:var(--c-accent2);text-decoration:underline;text-underline-offset:3px}
-*:focus-visible{outline:2px solid var(--c-accent);outline-offset:2px;border-radius:3px}
-::selection{background:rgba(16,163,127,.25)}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--c-surface2);border-radius:3px}
-
-/* ── ANIMATIONS ── */
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit;border:none;outline:none;cursor:pointer;background:none;color:inherit}
+a{color:var(--green2);text-decoration:underline;text-underline-offset:3px}
+::selection{background:rgba(16,163,127,.3)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--card2);border-radius:3px}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@keyframes dotBounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-6px);opacity:1}}
-@keyframes confetti{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(220px) rotate(600deg);opacity:0}}
-@keyframes slideFromRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
-@keyframes slideFromLeft{from{transform:translateX(-100%)}to{transform:translateX(0)}}
-@keyframes notifIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-@keyframes codeIn{from{opacity:0}to{opacity:1}}
-@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+@keyframes conf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(220px) rotate(600deg);opacity:0}}
+@keyframes notif{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
 
-/* ═══════════════════
-   SHELL LAYOUT
-═══════════════════ */
-#app{
-  display:grid;
-  grid-template-columns:var(--sb-w,260px) 1fr;
-  height:100vh;
-  transition:grid-template-columns .2s ease;
+/* ── LAYOUT ── */
+#app{display:flex;height:100vh;overflow:hidden}
+
+/* ── SIDEBAR ── */
+#sb{
+  width:260px;flex-shrink:0;
+  background:var(--sb);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:width .2s ease;
 }
-#app.sb-closed{
-  grid-template-columns:0 1fr;
-}
+#sb.hide{width:0;border:none}
 @media(max-width:768px){
-  #app{grid-template-columns:0 1fr}
-  #app.sb-open{grid-template-columns:260px 1fr}
+  #sb{position:fixed;left:0;top:0;bottom:0;z-index:200;transform:translateX(-100%);transition:transform .22s ease;width:260px}
+  #sb.mobile-open{transform:translateX(0)}
+  #sb-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199}
+  #sb.mobile-open~#sb-mask{display:block}
 }
-
-/* ═══════════════════
-   SIDEBAR
-═══════════════════ */
-#sidebar{
-  background:var(--c-sb);
-  border-right:1px solid var(--c-border);
-  display:flex;flex-direction:column;
-  overflow:hidden;
-  grid-column:1;
-  transition:all .2s ease;
-  position:relative;
-  z-index:50;
-}
-@media(max-width:768px){
-  #sidebar{
-    position:fixed;left:0;top:0;bottom:0;
-    width:260px;
-    transform:translateX(-100%);
-    transition:transform .25s cubic-bezier(.4,0,.2,1);
-    z-index:200;
-  }
-  #app.sb-open #sidebar{transform:translateX(0)}
-}
-.sb-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;
-}
-#app.sb-open .sb-overlay{display:block}
-
-.sb-top{
-  display:flex;align-items:center;gap:8px;
-  padding:12px 10px 10px;flex-shrink:0;
-}
-.new-chat-btn{
-  flex:1;display:flex;align-items:center;gap:8px;
+.sb-head{padding:10px 10px 8px;flex-shrink:0}
+.new-btn{
+  display:flex;align-items:center;gap:8px;width:100%;
   padding:9px 12px;border-radius:8px;
-  background:transparent;border:1px solid var(--c-border);
-  color:var(--c-text);font-size:14px;font-weight:500;
-  cursor:pointer;transition:all .15s;
+  background:transparent;border:1px solid var(--bd);
+  color:var(--t1);font-size:13px;font-weight:500;cursor:pointer;transition:.15s;
 }
-.new-chat-btn:hover{background:var(--c-hover);border-color:var(--c-border2)}
-.sb-icon-btn{
-  width:32px;height:32px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;color:var(--c-text3);cursor:pointer;transition:.15s;
-  flex-shrink:0;
-}
-.sb-icon-btn:hover{background:var(--c-hover);color:var(--c-text)}
-.sb-search{
-  padding:6px 10px 8px;flex-shrink:0;
-}
-.sb-search-box{
+.new-btn:hover{background:var(--hover);border-color:var(--bd2)}
+.sb-scroll{flex:1;overflow-y:auto;padding:3px 8px 8px}
+.sb-label{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.5px;padding:10px 6px 4px;text-transform:uppercase}
+.ch-item{
   display:flex;align-items:center;gap:7px;
-  background:var(--c-surface);border:1px solid var(--c-border);
-  border-radius:8px;padding:7px 10px;transition:.15s;
+  padding:7px 10px;border-radius:8px;cursor:pointer;transition:.15s;
+  border:1px solid transparent;margin-bottom:1px;position:relative;
 }
-.sb-search-box:focus-within{border-color:rgba(16,163,127,.4)}
-.sb-search-ico{font-size:12px;color:var(--c-text3);flex-shrink:0}
-.sb-search-inp{flex:1;font-size:13px;color:var(--c-text);background:transparent}
-.sb-search-inp::placeholder{color:var(--c-text4)}
-.sb-chats{flex:1;overflow-y:auto;padding:4px 8px}
-.sb-group-label{
-  font-size:11px;font-weight:600;color:var(--c-text3);
-  letter-spacing:.5px;padding:10px 8px 4px;text-transform:uppercase;
-}
-.chat-item{
-  display:flex;align-items:center;gap:8px;
-  padding:7px 10px;border-radius:8px;cursor:pointer;
-  transition:.15s;margin-bottom:1px;position:relative;
-  border:1px solid transparent;
-}
-.chat-item:hover{background:var(--c-hover)}
-.chat-item.active{background:var(--c-surface);border-color:var(--c-border)}
-.ci-ico{font-size:13px;color:var(--c-text3);flex-shrink:0}
-.ci-title{
-  flex:1;font-size:13px;color:var(--c-text2);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.chat-item.active .ci-title{color:var(--c-text)}
-.ci-actions{
-  display:none;gap:3px;position:absolute;right:6px;
-  background:var(--c-surface);border-radius:5px;padding:1px;
-}
-.chat-item:hover .ci-actions{display:flex}
-.cia{
-  width:22px;height:22px;border-radius:4px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;color:var(--c-text3);cursor:pointer;transition:.15s;
-}
-.cia:hover{background:var(--c-surface2);color:var(--c-text)}
-.cia.del:hover{background:rgba(239,68,68,.15);color:#f87171}
-.sb-empty{
-  text-align:center;padding:28px 14px;
-  font-size:13px;color:var(--c-text3);
-}
-.sb-bottom{
-  padding:8px;border-top:1px solid var(--c-border);flex-shrink:0;
-}
-.sb-user-row{
-  display:flex;align-items:center;gap:8px;
-  padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s;
-}
-.sb-user-row:hover{background:var(--c-hover)}
-.user-av{
-  width:28px;height:28px;border-radius:50%;
-  background:linear-gradient(135deg,var(--c-accent),#7c3aed);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;flex-shrink:0;
-}
-.sb-uname{font-size:13px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-uplan{font-size:10px;color:var(--c-text3);margin-top:1px}
-.sb-signout-btn{
-  font-size:14px;color:var(--c-text3);cursor:pointer;
-  padding:4px;border-radius:5px;transition:.15s;flex-shrink:0;
-}
-.sb-signout-btn:hover{color:var(--c-err);background:rgba(239,68,68,.1)}
+.ch-item:hover{background:var(--hover)}
+.ch-item.on{background:var(--card);border-color:var(--bd)}
+.ch-icon{font-size:13px;color:var(--t3);flex-shrink:0}
+.ch-title{flex:1;font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-item.on .ch-title{color:var(--t1)}
+.ch-del{opacity:0;font-size:11px;color:var(--t3);padding:2px 4px;border-radius:4px;transition:.15s;flex-shrink:0}
+.ch-item:hover .ch-del{opacity:1}
+.ch-del:hover{color:#f87171;background:rgba(248,113,113,.15)}
+.sb-empty{text-align:center;padding:24px 12px;font-size:12px;color:var(--t3);line-height:1.6}
+.sb-foot{padding:8px;border-top:1px solid var(--bd);flex-shrink:0}
+.sb-user{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s}
+.sb-user:hover{background:var(--hover)}
+.uav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--green),#7c3aed);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.uname{font-size:12px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uplan{font-size:10px;color:var(--t3);margin-top:1px}
+.u-logout{font-size:13px;color:var(--t3);padding:3px;border-radius:4px;transition:.15s;flex-shrink:0}
+.u-logout:hover{color:#f87171}
 
-/* ═══════════════════
-   MAIN AREA
-═══════════════════ */
-#main{
-  display:flex;flex-direction:column;
-  overflow:hidden;min-width:0;grid-column:2;
-}
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
 /* ── TOPBAR ── */
-#topbar{
-  display:flex;align-items:center;gap:8px;
-  padding:0 16px;height:52px;
-  border-bottom:1px solid var(--c-border);
-  flex-shrink:0;background:var(--c-bg);
-  position:relative;z-index:30;
+#top{
+  display:flex;align-items:center;gap:9px;padding:0 16px;height:52px;
+  border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--bg);
 }
-.tb-toggle{
-  width:32px;height:32px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;color:var(--c-text3);cursor:pointer;transition:.15s;
-  flex-shrink:0;
+.t-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);cursor:pointer;transition:.15s;flex-shrink:0}
+.t-icon:hover{background:var(--hover);color:var(--t1)}
+.model-btn{
+  display:flex;align-items:center;gap:7px;padding:6px 12px;
+  background:var(--card);border:1px solid var(--bd);border-radius:8px;
+  font-size:13px;font-weight:600;cursor:pointer;transition:.15s;
 }
-.tb-toggle:hover{background:var(--c-hover);color:var(--c-text)}
-.model-picker{
-  display:flex;align-items:center;gap:7px;
-  padding:6px 12px;background:var(--c-surface);
-  border:1px solid var(--c-border);border-radius:8px;
-  font-size:14px;font-weight:600;cursor:pointer;transition:.15s;
-  position:relative;
-}
-.model-picker:hover{border-color:var(--c-border2)}
-.mp-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--c-accent);flex-shrink:0;
-  animation:pulse 2s infinite;
-}
-.mp-name{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mp-arr{font-size:10px;color:var(--c-text3);transition:.15s}
-.model-picker.open .mp-arr{transform:rotate(180deg)}
+.model-btn:hover{border-color:var(--bd2)}
+.m-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s infinite}
+.m-name{max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-arr{font-size:10px;color:var(--t3)}
+.t-gap{flex:1}
+.t-actions{display:flex;align-items:center;gap:5px}
+#signin-btn{padding:6px 13px;background:var(--green);color:#fff;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+#signin-btn:hover{background:var(--green2);transform:translateY(-1px)}
+
 /* Model dropdown */
-.model-dropdown{
+#m-dd{
   position:fixed;z-index:300;
-  background:var(--c-surface);border:1px solid var(--c-border2);
-  border-radius:12px;padding:6px;min-width:280px;
-  box-shadow:0 8px 40px rgba(0,0,0,.5);
-  display:none;animation:scaleIn .15s ease;
-  transform-origin:top center;
+  background:var(--card);border:1px solid var(--bd2);border-radius:12px;
+  padding:5px;min-width:270px;
+  box-shadow:0 8px 40px rgba(0,0,0,.55);
+  display:none;animation:pop .15s ease;
 }
-.mdd-header{
-  padding:8px 12px 5px;
-  font-size:11px;font-weight:600;color:var(--c-text3);
-  letter-spacing:1px;text-transform:uppercase;
-}
-.mdd-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:8px;cursor:pointer;transition:.15s;
-}
-.mdd-item:hover{background:var(--c-hover)}
+.mdd-hdr{padding:8px 12px 4px;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:1px;text-transform:uppercase}
+.mdd-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:.15s}
+.mdd-item:hover{background:var(--hover)}
 .mdd-item.on{background:rgba(16,163,127,.1)}
-.mdi-ico{
-  width:32px;height:32px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-  flex-shrink:0;
-}
-.mdi-name{font-size:14px;font-weight:600;flex:1}
-.mdi-desc{font-size:11px;color:var(--c-text3);margin-top:1px}
-.mdi-badge{
-  padding:2px 8px;border-radius:100px;
-  font-size:10px;font-weight:700;flex-shrink:0;
-}
-.mdb-latest{background:rgba(16,163,127,.15);color:var(--c-accent)}
-.mdb-fast{background:rgba(245,158,11,.15);color:#fbbf24}
-.tb-spacer{flex:1}
-.tb-actions{display:flex;align-items:center;gap:5px}
-.tb-btn{
-  width:32px;height:32px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;color:var(--c-text2);cursor:pointer;transition:.15s;
-}
-.tb-btn:hover{background:var(--c-hover);color:var(--c-text)}
-.tb-btn.active{background:rgba(16,163,127,.12);color:var(--c-accent)}
-.tb-signin-btn{
-  padding:6px 14px;background:var(--c-accent);
-  color:#fff;border-radius:8px;font-size:13px;font-weight:600;
-  cursor:pointer;transition:.2s;
-}
-.tb-signin-btn:hover{background:var(--c-accent2);transform:translateY(-1px)}
+.mdi-ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.mdi-name{font-size:13px;font-weight:600;flex:1}
+.mdi-desc{font-size:11px;color:var(--t3);margin-top:1px}
+.mdi-tag{padding:2px 7px;border-radius:100px;font-size:9px;font-weight:700}
+.tag-new{background:rgba(16,163,127,.15);color:var(--green)}
+.tag-fast{background:rgba(245,158,11,.15);color:#fbbf24}
 
-/* ── CHAT MESSAGES ── */
-#chat-scroll{
-  flex:1;overflow-y:auto;
-  scroll-behavior:smooth;
-}
-#chat-content{
-  max-width:760px;margin:0 auto;
-  padding:20px 20px 16px;
-}
+/* ── MESSAGES ── */
+#chat-scroll{flex:1;overflow-y:auto}
+#chat-body{max-width:740px;margin:0 auto;padding:18px 16px 8px}
 
-/* WELCOME */
-#welcome-screen{
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;min-height:calc(100vh - 180px);
-  text-align:center;padding:20px;animation:fadeIn .4s ease;
+/* Welcome */
+#welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:calc(100vh - 200px);text-align:center;padding:20px;
+  animation:fadeIn .35s ease;
 }
-.ws-brand{
-  width:72px;height:72px;border-radius:20px;margin:0 auto 22px;
-  background:linear-gradient(135deg,var(--c-accent),#7c3aed);
-  display:flex;align-items:center;justify-content:center;font-size:36px;
+.w-logo{
+  width:70px;height:70px;border-radius:20px;margin:0 auto 20px;
+  background:linear-gradient(135deg,var(--green),#7c3aed);
+  display:flex;align-items:center;justify-content:center;font-size:34px;
   box-shadow:0 8px 32px rgba(16,163,127,.35);
+  animation:pulse 3s ease-in-out infinite alternate;
 }
-.ws-headline{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
-.ws-sub{
-  font-size:15px;color:var(--c-text2);max-width:460px;
-  line-height:1.65;margin-bottom:26px;
-}
-/* API key notice */
-.api-needed{
-  max-width:480px;width:100%;
+.w-title{font-size:27px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
+.w-sub{font-size:15px;color:var(--t2);max-width:440px;line-height:1.65;margin-bottom:26px}
+/* API notice in welcome */
+.w-api-note{
+  max-width:460px;width:100%;
   background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);
-  border-radius:10px;padding:14px 16px;margin-bottom:22px;
-  font-size:13px;color:#fde68a;line-height:1.7;text-align:left;
+  border-radius:10px;padding:13px 16px;margin-bottom:20px;
+  font-size:13px;color:#fde68a;text-align:left;line-height:1.7;
 }
-.api-needed strong{color:#fbbf24}
-.api-needed a{color:#fbbf24;font-weight:600}
-/* Starters */
-.starters-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:8px;width:100%;max-width:580px;margin-bottom:20px;
-}
-@media(max-width:520px){.starters-grid{grid-template-columns:1fr}}
+.w-api-note b{color:#fbbf24}
+.w-api-note a{color:#fbbf24;font-weight:600}
+/* Starter cards */
+.starters{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:560px;margin-bottom:18px}
+@media(max-width:500px){.starters{grid-template-columns:1fr}}
 .starter{
-  background:var(--c-surface);border:1px solid var(--c-border);
-  border-radius:10px;padding:14px;cursor:pointer;transition:.2s;text-align:left;
+  background:var(--card);border:1px solid var(--bd);border-radius:10px;
+  padding:13px;cursor:pointer;transition:.2s;text-align:left;
 }
-.starter:hover{border-color:rgba(16,163,127,.4);background:rgba(16,163,127,.06);transform:translateY(-2px)}
-.starter-icon{font-size:22px;margin-bottom:8px}
-.starter-title{font-size:13px;font-weight:700;margin-bottom:3px;color:var(--c-text)}
-.starter-desc{font-size:12px;color:var(--c-text3);line-height:1.4}
+.starter:hover{border-color:rgba(16,163,127,.4);background:rgba(16,163,127,.07);transform:translateY(-2px)}
+.s-ico{font-size:20px;margin-bottom:7px}
+.s-title{font-size:13px;font-weight:700;margin-bottom:2px}
+.s-desc{font-size:11px;color:var(--t3)}
 /* Chips */
-.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:560px}
-.chip{
-  padding:7px 14px;background:var(--c-surface);border:1px solid var(--c-border);
-  border-radius:100px;font-size:13px;color:var(--c-text2);cursor:pointer;transition:.15s;
-}
-.chip:hover{border-color:rgba(16,163,127,.4);color:var(--c-accent2);background:rgba(16,163,127,.06)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:540px}
+.chip{padding:6px 13px;background:var(--card);border:1px solid var(--bd);border-radius:100px;font-size:12px;color:var(--t2);cursor:pointer;transition:.15s}
+.chip:hover{border-color:rgba(16,163,127,.4);color:var(--green2);background:rgba(16,163,127,.07)}
 
-/* MESSAGE BLOCKS */
-.msg-block{
-  padding:22px 0;border-bottom:1px solid transparent;
-  animation:msgIn .25s ease;
-}
-.msg-block+.msg-block{border-top:1px solid transparent}
-.msg-row{display:flex;gap:14px}
-.msg-row.user{flex-direction:row-reverse}
-/* Avatar */
-.m-av{
-  width:32px;height:32px;border-radius:50%;
-  flex-shrink:0;display:flex;align-items:center;
-  justify-content:center;margin-top:2px;font-size:14px;
-}
-.av-ai{background:linear-gradient(135deg,var(--c-accent),#7c3aed)}
-.av-user{background:var(--c-surface2);font-weight:700}
-/* Content */
-.m-body{flex:1;min-width:0;max-width:calc(100% - 50px)}
-.m-name{font-size:13px;font-weight:700;color:var(--c-text3);margin-bottom:7px}
+/* Message block */
+.mb{padding:20px 0;animation:fadeUp .22s ease;border-bottom:1px solid transparent}
+.mb-row{display:flex;gap:13px}
+.mb-row.usr{flex-direction:row-reverse}
+.mb-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;font-size:13px}
+.av-ai{background:linear-gradient(135deg,var(--green),#7c3aed)}
+.av-u{background:var(--card2);font-weight:700}
+.mb-body{flex:1;max-width:calc(100% - 46px);min-width:0}
+.mb-from{font-size:12px;font-weight:700;color:var(--t3);margin-bottom:6px}
 /* User bubble */
-.user-bubble{
+.u-bubble{
   display:inline-block;max-width:100%;
-  background:var(--c-user-bg);border:1px solid var(--c-border);
-  border-radius:16px 16px 4px 16px;
-  padding:12px 16px;font-size:15px;line-height:1.65;
+  background:var(--card);border:1px solid var(--bd);
+  border-radius:16px 16px 5px 16px;
+  padding:11px 15px;font-size:14px;line-height:1.65;
   word-break:break-word;float:right;clear:both;
 }
 /* AI prose */
-.ai-prose{
-  font-size:15px;line-height:1.78;color:var(--c-text);
-  word-break:break-word;
-}
-.ai-prose p{margin:0 0 12px}
-.ai-prose p:last-child{margin-bottom:0}
-.ai-prose h1{font-size:22px;font-weight:700;margin:20px 0 10px;letter-spacing:-.3px}
-.ai-prose h2{font-size:18px;font-weight:700;margin:18px 0 9px;letter-spacing:-.2px}
-.ai-prose h3{font-size:15px;font-weight:700;margin:16px 0 8px}
-.ai-prose h4{font-size:14px;font-weight:700;margin:14px 0 7px;color:var(--c-text2)}
-.ai-prose strong{font-weight:700;color:var(--c-text)}
-.ai-prose em{font-style:italic;color:var(--c-text2)}
-.ai-prose ul{list-style:none;padding:0;margin:0 0 12px}
-.ai-prose ul li{padding-left:20px;position:relative;margin-bottom:6px;line-height:1.65}
-.ai-prose ul li::before{content:'•';position:absolute;left:6px;color:var(--c-text3)}
-.ai-prose ol{padding-left:22px;margin:0 0 12px}
-.ai-prose ol li{margin-bottom:6px;line-height:1.65}
-.ai-prose blockquote{
-  border-left:3px solid var(--c-accent);
-  padding:2px 0 2px 16px;margin:12px 0;
-  color:var(--c-text2);font-style:italic;
-}
-.ai-prose hr{border:none;border-top:1px solid var(--c-border);margin:16px 0}
-.ai-prose a{color:var(--c-accent2)}
-.ai-prose table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
-.ai-prose th{background:var(--c-surface);padding:9px 13px;border:1px solid var(--c-border);font-weight:700;text-align:left}
-.ai-prose td{padding:8px 13px;border:1px solid var(--c-border)}
+.ai-prose{font-size:14.5px;line-height:1.78;color:var(--t1);word-break:break-word}
+.ai-prose p{margin:0 0 11px}
+.ai-prose p:last-child{margin:0}
+.ai-prose h1,.ai-prose h2,.ai-prose h3,.ai-prose h4{font-weight:700;margin:18px 0 8px;letter-spacing:-.2px}
+.ai-prose h1{font-size:21px}.ai-prose h2{font-size:17px}.ai-prose h3{font-size:15px}.ai-prose h4{font-size:14px;color:var(--t2)}
+.ai-prose strong{font-weight:700}
+.ai-prose em{font-style:italic;color:var(--t2)}
+.ai-prose a{color:var(--green2)}
+.ai-prose ul{list-style:none;padding:0;margin:0 0 11px}
+.ai-prose ul li{padding-left:18px;position:relative;margin-bottom:5px;line-height:1.65}
+.ai-prose ul li::before{content:'•';position:absolute;left:5px;color:var(--t3)}
+.ai-prose ol{padding-left:20px;margin:0 0 11px}
+.ai-prose ol li{margin-bottom:5px;line-height:1.65}
+.ai-prose blockquote{border-left:3px solid var(--green);padding:2px 0 2px 14px;margin:10px 0;color:var(--t2);font-style:italic}
+.ai-prose hr{border:none;border-top:1px solid var(--bd);margin:14px 0}
+.ai-prose table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.ai-prose th{background:var(--card);padding:8px 12px;border:1px solid var(--bd);font-weight:700;text-align:left}
+.ai-prose td{padding:7px 12px;border:1px solid var(--bd)}
 .ai-prose tr:nth-child(even) td{background:rgba(255,255,255,.02)}
-/* Inline code */
-.ai-prose code{
-  font-family:var(--fm);font-size:13px;
-  background:var(--c-surface);padding:2px 6px;
-  border-radius:5px;color:#7dd3fc;
-  border:1px solid var(--c-border);
-}
+.ai-prose code{font-family:var(--fm);font-size:12.5px;background:var(--card);padding:2px 5px;border-radius:4px;color:#7dd3fc;border:1px solid var(--bd)}
 /* Code block */
-.code-block{
-  background:var(--c-code-bg);border:1px solid var(--c-code-border);
-  border-radius:10px;overflow:hidden;margin:14px 0;
-  animation:codeIn .3s ease;
-}
-.cb-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:9px 14px;background:var(--c-code-header);
-  border-bottom:1px solid var(--c-code-border);
-}
-.cb-lang{font-family:var(--fm);font-size:12px;color:#888;font-weight:500}
-.cb-copy{
-  display:flex;align-items:center;gap:5px;
-  padding:4px 10px;background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.1);border-radius:5px;
-  font-size:12px;color:#bbb;cursor:pointer;transition:.15s;
-  font-family:var(--fm);
-}
-.cb-copy:hover{background:rgba(255,255,255,.12);color:#fff}
-.cb-copy.done{background:rgba(16,163,127,.15);color:var(--c-accent2);border-color:rgba(16,163,127,.3)}
-.cb-body{
-  padding:16px;font-family:var(--fm);font-size:13.5px;
-  line-height:1.8;overflow-x:auto;
-  color:#abb2bf;
-}
-/* Syntax highlight tokens */
-.t-kw{color:#c678dd}
-.t-fn{color:#61afef}
-.t-str{color:#98c379}
-.t-nm{color:#d19a66}
-.t-cm{color:#5c6370;font-style:italic}
-.t-tag{color:#e06c75}
-.t-at{color:#d19a66}
-.t-py{color:#c678dd}
-.t-bool{color:#d19a66}
-.t-var{color:#e06c75}
-.t-op{color:#56b6c2}
+.code-wrap{background:var(--code-bg);border:1px solid #333;border-radius:10px;overflow:hidden;margin:12px 0}
+.code-top{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#252525;border-bottom:1px solid #333}
+.code-lang{font-family:var(--fm);font-size:11px;color:#888}
+.code-copy{display:flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:5px;font-size:11px;color:#aaa;cursor:pointer;transition:.15s;font-family:var(--fm)}
+.code-copy:hover{background:rgba(255,255,255,.12);color:#fff}
+.code-copy.ok{background:rgba(16,163,127,.15);color:var(--green2);border-color:rgba(16,163,127,.3)}
+.code-pre{padding:14px;font-family:var(--fm);font-size:13px;line-height:1.75;overflow-x:auto;color:#abb2bf}
+/* Syntax */
+.sk{color:#c678dd}.sf{color:#61afef}.ss{color:#98c379}.sn{color:#d19a66}.sc{color:#5c6370;font-style:italic}.st{color:#e06c75}.sa{color:#d19a66}.sp{color:#56b6c2}
+/* Message actions */
+.mb-acts{display:flex;gap:4px;margin-top:7px;opacity:0;transition:.15s}
+.mb:hover .mb-acts{opacity:1}
+.m-act{display:flex;align-items:center;gap:4px;padding:3px 9px;background:transparent;border:1px solid var(--bd);border-radius:6px;font-size:11px;color:var(--t3);cursor:pointer;transition:.15s}
+.m-act:hover{background:var(--hover);color:var(--t1);border-color:var(--bd2)}
+.m-act.ok{color:var(--green);border-color:rgba(16,163,127,.3)}
+/* Typing */
+#typing{display:flex;gap:13px;padding:20px 0;animation:fadeIn .2s ease}
+.t-dots{display:flex;gap:5px;align-items:center;padding:6px 0}
+.tdot{width:7px;height:7px;border-radius:50%;background:var(--t3);animation:bounce 1.3s ease-in-out infinite}
+.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
 
-/* Message action bar */
-.msg-actions{
-  display:flex;gap:4px;margin-top:8px;
-  opacity:0;transition:.15s;
-}
-.msg-block:hover .msg-actions{opacity:1}
-.ma-btn{
-  display:flex;align-items:center;gap:5px;
-  padding:4px 10px;background:transparent;
-  border:1px solid var(--c-border);border-radius:6px;
-  font-size:12px;color:var(--c-text3);cursor:pointer;transition:.15s;
-}
-.ma-btn:hover{background:var(--c-hover);color:var(--c-text);border-color:var(--c-border2)}
-.ma-btn.done{color:var(--c-accent);border-color:rgba(16,163,127,.3)}
-
-/* Typing indicator */
-#typing-indicator{
-  padding:18px 0;display:flex;gap:14px;
-  animation:fadeIn .2s ease;
-}
-.typing-dots{display:flex;gap:5px;align-items:center;padding:6px 0}
-.t-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--c-text3);
-  animation:dotBounce 1.3s ease-in-out infinite;
-}
-.t-dot:nth-child(2){animation-delay:.2s}
-.t-dot:nth-child(3){animation-delay:.4s}
-
-/* ── INPUT ZONE ── */
-#input-zone{
-  flex-shrink:0;padding:12px 16px 16px;
-  background:var(--c-bg);
-}
-.api-key-bar{
-  max-width:760px;margin:0 auto 10px;
+/* ── INPUT ── */
+#input-area{flex-shrink:0;padding:10px 16px 14px;background:var(--bg)}
+/* API Key bar */
+#api-bar{
+  max-width:740px;margin:0 auto 9px;
   display:flex;align-items:center;gap:9px;
-  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);
-  border-radius:10px;padding:10px 14px;
-  font-size:13px;color:#fde68a;cursor:pointer;transition:.15s;
+  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);
+  border-radius:10px;padding:9px 14px;font-size:13px;color:#fde68a;cursor:pointer;transition:.15s;
 }
-.api-key-bar:hover{background:rgba(245,158,11,.12)}
-.akb-text{flex:1}
-.akb-arrow{font-weight:700;flex-shrink:0}
+#api-bar:hover{background:rgba(245,158,11,.12)}
 /* Input box */
-.input-container{
-  max-width:760px;margin:0 auto;
-  background:var(--c-surface);border:1px solid var(--c-border);
-  border-radius:14px;overflow:hidden;
-  box-shadow:0 2px 16px rgba(0,0,0,.25);transition:.2s;
+.in-box{
+  max-width:740px;margin:0 auto;
+  background:var(--card);border:1px solid var(--bd);border-radius:14px;
+  overflow:hidden;transition:.2s;
+  box-shadow:0 2px 14px rgba(0,0,0,.28);
 }
-.input-container:focus-within{
-  border-color:rgba(16,163,127,.5);
-  box-shadow:0 0 0 3px rgba(16,163,127,.1),0 2px 16px rgba(0,0,0,.25);
-}
-.input-row{display:flex;align-items:flex-end;gap:8px;padding:12px 14px 8px}
-#chat-ta{
-  flex:1;background:transparent;font-size:15px;
-  color:var(--c-text);line-height:1.55;
-  resize:none;min-height:24px;max-height:220px;
-  font-family:var(--ff);
-}
-#chat-ta::placeholder{color:var(--c-text4)}
-#send-btn{
-  width:36px;height:36px;border-radius:8px;
-  background:var(--c-accent);color:#fff;font-size:16px;
+.in-box:focus-within{border-color:rgba(16,163,127,.5);box-shadow:0 0 0 3px rgba(16,163,127,.1),0 2px 14px rgba(0,0,0,.28)}
+.in-row{display:flex;align-items:flex-end;gap:8px;padding:11px 13px 8px}
+#ta{flex:1;background:transparent;font-size:14.5px;color:var(--t1);line-height:1.55;resize:none;min-height:24px;max-height:210px;font-family:var(--ff)}
+#ta::placeholder{color:var(--t4)}
+#send{
+  width:34px;height:34px;border-radius:7px;flex-shrink:0;
+  background:var(--green);color:#fff;font-size:15px;
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;border:none;transition:.2s;flex-shrink:0;
+  border:none;cursor:pointer;transition:.2s;
   box-shadow:0 2px 8px rgba(16,163,127,.35);
 }
-#send-btn:hover:not(:disabled){background:var(--c-accent2);transform:scale(1.05);box-shadow:0 4px 14px rgba(16,163,127,.5)}
-#send-btn:disabled{background:var(--c-surface2);color:var(--c-text4);box-shadow:none;cursor:not-allowed}
-.input-toolbar{
-  display:flex;align-items:center;gap:6px;
-  padding:0 12px 10px;flex-wrap:wrap;
-}
-.it-pill{
-  display:flex;align-items:center;gap:4px;
-  padding:4px 10px;background:transparent;
-  border:1px solid var(--c-border);border-radius:100px;
-  font-size:12px;color:var(--c-text3);cursor:pointer;transition:.15s;
-}
-.it-pill:hover{border-color:var(--c-border2);color:var(--c-text2)}
-.it-pill.active{border-color:rgba(16,163,127,.4);color:var(--c-accent2);background:rgba(16,163,127,.06)}
-.it-spacer{flex:1}
-.it-hint{font-size:11px;color:var(--c-text4)}
-.it-hint kbd{
-  background:var(--c-surface2);padding:1px 5px;border-radius:3px;
-  font-family:var(--fm);font-size:10px;
-  border:1px solid var(--c-border);
-}
-.it-char{font-size:11px;color:var(--c-text4);font-family:var(--fm)}
-.input-footer{
-  text-align:center;padding:6px 0 0;
-  font-size:12px;color:var(--c-text4);
-}
+#send:hover:not(:disabled){background:var(--green2);transform:scale(1.06)}
+#send:disabled{background:var(--card2);color:var(--t4);box-shadow:none;cursor:not-allowed}
+.in-foot{display:flex;align-items:center;gap:6px;padding:0 11px 9px;flex-wrap:wrap}
+.in-pill{display:flex;align-items:center;gap:4px;padding:4px 9px;background:transparent;border:1px solid var(--bd);border-radius:100px;font-size:11px;color:var(--t3);cursor:pointer;transition:.15s}
+.in-pill:hover{border-color:var(--bd2);color:var(--t2)}
+.in-pill.on{border-color:rgba(16,163,127,.4);color:var(--green2);background:rgba(16,163,127,.07)}
+.in-gap{flex:1}
+.in-hint{font-size:11px;color:var(--t4)}
+.in-hint kbd{background:var(--card2);padding:1px 5px;border-radius:3px;font-family:var(--fm);font-size:10px;border:1px solid var(--bd)}
+.in-chars{font-size:11px;color:var(--t4);font-family:var(--fm)}
+.in-disclaimer{text-align:center;padding:5px 0 0;font-size:11px;color:var(--t4)}
 
-/* ═══════════════════
-   AUTH MODAL
-═══════════════════ */
-.overlay{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
-  z-index:500;display:none;align-items:center;justify-content:center;
-}
-.overlay.show{display:flex;animation:fadeIn .2s ease}
-.auth-card{
-  width:100%;max-width:400px;margin:16px;
-  background:var(--c-surface);border:1px solid var(--c-border2);
-  border-radius:16px;overflow:hidden;
-  box-shadow:0 24px 80px rgba(0,0,0,.7);
-  animation:scaleIn .22s cubic-bezier(.23,1,.32,1);
-}
-.auth-grad{
-  background:linear-gradient(135deg,rgba(16,163,127,.12),rgba(124,58,237,.08));
-  padding:22px 24px 18px;border-bottom:1px solid var(--c-border);
-}
-.auth-brand{display:flex;align-items:center;gap:9px;margin-bottom:14px}
-.auth-brand-ico{
-  width:34px;height:34px;border-radius:9px;
-  background:linear-gradient(135deg,var(--c-accent),#7c3aed);
-  display:flex;align-items:center;justify-content:center;font-size:17px;
-  box-shadow:0 3px 12px rgba(16,163,127,.35);
-}
-.auth-brand-name{font-size:17px;font-weight:700}
-.auth-brand-name b{color:var(--c-accent2);font-weight:700}
-.auth-title{font-size:20px;font-weight:700;margin-bottom:4px}
-.auth-subtitle{font-size:13px;color:var(--c-text2)}
-/* Tabs */
-.auth-tabs{
-  display:flex;background:var(--c-surface2);
-  border-bottom:1px solid var(--c-border);
-  padding:4px 4px 0;gap:1px;
-}
-.atab{
-  flex:1;padding:8px;text-align:center;font-size:13px;font-weight:600;
-  color:var(--c-text3);cursor:pointer;transition:.15s;
-  border-radius:6px 6px 0 0;border-bottom:2px solid transparent;
-  margin-bottom:-1px;
-}
-.atab.on{color:var(--c-text);background:var(--c-surface);border-bottom-color:var(--c-accent)}
-.auth-body{padding:20px 22px 22px}
-.auth-form{display:none}
-.auth-form.on{display:block;animation:fadeUp .2s ease}
-.field{margin-bottom:13px}
-.field-label{
-  font-size:11px;font-weight:600;color:var(--c-text2);
-  margin-bottom:5px;display:flex;justify-content:space-between;
-  letter-spacing:.2px;
-}
-.field-label a{color:var(--c-accent2);cursor:pointer;font-weight:500}
-.field-inp{
-  width:100%;padding:10px 13px;
-  background:var(--c-surface2);border:1px solid var(--c-border);
-  border-radius:8px;font-size:14px;color:var(--c-text);transition:.15s;
-}
-.field-inp:focus{border-color:rgba(16,163,127,.5);box-shadow:0 0 0 3px rgba(16,163,127,.1)}
-.field-inp::placeholder{color:var(--c-text4)}
-.field-inp.err{border-color:rgba(239,68,68,.5);box-shadow:0 0 0 3px rgba(239,68,68,.1)}
-.btn-auth{
-  width:100%;padding:11px;
-  background:linear-gradient(135deg,var(--c-accent),#059669);
-  color:#fff;border-radius:8px;font-size:14px;font-weight:700;
-  cursor:pointer;border:none;transition:.2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.btn-auth:hover{transform:translateY(-1px);box-shadow:0 5px 20px rgba(16,163,127,.4)}
-.btn-auth:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.divider-or{
-  display:flex;align-items:center;gap:10px;
-  margin:13px 0;color:var(--c-text4);font-size:11px;
-}
-.divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--c-border)}
-.social-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.social-btn{
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  padding:9px;background:var(--c-surface2);border:1px solid var(--c-border);
-  border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;
-}
-.social-btn:hover{border-color:var(--c-border2);background:var(--c-surface)}
-.auth-link{text-align:center;margin-top:12px;font-size:12px;color:var(--c-text3)}
-.auth-link a{color:var(--c-accent2);cursor:pointer}
-/* Success state */
-#auth-success{display:none}
-#auth-success.show{display:block;animation:fadeUp .3s ease}
-.success-ring{
-  width:68px;height:68px;border-radius:50%;
-  background:rgba(16,163,127,.12);border:2px solid var(--c-accent);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 14px;
-  animation:scaleIn .4s cubic-bezier(.34,1.56,.64,1);
-}
-.succ-title{font-size:18px;font-weight:700;text-align:center;margin-bottom:5px}
-.succ-sub{font-size:13px;color:var(--c-text2);text-align:center;margin-bottom:14px}
+/* ── OVERLAYS ── */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center}
+.ovl.on{display:flex;animation:fadeIn .2s ease}
 
-/* ═══════════════════
-   SETTINGS PANEL
-═══════════════════ */
-#settings-overlay{z-index:400}
-.settings-panel{
-  width:100%;max-width:480px;margin:16px;
-  background:var(--c-surface);border:1px solid var(--c-border2);
-  border-radius:16px;overflow:hidden;
-  box-shadow:0 24px 80px rgba(0,0,0,.7);
-  animation:scaleIn .22s cubic-bezier(.23,1,.32,1);
-}
-.sp-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 20px 14px;border-bottom:1px solid var(--c-border);
-}
-.sp-title{font-size:17px;font-weight:700}
-.sp-close{
-  width:28px;height:28px;border-radius:6px;
-  background:var(--c-surface2);display:flex;align-items:center;
-  justify-content:center;font-size:14px;cursor:pointer;transition:.15s;
-}
-.sp-close:hover{background:var(--c-hover)}
-.sp-body{padding:18px 20px;overflow-y:auto;max-height:calc(80vh - 60px)}
-.sp-section{font-size:11px;font-weight:700;color:var(--c-text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-/* API key section */
-.sp-card{
-  background:var(--c-surface2);border:1px solid var(--c-border);
-  border-radius:10px;overflow:hidden;margin-bottom:16px;
-}
-.api-status-bar{
-  display:flex;align-items:center;gap:8px;
-  padding:10px 14px;border-bottom:1px solid var(--c-border);
-  font-size:12px;font-family:var(--fm);
-}
-.api-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.api-status-text{}
-.sp-inp-row{
-  display:flex;align-items:center;gap:8px;padding:10px 12px;
-}
-.sp-inp{
-  flex:1;padding:9px 12px;
-  background:var(--c-surface);border:1px solid var(--c-border);
-  border-radius:7px;font-size:13px;color:var(--c-text);transition:.15s;
-}
-.sp-inp:focus{border-color:rgba(16,163,127,.5);box-shadow:0 0 0 3px rgba(16,163,127,.1)}
-.sp-inp::placeholder{color:var(--c-text4)}
-.sp-save-btn{
-  padding:9px 16px;background:var(--c-accent);color:#fff;
-  border-radius:7px;font-size:13px;font-weight:700;
-  cursor:pointer;border:none;transition:.15s;flex-shrink:0;
-}
-.sp-save-btn:hover{background:var(--c-accent2)}
-.sp-help{
-  padding:0 14px 12px;font-size:12px;color:var(--c-text3);line-height:1.7;
-}
-.sp-help a{color:var(--c-accent2)}
-/* Toggles */
-.sp-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 14px;border-top:1px solid var(--c-border);
-}
-.sp-row-info{}
-.sp-row-title{font-size:14px;font-weight:600}
-.sp-row-desc{font-size:11px;color:var(--c-text3);margin-top:2px}
-.toggle{
-  width:40px;height:22px;border-radius:100px;
-  background:var(--c-text4);cursor:pointer;
-  position:relative;transition:.25s;flex-shrink:0;
-}
-.toggle.on{background:var(--c-accent)}
-.toggle::after{
-  content:'';position:absolute;top:2px;left:2px;
-  width:18px;height:18px;border-radius:50%;background:#fff;
-  transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.3);
-}
-.toggle.on::after{left:20px}
-/* Plan card */
-.plan-card{padding:14px 14px 14px}
-.pc-title{font-size:15px;font-weight:700;margin-bottom:3px}
-.pc-sub{font-size:12px;color:var(--c-text3);margin-bottom:10px}
-.pc-usage-label{
-  display:flex;justify-content:space-between;
-  font-size:11px;color:var(--c-text3);font-family:var(--fm);margin-bottom:5px;
-}
-.pc-bar{height:5px;background:var(--c-surface);border-radius:3px;overflow:hidden;margin-bottom:12px}
-.pc-fill{height:100%;background:linear-gradient(90deg,var(--c-accent),#7c3aed);border-radius:3px;transition:.5s}
-.upgrade-btn{
-  width:100%;padding:10px;
-  background:linear-gradient(135deg,var(--c-accent),#7c3aed);
-  color:#fff;border-radius:8px;font-size:13px;font-weight:700;
-  cursor:pointer;border:none;transition:.2s;
-}
-.upgrade-btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(16,163,127,.35)}
-.danger-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 14px;border-top:1px solid var(--c-border);flex-wrap:wrap;gap:10px;
-}
-.danger-btn{
-  padding:7px 14px;background:rgba(239,68,68,.1);
-  border:1px solid rgba(239,68,68,.3);color:var(--c-err);
-  border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;
-}
-.danger-btn:hover{background:rgba(239,68,68,.15)}
+/* Auth card */
+.auth-card{width:100%;max-width:390px;margin:14px;background:var(--card);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.23,1,.32,1)}
+.ac-top{background:linear-gradient(135deg,rgba(16,163,127,.12),rgba(124,58,237,.09));padding:20px 22px 16px;border-bottom:1px solid var(--bd)}
+.ac-brand{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ac-brand-ico{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--green),#7c3aed);display:flex;align-items:center;justify-content:center;font-size:16px}
+.ac-brand-name{font-size:16px;font-weight:700}
+.ac-brand-name b{color:var(--green2);font-weight:700}
+.ac-h{font-size:19px;font-weight:700;margin-bottom:3px}
+.ac-s{font-size:13px;color:var(--t2)}
+.ac-tabs{display:flex;background:var(--card2);border-bottom:1px solid var(--bd);padding:3px 3px 0;gap:1px}
+.ac-tab{flex:1;padding:8px;text-align:center;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;transition:.15s;border-radius:6px 6px 0 0;border-bottom:2px solid transparent;margin-bottom:-1px}
+.ac-tab.on{color:var(--t1);background:var(--card);border-bottom-color:var(--green)}
+.ac-body{padding:18px 20px 20px}
+.ac-form{display:none}
+.ac-form.on{display:block;animation:fadeUp .2s ease}
+.ac-success{display:none;text-align:center;padding:8px 0}
+.ac-success.on{display:block;animation:fadeUp .3s ease}
+.ring{width:64px;height:64px;border-radius:50%;background:rgba(16,163,127,.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.fl{margin-bottom:12px}
+.fl-lbl{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:4px;display:flex;justify-content:space-between;letter-spacing:.2px}
+.fl-lbl a{color:var(--green2);cursor:pointer}
+.fl-inp{width:100%;padding:9px 12px;background:var(--card2);border:1px solid var(--bd);border-radius:7px;font-size:14px;color:var(--t1);transition:.15s}
+.fl-inp:focus{border-color:rgba(16,163,127,.5);box-shadow:0 0 0 3px rgba(16,163,127,.1)}
+.fl-inp::placeholder{color:var(--t4)}
+.fl-inp.err{border-color:rgba(248,113,113,.5)}
+.btn-go{width:100%;padding:10px;background:linear-gradient(135deg,var(--green),#059669);color:#fff;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-go:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(16,163,127,.4)}
+.btn-go:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.or-row{display:flex;align-items:center;gap:9px;margin:12px 0;color:var(--t4);font-size:11px}
+.or-row::before,.or-row::after{content:'';flex:1;height:1px;background:var(--bd)}
+.soc-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.soc-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:var(--card2);border:1px solid var(--bd);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
+.soc-btn:hover{border-color:var(--bd2);background:var(--card)}
+.ac-link{text-align:center;margin-top:11px;font-size:12px;color:var(--t3)}
+.ac-link a{color:var(--green2);cursor:pointer}
 
-/* ═══════════════════
-   PAYMENT MODAL
-═══════════════════ */
-#pay-overlay{z-index:600}
-.pay-card{
-  width:100%;max-width:420px;margin:16px;
-  background:var(--c-surface);border:1px solid var(--c-border2);
-  border-radius:16px;overflow:hidden;
-  box-shadow:0 24px 80px rgba(0,0,0,.7);
-  animation:scaleIn .22s cubic-bezier(.23,1,.32,1);
-}
-.pay-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:18px 20px 14px;border-bottom:1px solid var(--c-border);
-}
-.pay-title{font-size:17px;font-weight:700}
-.pay-close{width:28px;height:28px;border-radius:6px;background:var(--c-surface2);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:.15s}
-.pay-close:hover{background:var(--c-hover)}
-.pay-body{padding:18px 20px}
-.plan-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
-.plan-opt{
-  border:2px solid var(--c-border);border-radius:10px;
-  padding:12px;cursor:pointer;transition:.2s;text-align:center;
-}
-.plan-opt:hover{border-color:rgba(16,163,127,.4)}
-.plan-opt.on{border-color:var(--c-accent);background:rgba(16,163,127,.08)}
-.po-price{font-size:20px;font-weight:800;letter-spacing:-1px;color:var(--c-accent2)}
-.po-label{font-size:10px;color:var(--c-text3);margin-top:3px}
-.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
-.pay-method{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  padding:11px;border:1px solid var(--c-border);border-radius:8px;
-  cursor:pointer;transition:.15s;
-}
-.pay-method:hover{border-color:rgba(16,163,127,.4);background:rgba(16,163,127,.05)}
-.pay-method.on{border-color:var(--c-accent);background:rgba(16,163,127,.08)}
-.pm-icon{font-size:22px}
-.pm-name{font-size:11px;font-weight:600;color:var(--c-text2)}
-.pay-info{
-  background:var(--c-surface2);border:1px solid var(--c-border);
-  border-radius:8px;padding:12px 14px;font-size:12px;
-  color:var(--c-text2);line-height:1.7;font-family:var(--fm);
-}
-.pay-footer{
-  display:flex;gap:8px;justify-content:flex-end;
-  padding:14px 20px;border-top:1px solid var(--c-border);
-}
-.btn-cancel{
-  padding:8px 16px;background:var(--c-surface2);
-  border:1px solid var(--c-border);color:var(--c-text2);
-  border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;
-}
-.btn-cancel:hover{color:var(--c-text);border-color:var(--c-border2)}
-.btn-pay{
-  padding:8px 20px;background:var(--c-accent);color:#fff;
-  border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:.2s;
-}
-.btn-pay:hover{background:var(--c-accent2);transform:translateY(-1px)}
+/* Settings panel */
+.stg-card{width:100%;max-width:460px;margin:14px;background:var(--card);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.23,1,.32,1)}
+.stg-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--bd)}
+.stg-title{font-size:16px;font-weight:700}
+.stg-x{width:27px;height:27px;border-radius:6px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:.15s;color:var(--t2)}
+.stg-x:hover{background:var(--hover);color:var(--t1)}
+.stg-body{padding:16px 20px}
+.stg-sec{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px}
+.stg-box{background:var(--card2);border:1px solid var(--bd);border-radius:9px;overflow:hidden;margin-bottom:14px}
+.api-status{display:flex;align-items:center;gap:8px;padding:9px 13px;border-bottom:1px solid var(--bd);font-size:12px;font-family:var(--fm)}
+.api-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.api-inp-row{display:flex;align-items:center;gap:7px;padding:9px 11px}
+.api-inp{flex:1;padding:8px 11px;background:var(--card);border:1px solid var(--bd);border-radius:6px;font-size:13px;color:var(--t1);transition:.15s}
+.api-inp:focus{border-color:rgba(16,163,127,.5)}
+.api-inp::placeholder{color:var(--t4)}
+.api-save{padding:8px 14px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.15s;flex-shrink:0}
+.api-save:hover{background:var(--green2)}
+.api-help{padding:0 13px 11px;font-size:11px;color:var(--t3);line-height:1.7}
+.api-help a{color:var(--green2)}
+.stg-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-top:1px solid var(--bd)}
+.stg-row:first-child{border:none}
+.sr-lbl{font-size:13px;font-weight:600}
+.sr-desc{font-size:11px;color:var(--t3);margin-top:2px}
+.tog{width:38px;height:20px;background:var(--t4);border-radius:100px;cursor:pointer;position:relative;transition:.25s;flex-shrink:0}
+.tog.on{background:var(--green)}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.tog.on::after{left:20px}
+.plan-section{padding:13px}
+.plan-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.plan-sub{font-size:11px;color:var(--t3);margin-bottom:9px}
+.plan-bar-row{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);font-family:var(--fm);margin-bottom:5px}
+.plan-bar{height:5px;background:var(--card);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.plan-fill{height:100%;background:linear-gradient(90deg,var(--green),#7c3aed);border-radius:3px;transition:.5s}
+.upg-btn{width:100%;padding:9px;background:linear-gradient(135deg,var(--green),#7c3aed);color:#fff;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.2s}
+.upg-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(16,163,127,.35)}
+.danger-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-top:1px solid var(--bd);flex-wrap:wrap;gap:8px}
+.del-btn{padding:6px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
+.del-btn:hover{background:rgba(248,113,113,.15)}
 
-/* ═══════════════════
-   TOASTS + MISC
-═══════════════════ */
-#notif-wrap{
-  position:fixed;top:64px;right:16px;z-index:1000;
-  display:flex;flex-direction:column;gap:6px;
-  pointer-events:none;
-}
-.notif{
-  display:flex;align-items:flex-start;gap:10px;
-  padding:12px 14px;
-  background:var(--c-surface);border:1px solid var(--c-border2);
-  border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);
-  pointer-events:all;max-width:320px;
-  animation:notifIn .3s cubic-bezier(.23,1,.32,1);
-}
-.notif.ok{border-left:3px solid var(--c-accent)}
-.notif.err{border-left:3px solid #f87171}
-.notif.info{border-left:3px solid #7c3aed}
-.notif.warn{border-left:3px solid #fbbf24}
-.notif-icon{font-size:18px;flex-shrink:0}
-.notif-body{flex:1}
-.notif-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.notif-msg{font-size:12px;color:var(--c-text2);line-height:1.5}
-.notif-x{cursor:pointer;color:var(--c-text3);font-size:14px;padding:2px;transition:.15s}
-.notif-x:hover{color:var(--c-text)}
-#toast-wrap{
-  position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
-  z-index:1000;display:flex;flex-direction:column;gap:5px;
-  align-items:center;pointer-events:none;
-}
-.toast{
-  padding:9px 18px;background:#1c1c1c;border:1px solid #333;
-  border-radius:100px;font-size:13px;font-weight:500;
-  white-space:nowrap;animation:fadeUp .3s ease;
-}
-.toast.ok{color:#4ade80;border-color:rgba(74,222,128,.3)}
-.toast.err{color:#f87171;border-color:rgba(248,113,113,.3)}
-.toast.info{color:#a5b4fc;border-color:rgba(165,180,252,.3)}
-.spin{width:14px;height:14px;border:2px solid var(--c-border);border-top-color:var(--c-accent);border-radius:50%;animation:spin .7s linear infinite}
-.conf{position:fixed;z-index:9999;pointer-events:none;border-radius:2px;animation:confetti .9s ease forwards}
+/* Payment modal */
+.pay-card{width:100%;max-width:400px;margin:14px;background:var(--card);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.23,1,.32,1)}
+.pay-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--bd)}
+.pay-title{font-size:16px;font-weight:700}
+.pay-x{width:27px;height:27px;border-radius:6px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:.15s}
+.pay-x:hover{background:var(--hover)}
+.pay-body{padding:16px 20px}
+.plan-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.pl-opt{border:2px solid var(--bd);border-radius:9px;padding:11px;cursor:pointer;transition:.2s;text-align:center}
+.pl-opt:hover{border-color:rgba(16,163,127,.35)}
+.pl-opt.on{border-color:var(--green);background:rgba(16,163,127,.08)}
+.po-price{font-size:19px;font-weight:800;letter-spacing:-1px;color:var(--green2)}
+.po-lbl{font-size:10px;color:var(--t3);margin-top:2px}
+.pm-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:13px}
+.pm-opt{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px;border:1px solid var(--bd);border-radius:7px;cursor:pointer;transition:.15s}
+.pm-opt:hover{border-color:rgba(16,163,127,.35);background:rgba(16,163,127,.05)}
+.pm-opt.on{border-color:var(--green);background:rgba(16,163,127,.08)}
+.pm-icon{font-size:20px}.pm-name{font-size:11px;font-weight:600;color:var(--t2)}
+.pay-info{background:var(--card2);border:1px solid var(--bd);border-radius:7px;padding:11px 13px;font-size:12px;color:var(--t2);line-height:1.7;font-family:var(--fm)}
+.pay-foot{display:flex;gap:7px;justify-content:flex-end;padding:12px 20px;border-top:1px solid var(--bd)}
+.btn-cancel{padding:8px 14px;background:var(--card2);border:1px solid var(--bd);color:var(--t2);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
+.btn-cancel:hover{color:var(--t1)}
+.btn-pay{padding:8px 18px;background:var(--green);color:#fff;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.2s}
+.btn-pay:hover{background:var(--green2);transform:translateY(-1px)}
 
-/* MOBILE RESPONSIVE */
+/* Toasts */
+#toasts{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:5px;align-items:center;pointer-events:none}
+.tst{padding:8px 16px;background:#1c1c1c;border:1px solid #333;border-radius:100px;font-size:12px;font-weight:500;white-space:nowrap;animation:fadeUp .25s ease}
+.tst.ok{color:#4ade80;border-color:rgba(74,222,128,.3)}
+.tst.err{color:#f87171;border-color:rgba(248,113,113,.3)}
+.tst.info{color:#a5b4fc;border-color:rgba(165,180,252,.3)}
+/* Notifs */
+#notifs{position:fixed;top:62px;right:14px;z-index:998;display:flex;flex-direction:column;gap:5px;pointer-events:none;max-width:300px}
+.notif{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;background:var(--card);border:1px solid var(--bd2);border-radius:11px;box-shadow:0 8px 32px rgba(0,0,0,.5);pointer-events:all;animation:notif .28s cubic-bezier(.23,1,.32,1)}
+.notif.ok{border-left:3px solid var(--green)}.notif.err{border-left:3px solid #f87171}.notif.info{border-left:3px solid #7c3aed}
+.n-ico{font-size:16px;flex-shrink:0}.n-body{flex:1}.n-title{font-size:12px;font-weight:700;margin-bottom:2px}.n-msg{font-size:11px;color:var(--t2);line-height:1.5}
+.n-x{cursor:pointer;color:var(--t3);font-size:13px;padding:1px;transition:.15s}.n-x:hover{color:var(--t1)}
+/* Spinner */
+.spin{width:14px;height:14px;border:2px solid var(--bd);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
+/* Confetti */
+.conf{position:fixed;z-index:9999;pointer-events:none;border-radius:2px;animation:conf .9s ease forwards}
 @media(max-width:768px){
-  #topbar{padding:0 12px}
-  .mp-name{max-width:120px}
-  #chat-content{padding:16px 14px 12px}
-  #input-zone{padding:10px 12px 14px}
-  .starters-grid{gap:6px}
+  .starters{gap:6px}
+  #chat-body{padding:14px 12px 8px}
+  #input-area{padding:8px 12px 12px}
 }
 </style>
 </head>
 <body>
-
 <div id="app">
-  <!-- Mobile overlay for sidebar -->
-  <div class="sb-overlay" onclick="closeSidebar()"></div>
 
-  <!-- ═══ SIDEBAR ═══ -->
-  <aside id="sidebar">
-    <div class="sb-top">
-      <button class="new-chat-btn" onclick="newChat()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        New chat
-      </button>
-      <div class="sb-icon-btn" onclick="openSettings()" title="Settings">⚙️</div>
+<!-- ── SIDEBAR ── -->
+<aside id="sb">
+  <div class="sb-head">
+    <button class="new-btn" onclick="newChat()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      New chat
+    </button>
+  </div>
+  <div class="sb-scroll">
+    <div id="chat-list-wrap">
+      <div class="sb-empty" id="sb-empty">No chats yet.<br>Start a conversation!</div>
+    </div>
+  </div>
+  <div class="sb-foot">
+    <div class="sb-user" onclick="openSettings()">
+      <div class="uav" id="sb-av">?</div>
+      <div>
+        <div class="uname" id="sb-name">Guest User</div>
+        <div class="uplan" id="sb-plan">Free · Add API key</div>
+      </div>
+      <span class="u-logout" onclick="event.stopPropagation();logout()" title="Sign out">⏻</span>
+    </div>
+  </div>
+</aside>
+<div id="sb-mask" onclick="closeSb()"></div>
+
+<!-- ── MAIN ── -->
+<div id="main">
+
+  <!-- TOPBAR -->
+  <header id="top">
+    <div class="t-icon" onclick="toggleSb()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </div>
 
-    <div class="sb-search">
-      <div class="sb-search-box">
-        <span class="sb-search-ico">🔍</span>
-        <input class="sb-search-inp" id="search-input" placeholder="Search chats..." oninput="filterChats(this.value)">
-      </div>
+    <div class="model-btn" id="model-btn" onclick="toggleMdd(event)">
+      <div class="m-dot"></div>
+      <span class="m-name" id="m-label">Claude Sonnet 4</span>
+      <span class="m-arr">▾</span>
     </div>
 
-    <div class="sb-chats" id="chat-list">
-      <div class="sb-empty" id="empty-history">No conversations yet.<br>Start a new chat!</div>
-    </div>
-
-    <div class="sb-bottom">
-      <div class="sb-user-row" onclick="toggleUserMenu()">
-        <div class="user-av" id="sb-avatar">?</div>
-        <div>
-          <div class="sb-uname" id="sb-name">Guest User</div>
-          <div class="sb-uplan" id="sb-plan">Free · Add API key to start</div>
-        </div>
-        <span class="sb-signout-btn" onclick="event.stopPropagation();doLogout()" title="Sign out">⏻</span>
+    <!-- Model dropdown -->
+    <div id="m-dd">
+      <div class="mdd-hdr">Select Model</div>
+      <div class="mdd-item on" onclick="setModel('claude-sonnet-4-20250514','Claude Sonnet 4',this)">
+        <div class="mdi-ico" style="background:linear-gradient(135deg,#10a37f,#7c3aed)">✦</div>
+        <div><div class="mdi-name">Claude Sonnet 4</div><div class="mdi-desc">Latest · Best quality</div></div>
+        <span class="mdi-tag tag-new">LATEST</span>
       </div>
-    </div>
-  </aside>
-
-  <!-- ═══ MAIN ═══ -->
-  <div id="main">
-
-    <!-- TOPBAR -->
-    <header id="topbar">
-      <div class="tb-toggle" onclick="toggleSidebar()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <div class="mdd-item" onclick="setModel('claude-sonnet-4-20250514','Claude Sonnet 4.5',this)">
+        <div class="mdi-ico" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">⚡</div>
+        <div><div class="mdi-name">Claude Sonnet 4.5</div><div class="mdi-desc">Fast · Great for coding</div></div>
+        <span class="mdi-tag tag-fast">FAST</span>
       </div>
-
-      <div class="model-picker" id="model-btn" onclick="toggleModelDD(event)">
-        <div class="mp-dot"></div>
-        <span class="mp-name" id="model-name-display">Claude Sonnet 4</span>
-        <span class="mp-arr">▾</span>
-      </div>
-
-      <!-- Model dropdown -->
-      <div class="model-dropdown" id="model-dropdown">
-        <div class="mdd-header">Choose a model</div>
-        <div class="mdd-item on" onclick="selectModel('claude-sonnet-4-20250514','Claude Sonnet 4','Latest · Best quality',this)">
-          <div class="mdi-ico" style="background:linear-gradient(135deg,#10a37f,#7c3aed)">✦</div>
-          <div><div class="mdi-name">Claude Sonnet 4</div><div class="mdi-desc">Latest · Best quality · Recommended</div></div>
-          <div class="mdi-badge mdb-latest">LATEST</div>
-        </div>
-        <div class="mdd-item" onclick="selectModel('claude-sonnet-4-20250514','Claude Sonnet 4.5','Fast · Great for code',this)">
-          <div class="mdi-ico" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">⚡</div>
-          <div><div class="mdi-name">Claude Sonnet 4.5</div><div class="mdi-desc">Fast · Great for coding · Balanced</div></div>
-          <div class="mdi-badge mdb-fast">FAST</div>
-        </div>
-        <div class="mdd-item" onclick="selectModel('claude-haiku-4-5-20251001','Claude Haiku 4.5','Fastest · Simple tasks',this)">
-          <div class="mdi-ico" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">⚡</div>
-          <div><div class="mdi-name">Claude Haiku 4.5</div><div class="mdi-desc">Fastest · Lightweight · Low cost</div></div>
-          <div class="mdi-badge mdb-fast">QUICK</div>
-        </div>
-      </div>
-
-      <div class="tb-spacer"></div>
-
-      <div class="tb-actions">
-        <div class="tb-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</div>
-        <div class="tb-btn" id="websearch-btn" onclick="toggleWebSearch()" title="Web search">🌐</div>
-        <div class="tb-btn" onclick="newChat()" title="New chat">✦</div>
-        <div id="auth-area">
-          <button class="tb-signin-btn" onclick="openAuth()" id="signin-btn">Sign in</button>
-        </div>
-      </div>
-    </header>
-
-    <!-- CHAT SCROLL AREA -->
-    <div id="chat-scroll">
-      <div id="chat-content">
-
-        <!-- WELCOME SCREEN -->
-        <div id="welcome-screen">
-          <div class="ws-brand">✦</div>
-          <div class="ws-headline">How can I help you?</div>
-          <div class="ws-sub">I'm NexusAI — powered by Claude. Ask me anything: code, writing, math, translation, advice, and more. In Hindi or English.</div>
-
-          <!-- Shows only if no API key -->
-          <div class="api-needed" id="welcome-api-notice">
-            <strong>🔑 One-time setup:</strong> Add your free Claude API key to enable real AI.<br>
-            Get it free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> — $5 credit, no card needed.<br>
-            Then click <strong style="cursor:pointer;color:#fbbf24" onclick="openSettings()">Settings → Paste key → Save</strong>
-          </div>
-
-          <div class="starters-grid">
-            <div class="starter" onclick="quickSend('Explain machine learning to me step by step with real examples in simple language.')">
-              <div class="starter-icon">🤖</div>
-              <div class="starter-title">Explain Machine Learning</div>
-              <div class="starter-desc">Step-by-step with examples</div>
-            </div>
-            <div class="starter" onclick="quickSend('Write a Python script that scrapes product prices from a website using requests and BeautifulSoup, with error handling.')">
-              <div class="starter-icon">🐍</div>
-              <div class="starter-title">Python Web Scraper</div>
-              <div class="starter-desc">With BeautifulSoup + error handling</div>
-            </div>
-            <div class="starter" onclick="quickSend('Meri startup ke liye ek detailed business plan banao. Product: AI-powered resume builder. Target: Indian college students.')">
-              <div class="starter-icon">💼</div>
-              <div class="starter-title">Business Plan (Hindi)</div>
-              <div class="starter-desc">Startup plan for Indian market</div>
-            </div>
-            <div class="starter" onclick="quickSend('Debug this JavaScript code and explain every error:\n\nconst user = null;\nconsole.log(user.name);\n\nconst arr = [1, 2, 3];\narr.forEach(n => {\n  console.log(n.toFixed(2));\n});')">
-              <div class="starter-icon">🐛</div>
-              <div class="starter-title">Debug JavaScript</div>
-              <div class="starter-desc">Find errors with explanations</div>
-            </div>
-            <div class="starter" onclick="quickSend('Write a professional email in English to a client apologizing for a 2-week project delay due to scope changes, and propose a new timeline.')">
-              <div class="starter-icon">✉️</div>
-              <div class="starter-title">Professional Email</div>
-              <div class="starter-desc">Client apology + new timeline</div>
-            </div>
-            <div class="starter" onclick="quickSend('Translate this paragraph to Hindi and explain the nuances: \"Artificial intelligence is no longer a futuristic concept — it is fundamentally reshaping every industry from healthcare to finance, and understanding it is now essential for anyone working in technology.\"')">
-              <div class="starter-icon">🌏</div>
-              <div class="starter-title">Translate to Hindi</div>
-              <div class="starter-desc">With meaning explanation</div>
-            </div>
-          </div>
-
-          <div class="chips">
-            <div class="chip" onclick="quickSend('Write a React custom hook for debouncing user input')">⚛️ React hook</div>
-            <div class="chip" onclick="quickSend('Explain the difference between SQL JOIN types with examples')">🗄️ SQL JOINs</div>
-            <div class="chip" onclick="quickSend('What are the best ways to grow a tech startup in India in 2025?')">📈 Startup India</div>
-            <div class="chip" onclick="quickSend('Write 5 creative Instagram captions for a food photography page')">📸 Instagram captions</div>
-            <div class="chip" onclick="quickSend('Solve this math problem step by step: Find the derivative of f(x) = 3x³ + 2x² - 5x + 7')">📐 Math calculus</div>
-            <div class="chip" onclick="quickSend('Mujhe ek motivational speech likhni hai college students ke liye. Topic: Failure se kaise seekhein')">🎤 Hindi speech</div>
-            <div class="chip" onclick="quickSend('Explain how HTTPS and SSL certificates work, step by step')">🔒 HTTPS explained</div>
-            <div class="chip" onclick="quickSend('Write a complete REST API in Node.js with Express for a todo app with CRUD operations')">🚀 Node.js API</div>
-          </div>
-        </div>
-
+      <div class="mdd-item" onclick="setModel('claude-haiku-4-5-20251001','Claude Haiku 4.5',this)">
+        <div class="mdi-ico" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">⚡</div>
+        <div><div class="mdi-name">Claude Haiku 4.5</div><div class="mdi-desc">Fastest · Lightweight</div></div>
+        <span class="mdi-tag tag-fast">QUICK</span>
       </div>
     </div>
 
-    <!-- INPUT ZONE -->
-    <div id="input-zone">
-      <!-- API Key notice bar -->
-      <div class="api-key-bar" id="api-key-bar" onclick="openSettings()">
-        <span class="akb-text">🔑 Add your Claude API key in Settings to start chatting with real AI</span>
-        <span class="akb-arrow">Settings →</span>
-      </div>
-
-      <div class="input-container">
-        <div class="input-row">
-          <textarea
-            id="chat-ta"
-            placeholder="Message NexusAI…"
-            rows="1"
-            oninput="onTAInput(this)"
-            onkeydown="onTAKeydown(event)"
-          ></textarea>
-          <button id="send-btn" onclick="sendMessage()" disabled>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-          </button>
-        </div>
-        <div class="input-toolbar">
-          <div class="it-pill" onclick="newChat()">✦ New chat</div>
-          <div class="it-pill" id="ws-pill" onclick="toggleWebSearch()">🌐 Web search</div>
-          <div class="it-spacer"></div>
-          <div class="it-hint"><kbd>Enter</kbd> send &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> new line</div>
-          <div class="it-char" id="char-display">0</div>
-        </div>
-      </div>
-      <div class="input-footer">NexusAI can make mistakes. Verify important information.</div>
+    <div class="t-gap"></div>
+    <div class="t-actions">
+      <div class="t-icon" onclick="toggleTheme()" id="theme-ico">🌙</div>
+      <div class="t-icon" onclick="newChat()" title="New chat">✦</div>
+      <div class="t-icon" onclick="openSettings()" title="Settings">⚙️</div>
+      <div id="auth-slot"><button id="signin-btn" onclick="openAuth()">Sign in</button></div>
     </div>
+  </header>
 
-  </div><!-- end #main -->
+  <!-- CHAT MESSAGES -->
+  <div id="chat-scroll">
+    <div id="chat-body">
+      <div id="welcome">
+        <div class="w-logo">✦</div>
+        <div class="w-title">How can I help you?</div>
+        <div class="w-sub">I'm NexusAI — powered by Claude. Ask me anything in Hindi or English: code, writing, math, analysis, translation, and more.</div>
+
+        <div class="w-api-note" id="w-api-note">
+          <b>🔑 Setup needed:</b> Add your free Claude API key to enable real AI.<br>
+          Get it free: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> — $5 credit, no card.<br>
+          Then: <b style="cursor:pointer;color:#fbbf24" onclick="openSettings()">Settings → Paste key → Save</b>
+        </div>
+
+        <div class="starters">
+          <div class="starter" onclick="qs('Explain how machine learning works with simple real-life examples.')"><div class="s-ico">🤖</div><div class="s-title">Explain ML</div><div class="s-desc">Simple examples, step by step</div></div>
+          <div class="starter" onclick="qs('Write a Python web scraper using requests and BeautifulSoup with error handling and comments.')"><div class="s-ico">🐍</div><div class="s-title">Python scraper</div><div class="s-desc">With error handling + comments</div></div>
+          <div class="starter" onclick="qs('Meri startup ke liye ek complete business plan banao. Product: AI tool for Indian small businesses.')"><div class="s-ico">💼</div><div class="s-title">Business plan (Hindi)</div><div class="s-desc">AI tool for Indian market</div></div>
+          <div class="starter" onclick="qs('Write a professional apology email to a client about a 2-week project delay with a revised timeline.')"><div class="s-ico">✉️</div><div class="s-title">Client email</div><div class="s-desc">Apology + revised timeline</div></div>
+          <div class="starter" onclick="qs('Debug this JavaScript and explain every issue:\n\nconst user = null;\nconsole.log(user.name);\n\nconst nums = [1,2,3];\nnums.forEach(n => console.log(n.toFixed()));')"><div class="s-ico">🐛</div><div class="s-title">Debug JavaScript</div><div class="s-desc">Errors explained clearly</div></div>
+          <div class="starter" onclick="qs('Translate to Hindi and explain meaning deeply: \"The future belongs to those who believe in the beauty of their dreams.\"')"><div class="s-ico">🌏</div><div class="s-title">Translate + explain</div><div class="s-desc">English → Hindi with context</div></div>
+        </div>
+
+        <div class="chips">
+          <div class="chip" onclick="qs('Write a React custom hook for debouncing input, with TypeScript and usage example')">⚛️ React hook</div>
+          <div class="chip" onclick="qs('Explain SQL JOINs (INNER, LEFT, RIGHT, FULL) with practical examples')">🗄️ SQL JOINs</div>
+          <div class="chip" onclick="qs('What are the top 5 ways to grow a tech startup in India in 2025?')">📈 Startup growth</div>
+          <div class="chip" onclick="qs('Write 5 creative Instagram captions for a food photography account')">📸 Insta captions</div>
+          <div class="chip" onclick="qs('Solve step by step: Find derivative of f(x) = 3x³ + 2x² − 5x + 7')">📐 Calculus</div>
+          <div class="chip" onclick="qs('Mujhe ek motivational speech likhni hai college students ke liye on: Failure se kaise seekhein')">🎤 Hindi speech</div>
+          <div class="chip" onclick="qs('Write a complete Node.js REST API with Express for a todo app with CRUD operations')">🚀 Node.js API</div>
+          <div class="chip" onclick="qs('Explain HTTPS, SSL certificates and TLS handshake step by step')">🔒 HTTPS/SSL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div id="input-area">
+    <div id="api-bar" onclick="openSettings()">
+      🔑 Add your free Claude API key in Settings to start chatting with real AI
+      <span style="margin-left:auto;font-weight:700">Settings →</span>
+    </div>
+    <div class="in-box">
+      <div class="in-row">
+        <textarea id="ta" placeholder="Message NexusAI… (Hindi or English)" rows="1" oninput="onTAIn(this)" onkeydown="onTAKey(event)"></textarea>
+        <button id="send" onclick="send()" disabled>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </button>
+      </div>
+      <div class="in-foot">
+        <div class="in-pill" onclick="newChat()">✦ New</div>
+        <div class="in-pill" id="ws-pill" onclick="toggleWS()">🌐 Web search</div>
+        <div class="in-gap"></div>
+        <div class="in-hint"><kbd>↵</kbd> send &nbsp;·&nbsp; <kbd>⇧↵</kbd> newline</div>
+        <div class="in-chars" id="chars">0</div>
+      </div>
+    </div>
+    <div class="in-disclaimer">NexusAI can make mistakes. Verify important information.</div>
+  </div>
+
+</div><!-- end #main -->
 </div><!-- end #app -->
 
-<!-- ═══ AUTH MODAL ═══ -->
-<div class="overlay" id="auth-overlay" onclick="if(event.target===this)closeAuth()">
+<!-- ── AUTH OVERLAY ── -->
+<div class="ovl" id="auth-ovl" onclick="if(event.target===this)closeAuth()">
   <div class="auth-card">
-    <div class="auth-grad">
-      <div class="auth-brand">
-        <div class="auth-brand-ico">✦</div>
-        <div class="auth-brand-name">Nexus<b>AI</b></div>
+    <div class="ac-top">
+      <div class="ac-brand">
+        <div class="ac-brand-ico">✦</div>
+        <div class="ac-brand-name">Nexus<b>AI</b></div>
       </div>
-      <div class="auth-title" id="auth-title">Welcome back</div>
-      <div class="auth-subtitle" id="auth-subtitle">Sign in to save your conversations</div>
+      <div class="ac-h" id="ac-h">Welcome back</div>
+      <div class="ac-s" id="ac-s">Sign in to save your conversations</div>
     </div>
-    <div class="auth-tabs">
-      <div class="atab on" id="tab-login" onclick="switchAuthTab('login')">Sign In</div>
-      <div class="atab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</div>
+    <div class="ac-tabs">
+      <div class="ac-tab on" id="tab-in" onclick="switchTab('in')">Sign In</div>
+      <div class="ac-tab" id="tab-up" onclick="switchTab('up')">Sign Up</div>
     </div>
-    <div class="auth-body">
+    <div class="ac-body">
       <!-- Login -->
-      <div class="auth-form on" id="form-login">
-        <div class="field">
-          <div class="field-label">Email address</div>
-          <input class="field-inp" id="login-email" type="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')submitLogin()">
+      <div class="ac-form on" id="form-in">
+        <div class="fl"><div class="fl-lbl">Email</div><input class="fl-inp" id="em" type="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div class="fl"><div class="fl-lbl">Password <a onclick="toast('Reset link sent!','info')">Forgot?</a></div><input class="fl-inp" id="pw" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="btn-go" onclick="doLogin()" id="login-btn">Sign In</button>
+        <div class="or-row">or</div>
+        <div class="soc-row">
+          <button class="soc-btn" onclick="socialLogin('Google')">🌐 Google</button>
+          <button class="soc-btn" onclick="socialLogin('GitHub')">⌨️ GitHub</button>
         </div>
-        <div class="field">
-          <div class="field-label">
-            Password
-            <a onclick="toast('Password reset email sent!','info')">Forgot password?</a>
-          </div>
-          <input class="field-inp" id="login-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitLogin()">
-        </div>
-        <button class="btn-auth" onclick="submitLogin()" id="login-btn">Sign In</button>
-        <div class="divider-or">or</div>
-        <div class="social-row">
-          <button class="social-btn" onclick="socialLogin('Google')">🌐 Google</button>
-          <button class="social-btn" onclick="socialLogin('GitHub')">⌨️ GitHub</button>
-        </div>
-        <div class="auth-link">No account? <a onclick="switchAuthTab('signup')">Sign up free →</a></div>
+        <div class="ac-link">No account? <a onclick="switchTab('up')">Sign up free →</a></div>
       </div>
       <!-- Signup -->
-      <div class="auth-form" id="form-signup">
-        <div class="field">
-          <div class="field-label">Full Name</div>
-          <input class="field-inp" id="signup-name" type="text" placeholder="Your name">
-        </div>
-        <div class="field">
-          <div class="field-label">Email address</div>
-          <input class="field-inp" id="signup-email" type="email" placeholder="you@example.com">
-        </div>
-        <div class="field">
-          <div class="field-label">Password</div>
-          <input class="field-inp" id="signup-pass" type="password" placeholder="Minimum 8 characters" onkeydown="if(event.key==='Enter')submitSignup()">
-        </div>
-        <button class="btn-auth" onclick="submitSignup()">Create Account</button>
-        <div class="auth-link" style="margin-top:10px;font-size:11px">By signing up you agree to our Terms &amp; Privacy Policy</div>
+      <div class="ac-form" id="form-up">
+        <div class="fl"><div class="fl-lbl">Full Name</div><input class="fl-inp" id="sn" placeholder="Your name"></div>
+        <div class="fl"><div class="fl-lbl">Email</div><input class="fl-inp" id="se" type="email" placeholder="you@example.com"></div>
+        <div class="fl"><div class="fl-lbl">Password</div><input class="fl-inp" id="sp" type="password" placeholder="Minimum 8 characters" onkeydown="if(event.key==='Enter')doSignup()"></div>
+        <button class="btn-go" onclick="doSignup()">Create Account</button>
+        <div class="ac-link" style="margin-top:9px;font-size:11px">By signing up you agree to our Terms &amp; Privacy</div>
       </div>
       <!-- Success -->
-      <div id="auth-success">
-        <div class="success-ring">
-          <svg width="30" height="30" viewBox="0 0 60 60" fill="none">
-            <path d="M14 30L25 41L46 22" stroke="#10a37f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="succ-title" id="succ-title">Welcome!</div>
-        <div class="succ-sub" id="succ-sub">Setting up your workspace...</div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--c-text3)"><div class="spin"></div> Loading</div>
+      <div class="ac-success" id="ac-succ">
+        <div class="ring"><svg width="28" height="28" viewBox="0 0 60 60" fill="none"><path d="M14 30L25 41L46 22" stroke="#10a37f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="font-size:17px;font-weight:700;margin-bottom:4px" id="succ-t">Welcome!</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:12px" id="succ-s">Setting up...</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--t3)"><div class="spin"></div> Loading</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ SETTINGS ═══ -->
-<div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
-  <div class="settings-panel">
-    <div class="sp-header">
-      <div class="sp-title">Settings</div>
-      <div class="sp-close" onclick="closeSettings()">✕</div>
-    </div>
-    <div class="sp-body">
-      <!-- API Key -->
-      <div class="sp-section">🔑 Claude API Key</div>
-      <div class="sp-card">
-        <div class="api-status-bar">
-          <div class="api-status-dot" id="api-dot" style="background:#f87171"></div>
-          <span class="api-status-text" id="api-status" style="font-size:12px;color:#f87171">Not connected — add key below</span>
+<!-- ── SETTINGS OVERLAY ── -->
+<div class="ovl" id="stg-ovl" onclick="if(event.target===this)closeSettings()">
+  <div class="stg-card">
+    <div class="stg-head"><div class="stg-title">Settings</div><div class="stg-x" onclick="closeSettings()">✕</div></div>
+    <div class="stg-body">
+
+      <div class="stg-sec">🔑 Claude API Key</div>
+      <div class="stg-box">
+        <div class="api-status">
+          <div class="api-dot" id="api-dot" style="background:#f87171"></div>
+          <span id="api-txt" style="color:#f87171">Not connected</span>
         </div>
-        <div class="sp-inp-row">
-          <input class="sp-inp" id="api-key-field" type="password" placeholder="sk-ant-api03-...">
-          <button class="sp-save-btn" onclick="saveApiKey()">Save</button>
+        <div class="api-inp-row">
+          <input class="api-inp" id="api-inp" type="password" placeholder="sk-ant-api03-...">
+          <button class="api-save" onclick="saveKey()">Save</button>
         </div>
-        <div class="sp-help">
-          Get your free API key: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br>
-          • $5 free credits included &nbsp;• No credit card required<br>
-          • Key is stored only in your browser (localStorage)
+        <div class="api-help">
+          Get free key: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br>
+          • $5 free credits · No card needed · Stored locally only
         </div>
       </div>
 
-      <!-- Preferences -->
-      <div class="sp-section">🎨 Preferences</div>
-      <div class="sp-card">
-        <div class="sp-row" style="border:none">
-          <div class="sp-row-info">
-            <div class="sp-row-title">Dark Mode</div>
-            <div class="sp-row-desc">Toggle dark or light interface</div>
-          </div>
-          <div class="toggle on" id="dark-toggle" onclick="toggleTheme();this.classList.toggle('on')"></div>
+      <div class="stg-sec">🎨 Preferences</div>
+      <div class="stg-box">
+        <div class="stg-row" style="border:none">
+          <div><div class="sr-lbl">Dark Mode</div><div class="sr-desc">Toggle dark/light interface</div></div>
+          <div class="tog on" id="dark-tog" onclick="toggleTheme();this.classList.toggle('on')"></div>
         </div>
-        <div class="sp-row">
-          <div class="sp-row-info">
-            <div class="sp-row-title">Save Chat History</div>
-            <div class="sp-row-desc">Store conversations in browser</div>
-          </div>
-          <div class="toggle on" id="history-toggle" onclick="this.classList.toggle('on')"></div>
+        <div class="stg-row">
+          <div><div class="sr-lbl">Save History</div><div class="sr-desc">Store chats in browser</div></div>
+          <div class="tog on" onclick="this.classList.toggle('on')"></div>
         </div>
-        <div class="sp-row">
-          <div class="sp-row-info">
-            <div class="sp-row-title">Show Typing Indicator</div>
-            <div class="sp-row-desc">Show dots while AI is responding</div>
-          </div>
-          <div class="toggle on" id="typing-toggle" onclick="this.classList.toggle('on')"></div>
+        <div class="stg-row">
+          <div><div class="sr-lbl">Typing Indicator</div><div class="sr-desc">Show dots while AI thinks</div></div>
+          <div class="tog on" id="ti-tog" onclick="this.classList.toggle('on')"></div>
         </div>
       </div>
 
-      <!-- Plan -->
-      <div class="sp-section">💎 Plan</div>
-      <div class="sp-card">
-        <div class="plan-card">
-          <div class="pc-title" id="sp-plan-name">Free Plan</div>
-          <div class="pc-sub" id="sp-plan-sub">Unlimited chat · 5 website builds/month</div>
-          <div class="pc-usage-label">
-            <span>Website builds used</span>
-            <span id="sp-builds">0 / 5</span>
-          </div>
-          <div class="pc-bar"><div class="pc-fill" id="sp-builds-fill" style="width:0%"></div></div>
-          <button class="upgrade-btn" onclick="closeSettings();openPayModal()">⚡ Upgrade to Pro — ₹999/month</button>
+      <div class="stg-sec">💎 Plan</div>
+      <div class="stg-box">
+        <div class="plan-section">
+          <div class="plan-title" id="plan-lbl">Free Plan</div>
+          <div class="plan-sub">Unlimited AI chat · 5 website builds/month</div>
+          <div class="plan-bar-row"><span>Builds used</span><span id="builds-lbl">0 / 5</span></div>
+          <div class="plan-bar"><div class="plan-fill" id="builds-fill" style="width:0%"></div></div>
+          <button class="upg-btn" onclick="closeSettings();openPay()">⚡ Upgrade to Pro — ₹999/month</button>
         </div>
         <div class="danger-row">
-          <div>
-            <div class="sp-row-title" style="font-size:13px">Clear all history</div>
-            <div class="sp-row-desc">Delete all saved conversations</div>
-          </div>
-          <button class="danger-btn" onclick="if(confirm('Delete all chat history?')){clearAllHistory();closeSettings()}">Clear History</button>
-        </div>
-      </div>
-
-      <!-- Profile (if logged in) -->
-      <div id="sp-profile-section" style="display:none">
-        <div class="sp-section">👤 Profile</div>
-        <div class="sp-card">
-          <div style="padding:14px">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--c-border)">
-              <div class="user-av" id="sp-av" style="width:44px;height:44px;border-radius:50%;font-size:18px">?</div>
-              <div><div style="font-size:15px;font-weight:700" id="sp-name">Guest</div><div style="font-size:12px;color:var(--c-text3)" id="sp-email">Not signed in</div></div>
-            </div>
-            <div class="sp-inp-row" style="padding:0">
-              <input class="sp-inp" id="sp-name-inp" placeholder="Display name">
-              <button class="sp-save-btn" onclick="saveProfile()">Save</button>
-            </div>
-          </div>
+          <div><div class="sr-lbl" style="font-size:13px">Clear all history</div><div class="sr-desc">Delete all conversations</div></div>
+          <button class="del-btn" onclick="if(confirm('Delete all chats?')){clearHistory();closeSettings()}">Clear</button>
         </div>
       </div>
 
@@ -1222,1052 +656,744 @@ a{color:var(--c-accent2);text-decoration:underline;text-underline-offset:3px}
   </div>
 </div>
 
-<!-- ═══ PAYMENT ═══ -->
-<div class="overlay" id="pay-overlay" onclick="if(event.target===this)closePayModal()">
+<!-- ── PAYMENT OVERLAY ── -->
+<div class="ovl" id="pay-ovl" onclick="if(event.target===this)closePay()">
   <div class="pay-card">
-    <div class="pay-header">
-      <div class="pay-title">⚡ Upgrade to Pro</div>
-      <div class="pay-close" onclick="closePayModal()">✕</div>
-    </div>
+    <div class="pay-head"><div class="pay-title">⚡ Upgrade to Pro</div><div class="pay-x" onclick="closePay()">✕</div></div>
     <div class="pay-body">
       <div class="plan-opts">
-        <div class="plan-opt on" onclick="pickPlan(this,'999','Pro/mo')"><div class="po-price">₹999</div><div class="po-label">Pro / month</div></div>
-        <div class="plan-opt" onclick="pickPlan(this,'2499','Yearly')"><div class="po-price">₹2,499</div><div class="po-label">Pro / year</div></div>
-        <div class="plan-opt" onclick="pickPlan(this,'4999','Agency')"><div class="po-price">₹4,999</div><div class="po-label">Agency / mo</div></div>
+        <div class="pl-opt on" onclick="pickPlan(this,'999','₹999/mo')"><div class="po-price">₹999</div><div class="po-lbl">Pro / mo</div></div>
+        <div class="pl-opt" onclick="pickPlan(this,'2499','₹2,499/yr')"><div class="po-price">₹2,499</div><div class="po-lbl">Pro / yr</div></div>
+        <div class="pl-opt" onclick="pickPlan(this,'4999','₹4,999/mo')"><div class="po-price">₹4,999</div><div class="po-lbl">Agency</div></div>
       </div>
-      <div style="font-size:12px;font-weight:700;color:var(--c-text2);margin-bottom:8px">Payment Method</div>
-      <div class="pay-methods">
-        <div class="pay-method on" onclick="pickPayMethod(this)"><div class="pm-icon">📱</div><div class="pm-name">UPI</div></div>
-        <div class="pay-method" onclick="pickPayMethod(this)"><div class="pm-icon">💳</div><div class="pm-name">Card</div></div>
-        <div class="pay-method" onclick="pickPayMethod(this)"><div class="pm-icon">🏦</div><div class="pm-name">Net Banking</div></div>
+      <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:7px">Payment Method</div>
+      <div class="pm-row">
+        <div class="pm-opt on" onclick="pickPM(this)"><div class="pm-icon">📱</div><div class="pm-name">UPI</div></div>
+        <div class="pm-opt" onclick="pickPM(this)"><div class="pm-icon">💳</div><div class="pm-name">Card</div></div>
+        <div class="pm-opt" onclick="pickPM(this)"><div class="pm-icon">🏦</div><div class="pm-name">Net Bank</div></div>
       </div>
-      <div class="field" style="margin-bottom:12px">
-        <div class="field-label">Your UPI ID</div>
-        <input id="upi-id" type="text" placeholder="name@paytm or 9876543210@upi"
-          style="width:100%;padding:10px 12px;background:var(--c-surface2);border:1px solid var(--c-border);border-radius:8px;font-size:14px;color:var(--c-text)">
+      <div class="fl" style="margin-bottom:11px">
+        <div class="fl-lbl">Your UPI ID</div>
+        <input id="upi" type="text" placeholder="name@paytm or 9876543210@upi" style="width:100%;padding:9px 12px;background:var(--card2);border:1px solid var(--bd);border-radius:7px;font-size:13px;color:var(--t1)">
       </div>
       <div class="pay-info">
-        💳 Pay to: <strong>piyushmoses01@gmail.com</strong><br>
-        📧 Send screenshot: <strong>piyushmoses01@gmail.com</strong><br>
-        ✅ Account upgraded in 2 hours<br>
-        Total: <strong id="pay-total" style="color:var(--c-accent2)">₹999/month</strong>
+        💳 Pay to: <b>piyushmoses01@gmail.com</b><br>
+        📧 Screenshot to: <b>piyushmoses01@gmail.com</b><br>
+        ✅ Activated within 2 hours<br>
+        Total: <b id="pay-total" style="color:var(--green2)">₹999/month</b>
       </div>
     </div>
-    <div class="pay-footer">
-      <button class="btn-cancel" onclick="closePayModal()">Cancel</button>
-      <button class="btn-pay" onclick="submitPayment()">⚡ Pay Now</button>
+    <div class="pay-foot">
+      <button class="btn-cancel" onclick="closePay()">Cancel</button>
+      <button class="btn-pay" onclick="doPay()">⚡ Pay Now</button>
     </div>
   </div>
 </div>
 
-<!-- Notifications + Toasts -->
-<div id="notif-wrap"></div>
-<div id="toast-wrap"></div>
+<div id="toasts"></div>
+<div id="notifs"></div>
 
-<!-- ═══════════════════════════════════════════
-     COMPLETE ENGINE — Real Claude API
-═══════════════════════════════════════════ -->
 <script>
-'use strict';
+/* ═══════════════════════════════════════════════════
+   NEXUSAI — COMPLETE REAL AI ENGINE
+   Real Claude API · No fakes · ChatGPT quality
+═══════════════════════════════════════════════════ */
 
-// ─── CONFIG ───────────────────────────────
-const VERSION = '2.0.0';
-const MAX_TOKENS = 4096;
-const MAX_FREE_BUILDS = 5;
-const MODELS = {
-  'claude-sonnet-4-20250514': 'Claude Sonnet 4',
-  'claude-haiku-4-5-20251001': 'Claude Haiku 4.5'
-};
+// ─── SYSTEM PROMPT ─────────────────────────────
+const SYS = `You are NexusAI, a highly capable AI assistant powered by Claude.
 
-// System prompt — defines AI personality and capabilities
-const SYSTEM_PROMPT = `You are NexusAI, a highly capable and friendly AI assistant powered by Claude.
+## Identity
+- Warm, helpful, knowledgeable, and conversational
+- Respond naturally — not robotic
+- Adapt tone based on context
 
-## Core Identity
-- Name: NexusAI
-- You are helpful, knowledgeable, honest, and conversational
-- You speak naturally — not robotic
-- You adapt your tone: technical when needed, casual when chatting
-
-## Languages
-- You fully understand and respond in Hindi, English, Hinglish, and any language the user writes in
-- If the user writes in Hindi, respond in Hindi
-- If Hinglish, respond in Hinglish
-- Match the user's language naturally
+## Language
+- Respond in the same language the user writes in
+- Hindi → Hindi, English → English, Hinglish → Hinglish
+- Be natural, not translated-sounding
 
 ## Capabilities
-- Answer any factual question across all domains
-- Write, debug, explain, and review code in any programming language
-- Help with writing: emails, essays, reports, stories, poems, scripts
-- Translate text between any languages
-- Solve math problems step by step
-- Give business, career, startup, and life advice
-- Analyze data, create plans, brainstorm ideas
-- Explain complex topics simply with examples
+- Answer questions on any topic
+- Write, debug, explain code in any language
+- Help with writing: emails, essays, stories, scripts
+- Translate between languages
+- Solve math and logic problems step by step
+- Give startup, career, and life advice
+- Analyze data and create plans
 
-## Response Formatting
-- Use markdown formatting: **bold**, *italic*, \`code\`, code blocks, headers, lists, tables
-- For code: always use fenced code blocks with the language specified
-- For step-by-step: use numbered lists
-- For comparisons: use tables
-- Keep responses focused — not too long unless detail is needed
-- Use line breaks to improve readability
+## Formatting
+- Use markdown: **bold**, *italic*, code blocks, lists, tables, headings
+- Code: always use fenced blocks with language tag
+- Be concise but thorough
+- Use examples to explain complex topics`;
 
-## Code Responses
-- Always provide complete, working code
-- Include comments explaining key parts
-- Mention any dependencies or requirements
-- Show example usage when helpful
-
-## Honesty
-- If you don't know something, say so
-- If asked about real-time events after your training cutoff, acknowledge the limitation
-- Never make up facts`;
-
-// ─── STATE ────────────────────────────────
-let S = {
-  apiKey: localStorage.getItem('nai_api') || '',
-  user: JSON.parse(localStorage.getItem('nai_user') || 'null'),
+// ─── STATE ─────────────────────────────────────
+const G = {
+  key: localStorage.getItem('nai_k') || '',
+  user: JSON.parse(localStorage.getItem('nai_u') || 'null'),
   model: 'claude-sonnet-4-20250514',
-  modelName: 'Claude Sonnet 4',
-  conversations: JSON.parse(localStorage.getItem('nai_convs') || '[]'),
-  currentId: null,
-  history: [],       // API message history for current conversation
-  loading: false,
-  webSearch: false,
-  theme: localStorage.getItem('nai_theme') || 'dark',
-  isPro: localStorage.getItem('nai_pro') === '1',
-  builds: parseInt(localStorage.getItem('nai_builds') || '0'),
-  payPlan: { price: '999', label: 'Pro/month' }
+  mName: 'Claude Sonnet 4',
+  convs: JSON.parse(localStorage.getItem('nai_c') || '[]'),
+  cid: null,
+  hist: [],
+  busy: false,
+  ws: false,
+  theme: localStorage.getItem('nai_t') || 'dark',
+  pro: localStorage.getItem('nai_pro') === '1',
+  builds: parseInt(localStorage.getItem('nai_b') || '0'),
+  payPlan: '₹999/month'
 };
 
-// ─── INIT ─────────────────────────────────
+// ─── INIT ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   applyTheme(false);
   refreshUI();
-  renderChatHistory();
-
-  if (S.apiKey) {
-    document.getElementById('api-key-bar').style.display = 'none';
-    document.getElementById('welcome-api-notice').style.display = 'none';
-    document.getElementById('send-btn').disabled = false;
+  renderHistory();
+  if (G.key) {
+    document.getElementById('api-bar').style.display = 'none';
+    document.getElementById('w-api-note')?.remove();
+    document.getElementById('send').disabled = false;
   }
-
-  // Focus input
-  setTimeout(() => document.getElementById('chat-ta')?.focus(), 150);
+  setTimeout(() => document.getElementById('ta')?.focus(), 100);
 });
 
-// Close model dropdown on outside click
+// Close model dropdown on click outside
 document.addEventListener('click', e => {
-  const dd = document.getElementById('model-dropdown');
+  const dd = document.getElementById('m-dd');
   const btn = document.getElementById('model-btn');
-  if (dd && btn && !dd.contains(e.target) && !btn.contains(e.target)) {
+  if (dd && !dd.contains(e.target) && !btn?.contains(e.target)) {
     dd.style.display = 'none';
-    btn.classList.remove('open');
   }
 });
 
-// ─── THEME ────────────────────────────────
+// ─── THEME ─────────────────────────────────────
 function applyTheme(save = true) {
-  document.documentElement.setAttribute('data-theme', S.theme === 'light' ? 'light' : '');
-  const btn = document.getElementById('theme-btn');
-  if (btn) btn.textContent = S.theme === 'dark' ? '🌙' : '☀️';
-  const tog = document.getElementById('dark-toggle');
-  if (tog) tog.classList.toggle('on', S.theme === 'dark');
-  if (save) localStorage.setItem('nai_theme', S.theme);
+  G.theme === 'light'
+    ? document.documentElement.setAttribute('data-light', '')
+    : document.documentElement.removeAttribute('data-light');
+  const ico = document.getElementById('theme-ico');
+  if (ico) ico.textContent = G.theme === 'dark' ? '🌙' : '☀️';
+  const tog = document.getElementById('dark-tog');
+  if (tog) tog.classList.toggle('on', G.theme === 'dark');
+  if (save) localStorage.setItem('nai_t', G.theme);
 }
 function toggleTheme() {
-  S.theme = S.theme === 'dark' ? 'light' : 'dark';
+  G.theme = G.theme === 'dark' ? 'light' : 'dark';
   applyTheme();
 }
 
-// ─── UI REFRESH ───────────────────────────
+// ─── UI REFRESH ────────────────────────────────
 function refreshUI() {
-  const name = S.user?.name || 'Guest User';
-  const initial = name.charAt(0).toUpperCase();
-  const email = S.user?.email || '';
-
-  // Sidebar user info
-  setEl('sb-avatar', initial);
-  setEl('sb-name', name);
-  setEl('sb-plan',
-    S.isPro ? 'Pro · Unlimited builds' :
-    S.apiKey ? `Free · ${S.builds}/${MAX_FREE_BUILDS} builds` :
-    'Free · Add API key to start'
-  );
-
-  // Topbar auth button
-  const authArea = document.getElementById('auth-area');
-  if (authArea) {
-    if (S.user) {
-      authArea.innerHTML = `<div class="user-av" style="cursor:pointer" onclick="openSettings()" title="${name}">${initial}</div>`;
-    } else {
-      authArea.innerHTML = `<button class="tb-signin-btn" onclick="openAuth()">Sign in</button>`;
-    }
+  const name = G.user?.name || 'Guest User';
+  const init = name[0].toUpperCase();
+  _set('sb-av', init);
+  _set('sb-name', name);
+  _set('sb-plan', G.pro ? 'Pro · Unlimited' : G.key ? `Free · ${G.builds}/5 builds` : 'Free · Add API key');
+  // Auth slot
+  const slot = document.getElementById('auth-slot');
+  if (slot) {
+    slot.innerHTML = G.user
+      ? `<div class="uav" style="cursor:pointer" onclick="openSettings()" title="${name}">${init}</div>`
+      : `<button id="signin-btn" onclick="openAuth()">Sign in</button>`;
   }
-
-  // Settings API status
-  updateApiStatusUI();
-
-  // Settings plan info
-  setEl('sp-plan-name', S.isPro ? 'Pro Plan 🔥' : 'Free Plan');
-  setEl('sp-plan-sub', S.isPro ? 'Unlimited AI chat · Unlimited website builds' : 'Unlimited AI chat · 5 website builds/month');
-  setEl('sp-builds', S.isPro ? 'Unlimited' : `${S.builds} / ${MAX_FREE_BUILDS}`);
-  const fill = document.getElementById('sp-builds-fill');
-  if (fill) fill.style.width = S.isPro ? '5%' : `${Math.min((S.builds / MAX_FREE_BUILDS) * 100, 100)}%`;
-
-  // Profile section
-  const profileSec = document.getElementById('sp-profile-section');
-  if (profileSec) profileSec.style.display = S.user ? 'block' : 'none';
-  setEl('sp-name', name);
-  setEl('sp-email', email);
-  const spNameInp = document.getElementById('sp-name-inp');
-  if (spNameInp && S.user) spNameInp.value = S.user.name || '';
-}
-
-function updateApiStatusUI() {
+  // API dot
   const dot = document.getElementById('api-dot');
-  const statusTxt = document.getElementById('api-status');
-  if (!dot || !statusTxt) return;
-  if (S.apiKey) {
-    dot.style.background = '#4ade80';
-    statusTxt.textContent = `Connected · ${S.modelName}`;
-    statusTxt.style.color = '#4ade80';
-  } else {
-    dot.style.background = '#f87171';
-    statusTxt.textContent = 'Not connected — add key below';
-    statusTxt.style.color = '#f87171';
+  const txt = document.getElementById('api-txt');
+  if (dot && txt) {
+    if (G.key) { dot.style.background = '#4ade80'; txt.textContent = `Connected · ${G.mName}`; txt.style.color = '#4ade80'; }
+    else { dot.style.background = '#f87171'; txt.textContent = 'Not connected'; txt.style.color = '#f87171'; }
   }
+  // Builds
+  _set('builds-lbl', G.pro ? 'Unlimited' : `${G.builds} / 5`);
+  _set('plan-lbl', G.pro ? 'Pro Plan 🔥' : 'Free Plan');
+  const fill = document.getElementById('builds-fill');
+  if (fill) fill.style.width = G.pro ? '5%' : `${Math.min(G.builds / 5 * 100, 100)}%`;
 }
+function _set(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 
-function setEl(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-
-// ─── SIDEBAR ──────────────────────────────
-function toggleSidebar() {
-  const app = document.getElementById('app');
+// ─── SIDEBAR ───────────────────────────────────
+function toggleSb() {
+  const sb = document.getElementById('sb');
   if (window.innerWidth <= 768) {
-    app.classList.toggle('sb-open');
+    sb.classList.toggle('mobile-open');
   } else {
-    app.classList.toggle('sb-closed');
+    sb.classList.toggle('hide');
   }
 }
-function closeSidebar() {
-  document.getElementById('app').classList.remove('sb-open');
+function closeSb() {
+  document.getElementById('sb').classList.remove('mobile-open');
 }
 
-function renderChatHistory() {
-  const list = document.getElementById('chat-list');
-  const empty = document.getElementById('empty-history');
-  if (!list) return;
-
-  const q = document.getElementById('search-input')?.value.toLowerCase() || '';
-  const filtered = q
-    ? S.conversations.filter(c => c.title.toLowerCase().includes(q))
-    : S.conversations;
-
-  if (!filtered.length) {
-    list.innerHTML = '';
-    if (empty) empty.style.display = 'block';
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-
-  // Group by date
-  const today = new Date(); today.setHours(0,0,0,0);
-  const yesterday = new Date(today); yesterday.setDate(yesterday.getDate()-1);
-  const week = new Date(today); week.setDate(week.getDate()-7);
-
-  const groups = { 'Today':[], 'Yesterday':[], 'Last 7 days':[], 'Older':[] };
-  filtered.forEach(c => {
-    const d = new Date(c.ts); d.setHours(0,0,0,0);
-    if (d >= today) groups['Today'].push(c);
-    else if (d >= yesterday) groups['Yesterday'].push(c);
-    else if (d >= week) groups['Last 7 days'].push(c);
-    else groups['Older'].push(c);
-  });
-
-  list.innerHTML = Object.entries(groups).map(([label, items]) => {
-    if (!items.length) return '';
-    return `<div class="sb-group-label">${label}</div>` +
-      items.map(c => `
-        <div class="chat-item ${c.id === S.currentId ? 'active' : ''}" onclick="loadConversation('${c.id}')">
-          <span class="ci-ico">💬</span>
-          <span class="ci-title">${escapeHtml(c.title)}</span>
-          <div class="ci-actions">
-            <div class="cia del" onclick="event.stopPropagation();deleteConversation('${c.id}')" title="Delete">✕</div>
-          </div>
+function renderHistory() {
+  const wrap = document.getElementById('chat-list-wrap');
+  const empty = document.getElementById('sb-empty');
+  if (!wrap) return;
+  const groups = groupConvsByDate(G.convs);
+  if (!G.convs.length) { if(empty)empty.style.display='block'; wrap.innerHTML=''; wrap.appendChild(empty); return; }
+  if(empty)empty.style.display='none';
+  wrap.innerHTML = Object.entries(groups).map(([label, items]) =>
+    items.length ? `<div class="sb-label">${label}</div>` + items.map(c => `
+      <div class="ch-item ${c.id===G.cid?'on':''}" onclick="loadConv('${c.id}')">
+        <span class="ch-icon">💬</span>
+        <span class="ch-title">${esc(c.title)}</span>
+        <div class="ci-actions" style="display:none;gap:3px;position:absolute;right:6px;background:var(--card);border-radius:5px;padding:1px">
+          <span class="ch-del" onclick="event.stopPropagation();delConv('${c.id}')">✕</span>
         </div>
-      `).join('');
-  }).join('');
-}
-
-function filterChats(q) { renderChatHistory(); }
-
-function loadConversation(id) {
-  const conv = S.conversations.find(c => c.id === id);
-  if (!conv) return;
-
-  S.currentId = id;
-  S.history = [...conv.messages];
-
-  // Clear and rebuild chat
-  const ws = document.getElementById('welcome-screen');
-  if (ws) ws.remove();
-  document.getElementById('chat-content').innerHTML = '';
-  const ti = document.getElementById('typing-indicator');
-  if (ti) ti.remove();
-
-  S.history.forEach(m => {
-    if (m.role === 'user') renderUserMessage(m.content);
-    else renderAIMessage(m.content);
+      </div>`).join('') : ''
+  ).join('');
+  // Show ci-actions on hover
+  wrap.querySelectorAll('.ch-item').forEach(el => {
+    el.addEventListener('mouseenter', () => { const a = el.querySelector('.ci-actions'); if(a)a.style.display='flex'; });
+    el.addEventListener('mouseleave', () => { const a = el.querySelector('.ci-actions'); if(a)a.style.display='none'; });
   });
-
-  renderChatHistory();
-  scrollToBottom();
-
-  // Close sidebar on mobile
-  if (window.innerWidth <= 768) closeSidebar();
 }
 
-function deleteConversation(id) {
-  S.conversations = S.conversations.filter(c => c.id !== id);
-  localStorage.setItem('nai_convs', JSON.stringify(S.conversations));
-  if (S.currentId === id) newChat();
-  else renderChatHistory();
-  toast('Conversation deleted', 'info');
+function groupConvsByDate(convs) {
+  const now = Date.now();
+  const DAY = 86400000;
+  const groups = { Today:[], Yesterday:[], 'Last 7 days':[], Older:[] };
+  convs.forEach(c => {
+    const diff = now - c.ts;
+    if (diff < DAY) groups.Today.push(c);
+    else if (diff < 2*DAY) groups.Yesterday.push(c);
+    else if (diff < 8*DAY) groups['Last 7 days'].push(c);
+    else groups.Older.push(c);
+  });
+  return groups;
 }
 
-function clearAllHistory() {
-  S.conversations = [];
-  S.currentId = null;
-  S.history = [];
-  localStorage.removeItem('nai_convs');
-  newChat();
-  renderChatHistory();
-  toast('All history cleared', 'info');
+function loadConv(id) {
+  const c = G.convs.find(x => x.id === id);
+  if (!c) return;
+  G.cid = id;
+  G.hist = [...c.msgs];
+  document.getElementById('welcome')?.remove();
+  document.getElementById('typing')?.remove();
+  document.getElementById('chat-body').innerHTML = '';
+  G.hist.forEach(m => m.role === 'user' ? renderUser(m.content) : renderAI(m.content));
+  renderHistory();
+  scrollBottom();
+  if (window.innerWidth <= 768) closeSb();
+}
+
+function delConv(id) {
+  G.convs = G.convs.filter(c => c.id !== id);
+  localStorage.setItem('nai_c', JSON.stringify(G.convs));
+  if (G.cid === id) newChat();
+  else renderHistory();
+  toast('Deleted', 'info');
+}
+
+function clearHistory() {
+  G.convs = []; G.cid = null; G.hist = [];
+  localStorage.removeItem('nai_c');
+  newChat(); renderHistory();
+  toast('History cleared', 'info');
 }
 
 function newChat() {
-  S.currentId = null;
-  S.history = [];
-
-  // Remove typing indicator
-  document.getElementById('typing-indicator')?.remove();
-
-  // Rebuild welcome screen
-  const content = document.getElementById('chat-content');
-  if (content) {
-    content.innerHTML = '';
-    const ws = document.createElement('div');
-    ws.id = 'welcome-screen';
-    ws.innerHTML = `
-      <div class="ws-brand">✦</div>
-      <div class="ws-headline">How can I help you?</div>
-      <div class="ws-sub">I'm NexusAI — ask me anything in Hindi or English.</div>
-      ${!S.apiKey ? `<div class="api-needed">🔑 Add your <strong>free</strong> Claude API key in <strong style="cursor:pointer;color:#fbbf24" onclick="openSettings()">Settings</strong> to start chatting. Get it at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>` : ''}
-      <div class="chips">
-        <div class="chip" onclick="quickSend('Write a Python function to sort a list of dictionaries by a key')">🐍 Python code</div>
-        <div class="chip" onclick="quickSend('Explain what is blockchain in simple Hindi')">🌏 Hindi explain</div>
-        <div class="chip" onclick="quickSend('Write 3 subject lines for a cold email to a startup founder')">📧 Cold email</div>
-        <div class="chip" onclick="quickSend('What are the best free APIs for beginners in 2025?')">🔌 APIs for beginners</div>
-        <div class="chip" onclick="quickSend('Debug this error: TypeError: Cannot read properties of undefined')">🐛 Debug error</div>
-        <div class="chip" onclick="quickSend('Meri job interview ki preparation kaise karun?')">💼 Interview prep</div>
-      </div>`;
-    content.appendChild(ws);
-  }
-
-  renderChatHistory();
-  document.getElementById('chat-ta')?.focus();
+  G.cid = null; G.hist = [];
+  document.getElementById('typing')?.remove();
+  const body = document.getElementById('chat-body');
+  if (!body) return;
+  body.innerHTML = '';
+  const w = document.createElement('div');
+  w.id = 'welcome';
+  w.innerHTML = `
+    <div class="w-logo">✦</div>
+    <div class="w-title">How can I help you?</div>
+    <div class="w-sub">Ask me anything in Hindi or English.</div>
+    ${!G.key ? `<div class="w-api-note" id="w-api-note"><b>🔑 Add your API key</b> in <b style="cursor:pointer;color:#fbbf24" onclick="openSettings()">Settings</b> to enable real AI. <a href="https://console.anthropic.com" target="_blank">Get it free here</a></div>` : ''}
+    <div class="chips">
+      <div class="chip" onclick="qs('Write a Python function to sort a list of dicts by key')">🐍 Python</div>
+      <div class="chip" onclick="qs('Explain blockchain to a 12-year-old in Hindi')">🌏 Hindi explain</div>
+      <div class="chip" onclick="qs('Write a cold email subject line for a SaaS product targeting HR teams')">📧 Cold email</div>
+      <div class="chip" onclick="qs('Debug: TypeError: Cannot read properties of undefined (reading name)')">🐛 JS debug</div>
+      <div class="chip" onclick="qs('Meri job interview ki preparation kaise karun? Tips do')">💼 Interview tips</div>
+      <div class="chip" onclick="qs('Explain REST vs GraphQL — when to use which one?')">🔌 API design</div>
+    </div>`;
+  body.appendChild(w);
+  renderHistory();
+  document.getElementById('ta')?.focus();
 }
 
-// ─── MODEL SELECTOR ───────────────────────
-function toggleModelDD(e) {
-  const dd = document.getElementById('model-dropdown');
-  const btn = document.getElementById('model-btn');
+// ─── MODEL SELECTOR ────────────────────────────
+function toggleMdd(e) {
+  const dd = document.getElementById('m-dd');
   if (!dd) return;
-  const isOpen = dd.style.display === 'block';
-  if (isOpen) {
-    dd.style.display = 'none';
-    btn.classList.remove('open');
-  } else {
-    const rect = btn.getBoundingClientRect();
-    dd.style.left = rect.left + 'px';
-    dd.style.top = (rect.bottom + 6) + 'px';
-    dd.style.display = 'block';
-    btn.classList.add('open');
-  }
+  if (dd.style.display === 'block') { dd.style.display = 'none'; return; }
+  const r = document.getElementById('model-btn').getBoundingClientRect();
+  dd.style.left = r.left + 'px';
+  dd.style.top = (r.bottom + 5) + 'px';
+  dd.style.display = 'block';
   e.stopPropagation();
 }
-
-function selectModel(id, name, desc, el) {
-  S.model = id;
-  S.modelName = name;
-  setEl('model-name-display', name);
+function setModel(id, name, el) {
+  G.model = id; G.mName = name;
+  _set('m-label', name);
   document.querySelectorAll('.mdd-item').forEach(i => i.classList.remove('on'));
   el.classList.add('on');
-  document.getElementById('model-dropdown').style.display = 'none';
-  document.getElementById('model-btn').classList.remove('open');
-  updateApiStatusUI();
+  document.getElementById('m-dd').style.display = 'none';
+  refreshUI();
   toast(`Model: ${name}`, 'info');
 }
 
-// ─── API KEY ──────────────────────────────
-function saveApiKey() {
-  const val = document.getElementById('api-key-field').value.trim();
-  if (!val || val.startsWith('•')) { toast('Please enter your Claude API key', 'err'); return; }
-  if (!val.startsWith('sk-ant')) { toast('Key must start with "sk-ant..."', 'err'); return; }
-
-  S.apiKey = val;
-  localStorage.setItem('nai_api', S.apiKey);
-  document.getElementById('api-key-field').value = '•'.repeat(36);
-  document.getElementById('api-key-bar').style.display = 'none';
-  document.getElementById('welcome-api-notice')?.remove();
-  document.getElementById('send-btn').disabled = false;
-
-  updateApiStatusUI();
+// ─── API KEY ───────────────────────────────────
+function saveKey() {
+  const v = document.getElementById('api-inp').value.trim();
+  if (!v || v.startsWith('•')) { toast('Enter your Claude API key', 'err'); return; }
+  if (!v.startsWith('sk-ant')) { toast('Key must start with sk-ant...', 'err'); return; }
+  G.key = v;
+  localStorage.setItem('nai_k', v);
+  document.getElementById('api-inp').value = '•'.repeat(36);
+  document.getElementById('api-bar').style.display = 'none';
+  document.getElementById('w-api-note')?.remove();
+  document.getElementById('send').disabled = false;
   refreshUI();
-  toast('API key saved! You can now chat with AI.', 'ok');
-  showNotif('Connected!', 'Claude API is ready. Start chatting!', '✦', 'ok');
+  toast('API key connected! ✓', 'ok');
+  showNotif('Connected!', 'Real AI is ready. Start chatting!', '✦', 'ok');
 }
 
-// ─── AUTH ─────────────────────────────────
-function openAuth() { document.getElementById('auth-overlay').classList.add('show'); }
-function closeAuth() { document.getElementById('auth-overlay').classList.remove('show'); }
+// ─── AUTH ──────────────────────────────────────
+function openAuth() { document.getElementById('auth-ovl').classList.add('on'); }
+function closeAuth() { document.getElementById('auth-ovl').classList.remove('on'); }
 
-function switchAuthTab(tab) {
-  document.getElementById('tab-login').classList.toggle('on', tab === 'login');
-  document.getElementById('tab-signup').classList.toggle('on', tab === 'signup');
-  document.getElementById('form-login').classList.toggle('on', tab === 'login');
-  document.getElementById('form-signup').classList.toggle('on', tab === 'signup');
-  document.getElementById('auth-success').style.display = 'none';
-  document.getElementById('auth-success').classList.remove('show');
-  setEl('auth-title', tab === 'login' ? 'Welcome back' : 'Create account');
-  setEl('auth-subtitle', tab === 'login' ? 'Sign in to save your conversations' : 'Start for free — no credit card needed');
+function switchTab(t) {
+  document.getElementById('tab-in').classList.toggle('on', t === 'in');
+  document.getElementById('tab-up').classList.toggle('on', t !== 'in');
+  document.getElementById('form-in').classList.toggle('on', t === 'in');
+  document.getElementById('form-up').classList.toggle('on', t !== 'in');
+  document.getElementById('ac-succ').classList.remove('on');
+  _set('ac-h', t === 'in' ? 'Welcome back' : 'Create account');
+  _set('ac-s', t === 'in' ? 'Sign in to save your conversations' : 'Start free — no card needed');
 }
 
-function submitLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  const emailEl = document.getElementById('login-email');
-  const passEl = document.getElementById('login-pass');
-
-  if (!email || !email.includes('@')) {
-    emailEl.classList.add('err');
-    setTimeout(() => emailEl.classList.remove('err'), 2000);
-    toast('Please enter a valid email', 'err'); return;
-  }
-  if (!pass) {
-    passEl.classList.add('err');
-    setTimeout(() => passEl.classList.remove('err'), 2000);
-    toast('Please enter your password', 'err'); return;
-  }
-
+function doLogin() {
+  const em = document.getElementById('em').value.trim();
+  const pw = document.getElementById('pw').value;
+  const emEl = document.getElementById('em');
+  if (!em || !em.includes('@')) { emEl.classList.add('err'); setTimeout(()=>emEl.classList.remove('err'),2000); toast('Valid email required','err'); return; }
+  if (!pw) { toast('Enter your password','err'); return; }
   const btn = document.getElementById('login-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spin"></div>&nbsp;Signing in...';
-
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div>&nbsp;Signing in...';
   setTimeout(() => {
-    S.user = {
-      name: email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-      email,
-      since: Date.now()
-    };
-    localStorage.setItem('nai_user', JSON.stringify(S.user));
-    showAuthSuccess();
-    setTimeout(() => {
-      closeAuth();
-      refreshUI();
-      confetti();
-      showNotif('Signed in!', `Welcome back, ${S.user.name}`, '✦', 'ok');
-      btn.disabled = false;
-      btn.innerHTML = 'Sign In';
-    }, 1300);
+    G.user = { name: em.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,c=>c.toUpperCase()), email:em, ts:Date.now() };
+    localStorage.setItem('nai_u', JSON.stringify(G.user));
+    showSucc();
+    setTimeout(()=>{ closeAuth(); refreshUI(); confetti(); showNotif(`Welcome, ${G.user.name}!`,'Signed in to NexusAI','✦','ok'); btn.disabled=false; btn.innerHTML='Sign In'; },1300);
   }, 900);
 }
 
-function submitSignup() {
-  const name = document.getElementById('signup-name').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
-  const pass = document.getElementById('signup-pass').value;
-
-  if (!name) { toast('Enter your name', 'err'); return; }
-  if (!email || !email.includes('@')) { toast('Enter a valid email', 'err'); return; }
-  if (pass.length < 6) { toast('Password must be at least 8 characters', 'err'); return; }
-
-  S.user = { name, email, since: Date.now() };
-  localStorage.setItem('nai_user', JSON.stringify(S.user));
-  showAuthSuccess();
-  setTimeout(() => {
-    closeAuth();
-    refreshUI();
-    confetti();
-    showNotif('Account created!', `Welcome to NexusAI, ${name}! 🎉`, '✦', 'ok');
-  }, 1400);
+function doSignup() {
+  const n = document.getElementById('sn').value.trim();
+  const e = document.getElementById('se').value.trim();
+  const p = document.getElementById('sp').value;
+  if (!n) { toast('Enter your name','err'); return; }
+  if (!e || !e.includes('@')) { toast('Valid email required','err'); return; }
+  if (p.length < 6) { toast('Password min 6 characters','err'); return; }
+  G.user = { name:n, email:e, ts:Date.now() };
+  localStorage.setItem('nai_u', JSON.stringify(G.user));
+  showSucc();
+  setTimeout(()=>{ closeAuth(); refreshUI(); confetti(); toast(`Account created! Welcome, ${n}!`,'ok'); },1400);
 }
 
-function socialLogin(provider) {
-  S.user = { name: 'Piyush Moses', email: 'piyushmoses01@gmail.com', via: provider, since: Date.now() };
-  localStorage.setItem('nai_user', JSON.stringify(S.user));
-  showAuthSuccess();
-  setTimeout(() => { closeAuth(); refreshUI(); confetti(); toast(`Signed in with ${provider}`, 'ok'); }, 1000);
+function socialLogin(p) {
+  G.user = { name:'Piyush Moses', email:'piyushmoses01@gmail.com', via:p, ts:Date.now() };
+  localStorage.setItem('nai_u', JSON.stringify(G.user));
+  showSucc();
+  setTimeout(()=>{ closeAuth(); refreshUI(); confetti(); toast(`Signed in with ${p}`,'ok'); },1000);
 }
 
-function showAuthSuccess() {
-  ['form-login','form-signup'].forEach(id => document.getElementById(id)?.classList.remove('on'));
-  const succ = document.getElementById('auth-success');
-  succ.style.display = 'block';
-  succ.classList.add('show');
-  setEl('succ-title', `Welcome, ${S.user.name}!`);
-  setEl('succ-sub', 'Loading your workspace...');
+function showSucc() {
+  ['form-in','form-up'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
+  const s = document.getElementById('ac-succ'); s.classList.add('on');
+  _set('succ-t', `Welcome, ${G.user.name}!`);
+  _set('succ-s', 'Loading your workspace...');
 }
 
-function doLogout() {
-  if (!confirm('Sign out of NexusAI?')) return;
-  S.user = null;
-  localStorage.removeItem('nai_user');
-  refreshUI();
-  toast('Signed out', 'info');
+function logout() {
+  if (!confirm('Sign out?')) return;
+  G.user = null; localStorage.removeItem('nai_u');
+  refreshUI(); toast('Signed out','info');
 }
 
-function toggleUserMenu() { openSettings(); }
-
-// ─── SETTINGS ─────────────────────────────
+// ─── SETTINGS ──────────────────────────────────
 function openSettings() {
-  if (S.apiKey) document.getElementById('api-key-field').value = '•'.repeat(36);
-  document.getElementById('settings-overlay').classList.add('show');
+  if (G.key) document.getElementById('api-inp').value = '•'.repeat(36);
+  document.getElementById('stg-ovl').classList.add('on');
 }
-function closeSettings() { document.getElementById('settings-overlay').classList.remove('show'); }
+function closeSettings() { document.getElementById('stg-ovl').classList.remove('on'); }
 
-function saveProfile() {
-  const name = document.getElementById('sp-name-inp').value.trim();
-  if (!name || !S.user) return;
-  S.user.name = name;
-  localStorage.setItem('nai_user', JSON.stringify(S.user));
-  refreshUI();
-  toast('Profile updated!', 'ok');
-}
-
-// ─── PAYMENT ──────────────────────────────
-function openPayModal() { document.getElementById('pay-overlay').classList.add('show'); }
-function closePayModal() { document.getElementById('pay-overlay').classList.remove('show'); }
-
+// ─── PAYMENT ───────────────────────────────────
+function openPay() { document.getElementById('pay-ovl').classList.add('on'); }
+function closePay() { document.getElementById('pay-ovl').classList.remove('on'); }
 function pickPlan(el, price, label) {
-  document.querySelectorAll('.plan-opt').forEach(c => c.classList.remove('on'));
-  el.classList.add('on');
-  S.payPlan = { price, label };
-  setEl('pay-total', `₹${price} · ${label}`);
+  document.querySelectorAll('.pl-opt').forEach(c=>c.classList.remove('on')); el.classList.add('on');
+  G.payPlan = label; _set('pay-total', label);
+}
+function pickPM(el) { document.querySelectorAll('.pm-opt').forEach(m=>m.classList.remove('on')); el.classList.add('on'); }
+function doPay() {
+  const upi = document.getElementById('upi').value.trim();
+  if (!upi) { toast('Enter your UPI ID','err'); return; }
+  closePay();
+  toast(`💳 Request sent to ${upi}`,'info');
+  setTimeout(()=>toast('📧 Send screenshot to piyushmoses01@gmail.com','info'),1200);
+  setTimeout(()=>{ toast('✅ Account upgrades in 2 hours','ok'); confetti(); },2400);
 }
 
-function pickPayMethod(el) {
-  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('on'));
-  el.classList.add('on');
+// ─── WEB SEARCH TOGGLE ─────────────────────────
+function toggleWS() {
+  G.ws = !G.ws;
+  const p = document.getElementById('ws-pill');
+  if (p) { p.classList.toggle('on', G.ws); p.textContent = (G.ws ? '🟢' : '🌐') + ' Web search'; }
+  toast(G.ws ? 'Web search on' : 'Web search off', 'info');
 }
 
-function submitPayment() {
-  const upi = document.getElementById('upi-id').value.trim();
-  if (!upi) { toast('Please enter your UPI ID', 'err'); return; }
-  closePayModal();
-  toast(`💳 Payment request sent to ${upi}`, 'info');
-  setTimeout(() => toast('📧 Send screenshot to piyushmoses01@gmail.com', 'info'), 1200);
-  setTimeout(() => {
-    toast('✅ Your account will be upgraded within 2 hours', 'ok');
-    confetti();
-    showNotif('Payment Received!', 'Send screenshot to piyushmoses01@gmail.com to activate Pro.', '💳', 'warn');
-  }, 2400);
-}
+// ─── SEND MESSAGE ──────────────────────────────
+async function send() {
+  const ta = document.getElementById('ta');
+  const msg = ta.value.trim();
+  if (!msg || G.busy) return;
+  if (!G.key) { openSettings(); toast('Add API key in Settings first','err'); return; }
 
-// ─── WEB SEARCH ───────────────────────────
-function toggleWebSearch() {
-  S.webSearch = !S.webSearch;
-  const pill = document.getElementById('ws-pill');
-  const tbBtn = document.getElementById('websearch-btn');
-  if (pill) { pill.classList.toggle('active', S.webSearch); pill.textContent = (S.webSearch ? '🟢' : '🌐') + ' Web search'; }
-  if (tbBtn) { tbBtn.classList.toggle('active', S.webSearch); }
-  toast(S.webSearch ? 'Web search enabled' : 'Web search disabled', 'info');
-}
+  // Remove welcome
+  document.getElementById('welcome')?.remove();
 
-// ─── SEND MESSAGE ─────────────────────────
-async function sendMessage() {
-  const ta = document.getElementById('chat-ta');
-  const text = ta.value.trim();
-  if (!text || S.loading) return;
-  if (!S.apiKey) { openSettings(); toast('Add Claude API key in Settings first', 'err'); return; }
+  // New conversation
+  if (!G.cid) G.cid = 'c' + Date.now();
 
-  // Remove welcome screen
-  document.getElementById('welcome-screen')?.remove();
-
-  // Start new conversation if needed
-  if (!S.currentId) {
-    S.currentId = `conv_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-  }
-
-  // Add to API history
-  S.history.push({ role: 'user', content: text });
-
-  // Render user message
-  renderUserMessage(text);
+  // Add to history and render
+  G.hist.push({ role:'user', content:msg });
+  renderUser(msg);
 
   // Clear input
-  ta.value = '';
-  ta.style.height = 'auto';
-  setEl('char-display', '0');
-  document.getElementById('send-btn').disabled = true;
+  ta.value = ''; ta.style.height = 'auto'; _set('chars','0');
+  document.getElementById('send').disabled = true;
 
-  // Show typing indicator
-  const typingEl = document.getElementById('typing-toggle')?.classList.contains('on') !== false
-    ? showTypingIndicator() : null;
+  // Show typing
+  const showTi = document.getElementById('ti-tog')?.classList.contains('on') !== false;
+  if (showTi) showTyping();
 
-  S.loading = true;
+  G.busy = true;
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': S.apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: S.model,
-        max_tokens: MAX_TOKENS,
-        system: buildSystemPrompt(),
-        messages: S.history
-      })
-    });
-
-    const data = await response.json();
-
-    // Remove typing indicator
-    typingEl?.remove();
-    document.getElementById('typing-indicator')?.remove();
-
-    if (data.content && data.content.length > 0) {
-      const reply = data.content.map(c => c.text || '').join('');
-      S.history.push({ role: 'assistant', content: reply });
-      renderAIMessage(reply);
-      saveConversation(text);
-    } else if (data.error) {
-      const msg = buildErrorMessage(data.error);
-      renderAIMessage(msg);
-      toast('API Error: ' + data.error.type, 'err');
-    } else {
-      renderAIMessage('**Unexpected response from API.** Please try again.');
-    }
-
-  } catch (err) {
-    typingEl?.remove();
-    document.getElementById('typing-indicator')?.remove();
-    renderAIMessage(`**Connection Error**\n\nCould not reach Claude API.\n\n**What to check:**\n- Internet connection\n- API key correctness in Settings\n- Try again in a moment\n\n\`${err.message}\``);
-    toast('Connection failed', 'err');
-  }
-
-  S.loading = false;
-  document.getElementById('send-btn').disabled = !document.getElementById('chat-ta').value.trim() || !S.apiKey;
-  document.getElementById('chat-ta')?.focus();
-}
-
-function buildSystemPrompt() {
-  let sys = SYSTEM_PROMPT;
-  if (S.webSearch) sys += '\n\nNote: The user has web search enabled. If they ask about current events beyond your training data, let them know and suggest they verify with current sources.';
-  return sys;
-}
-
-function buildErrorMessage(error) {
-  const fixes = {
-    'authentication_error': '**Fix:** Your API key is incorrect or expired. Go to Settings and enter a valid key from [console.anthropic.com](https://console.anthropic.com).',
-    'rate_limit_error': '**Fix:** You have hit the rate limit. Wait 30-60 seconds and try again.',
-    'invalid_request_error': '**Fix:** The request was too long. Try starting a new chat.',
-    'overloaded_error': '**Fix:** Claude servers are temporarily busy. Try again in a moment.',
-  };
-  const fix = fixes[error.type] || '**Fix:** Check your internet connection and API key in Settings.';
-  return `**API Error (${error.type}):** ${error.message}\n\n${fix}`;
-}
-
-async function retryLastMessage() {
-  if (S.loading || S.history.length < 1) return;
-  const blocks = document.querySelectorAll('#chat-content .msg-block');
-  // Remove last AI block
-  if (S.history[S.history.length - 1]?.role === 'assistant') {
-    blocks[blocks.length - 1]?.remove();
-    S.history.pop();
-  }
-  if (!S.history.length) return;
-  const typingEl = showTypingIndicator();
-  S.loading = true;
-  document.getElementById('send-btn').disabled = true;
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': S.apiKey, 'anthropic-version': '2023-06-01' },
-      body: JSON.stringify({ model: S.model, max_tokens: MAX_TOKENS, system: buildSystemPrompt(), messages: S.history })
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': G.key,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: G.model,
+        max_tokens: 4096,
+        system: G.ws ? SYS + '\n\nWeb search is enabled by the user. If they ask about recent events beyond your training, acknowledge it and suggest verifying with current sources.' : SYS,
+        messages: G.hist
+      })
     });
+
     const data = await res.json();
-    typingEl?.remove();
-    document.getElementById('typing-indicator')?.remove();
-    if (data.content?.[0]) {
+    hideTyping();
+
+    if (data.content?.length) {
       const reply = data.content.map(c => c.text || '').join('');
-      S.history.push({ role: 'assistant', content: reply });
-      renderAIMessage(reply);
-      saveConversation('');
+      G.hist.push({ role:'assistant', content:reply });
+      renderAI(reply);
+      saveConv(msg);
+    } else if (data.error) {
+      const hints = {
+        authentication_error: '\n\n**Fix:** Your API key is wrong. Go to Settings → paste a valid key from console.anthropic.com',
+        rate_limit_error: '\n\n**Fix:** Rate limit hit. Wait ~30 seconds and try again.',
+        invalid_request_error: '\n\n**Fix:** Message too long. Start a new chat.',
+        overloaded_error: '\n\n**Fix:** Claude servers busy. Try again in a moment.'
+      };
+      const hint = hints[data.error.type] || '\n\n**Fix:** Check Settings → API key is correct.';
+      renderAI(`**Error (${data.error.type}):** ${data.error.message}${hint}`);
+      toast('API Error: ' + data.error.type, 'err');
     }
   } catch (e) {
-    typingEl?.remove();
-    toast('Retry failed. Check connection.', 'err');
+    hideTyping();
+    renderAI(`**Connection Error**\n\nCould not reach Claude API.\n\n**Check:**\n- Internet connection\n- API key in Settings\n\n\`${e.message}\``);
+    toast('Connection failed', 'err');
   }
-  S.loading = false;
-  document.getElementById('send-btn').disabled = false;
+
+  G.busy = false;
+  document.getElementById('send').disabled = !document.getElementById('ta').value.trim() || !G.key;
+  document.getElementById('ta')?.focus();
 }
 
-function quickSend(text) {
-  document.getElementById('chat-ta').value = text;
-  onTAInput(document.getElementById('chat-ta'));
-  sendMessage();
+function qs(text) {
+  document.getElementById('ta').value = text;
+  onTAIn(document.getElementById('ta'));
+  send();
 }
 
-// ─── SAVE CONVERSATION ────────────────────
-function saveConversation(firstMsg) {
-  if (!S.currentId) return;
-  const title = (firstMsg || S.history.find(m => m.role === 'user')?.content || 'New conversation').slice(0, 60);
-  const existing = S.conversations.findIndex(c => c.id === S.currentId);
-  const conv = { id: S.currentId, title, messages: [...S.history], ts: Date.now() };
-  if (existing >= 0) S.conversations[existing] = conv;
-  else S.conversations.unshift(conv);
-  S.conversations = S.conversations.slice(0, 50);
-  localStorage.setItem('nai_convs', JSON.stringify(S.conversations));
-  renderChatHistory();
+// ─── SAVE CONVERSATION ─────────────────────────
+function saveConv(firstMsg) {
+  if (!G.cid) return;
+  const title = firstMsg.slice(0, 58) + (firstMsg.length > 58 ? '…' : '');
+  const idx = G.convs.findIndex(c => c.id === G.cid);
+  const conv = { id:G.cid, title, msgs:[...G.hist], ts:Date.now() };
+  if (idx >= 0) G.convs[idx] = conv;
+  else G.convs.unshift(conv);
+  G.convs = G.convs.slice(0, 50);
+  localStorage.setItem('nai_c', JSON.stringify(G.convs));
+  renderHistory();
 }
 
-// ─── RENDER MESSAGES ──────────────────────
-function renderUserMessage(text) {
-  const content = document.getElementById('chat-content');
-  if (!content) return;
-  const d = document.createElement('div');
-  d.className = 'msg-block';
-  const av = S.user ? S.user.name.charAt(0).toUpperCase() : 'U';
+// ─── RENDER MESSAGES ───────────────────────────
+function renderUser(text) {
+  const body = document.getElementById('chat-body');
+  const d = document.createElement('div'); d.className = 'mb';
+  const av = G.user ? G.user.name[0].toUpperCase() : 'U';
   d.innerHTML = `
-    <div class="msg-row user">
-      <div class="m-av av-user">${av}</div>
-      <div class="m-body">
-        <div class="user-bubble">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
-        <div class="msg-actions">
-          <button class="ma-btn" onclick="copyPlainText(this,'${encodeURIComponent(text)}')">📋 Copy</button>
+    <div class="mb-row usr">
+      <div class="mb-av av-u">${av}</div>
+      <div class="mb-body">
+        <div class="u-bubble">${esc(text).replace(/\n/g,'<br>')}</div>
+        <div class="mb-acts">
+          <button class="m-act" onclick="cpText(this,'${encodeURIComponent(text)}')">📋 Copy</button>
         </div>
       </div>
     </div>`;
-  content.appendChild(d);
-  scrollToBottom();
+  body.appendChild(d); scrollBottom();
 }
 
-function renderAIMessage(text) {
-  const content = document.getElementById('chat-content');
-  if (!content) return;
-  const d = document.createElement('div');
-  d.className = 'msg-block';
-  const html = parseMarkdown(text);
+function renderAI(text) {
+  const body = document.getElementById('chat-body');
+  const d = document.createElement('div'); d.className = 'mb';
   d.innerHTML = `
-    <div class="msg-row">
-      <div class="m-av av-ai">✦</div>
-      <div class="m-body">
-        <div class="m-name">NexusAI · ${S.modelName}</div>
-        <div class="ai-prose">${html}</div>
-        <div class="msg-actions">
-          <button class="ma-btn" onclick="copyAIResponse(this)">📋 Copy</button>
-          <button class="ma-btn" onclick="retryLastMessage()">↻ Retry</button>
+    <div class="mb-row">
+      <div class="mb-av av-ai">✦</div>
+      <div class="mb-body">
+        <div class="mb-from">NexusAI · ${G.mName}</div>
+        <div class="ai-prose">${parseMD(text)}</div>
+        <div class="mb-acts">
+          <button class="m-act" onclick="cpAI(this)">📋 Copy</button>
+          <button class="m-act" onclick="retry()">↻ Retry</button>
         </div>
       </div>
     </div>`;
-  content.appendChild(d);
-
-  // Attach copy buttons to code blocks
-  d.querySelectorAll('.cb-copy').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const codeEl = this.closest('.code-block').querySelector('.cb-body');
-      const codeText = codeEl ? codeEl.textContent : '';
-      navigator.clipboard.writeText(codeText).then(() => {
-        this.textContent = '✓ Copied!';
-        this.classList.add('done');
-        setTimeout(() => { this.textContent = '📋 Copy'; this.classList.remove('done'); }, 2000);
+  body.appendChild(d);
+  // Code copy buttons
+  d.querySelectorAll('.code-copy').forEach(btn => {
+    btn.onclick = function() {
+      const code = this.closest('.code-wrap')?.querySelector('.code-pre')?.textContent || '';
+      navigator.clipboard.writeText(code).then(() => {
+        this.textContent = '✓ Copied!'; this.classList.add('ok');
+        setTimeout(() => { this.textContent = '📋 Copy'; this.classList.remove('ok'); }, 2000);
       });
-    });
+    };
   });
-
-  scrollToBottom();
+  scrollBottom();
 }
 
-function copyAIResponse(btn) {
-  const prose = btn.closest('.msg-block').querySelector('.ai-prose');
-  if (prose) {
-    navigator.clipboard.writeText(prose.innerText).then(() => {
-      btn.textContent = '✓ Copied';
-      btn.classList.add('done');
-      setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('done'); }, 2000);
-    });
+function cpText(btn, enc) {
+  navigator.clipboard.writeText(decodeURIComponent(enc)).then(() => {
+    btn.textContent = '✓ Copied'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+function cpAI(btn) {
+  const t = btn.closest('.mb')?.querySelector('.ai-prose')?.innerText || '';
+  navigator.clipboard.writeText(t).then(() => {
+    btn.textContent = '✓ Copied'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+
+async function retry() {
+  if (G.busy || !G.hist.length) return;
+  if (G.hist[G.hist.length-1]?.role === 'assistant') {
+    document.querySelectorAll('#chat-body .mb:last-child')[0]?.remove();
+    G.hist.pop();
   }
-}
-
-function copyPlainText(btn, encoded) {
-  navigator.clipboard.writeText(decodeURIComponent(encoded)).then(() => {
-    btn.textContent = '✓ Copied';
-    btn.classList.add('done');
-    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('done'); }, 2000);
-  });
-}
-
-function showTypingIndicator() {
-  const content = document.getElementById('chat-content');
-  if (!content) return null;
-  const existing = document.getElementById('typing-indicator');
-  if (existing) existing.remove();
-  const d = document.createElement('div');
-  d.id = 'typing-indicator';
-  d.innerHTML = `
-    <div class="msg-row">
-      <div class="m-av av-ai">✦</div>
-      <div class="typing-dots">
-        <div class="t-dot"></div>
-        <div class="t-dot"></div>
-        <div class="t-dot"></div>
-      </div>
-    </div>`;
-  content.appendChild(d);
-  scrollToBottom();
-  return d;
-}
-
-function scrollToBottom() {
-  const sc = document.getElementById('chat-scroll');
-  if (sc) setTimeout(() => sc.scrollTop = sc.scrollHeight, 60);
-}
-
-// ─── MARKDOWN PARSER ──────────────────────
-function parseMarkdown(text) {
-  // Extract and replace code blocks first (to avoid inner processing)
-  const codeBlocks = [];
-  let h = escapeHtml(text);
-
-  // Fenced code blocks
-  h = h.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-    const l = (lang || 'code').toLowerCase();
-    const highlighted = highlightSyntax(code.trim(), l);
-    const idx = codeBlocks.length;
-    codeBlocks.push(`<div class="code-block"><div class="cb-header"><span class="cb-lang">${l}</span><button class="cb-copy">📋 Copy</button></div><div class="cb-body">${highlighted}</div></div>`);
-    return `\x00CODE${idx}\x00`;
-  });
-
-  // Inline code (before other processing)
-  h = h.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-
-  // Headings
-  h = h.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
-  h = h.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-  h = h.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-  h = h.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-
-  // Bold + Italic
-  h = h.replace(/\*\*\*(.+?)\*\*\*/gs, '<strong><em>$1</em></strong>');
-  h = h.replace(/___(.+?)___/gs, '<strong><em>$1</em></strong>');
-  h = h.replace(/\*\*(.+?)\*\*/gs, '<strong>$1</strong>');
-  h = h.replace(/__(.+?)__/gs, '<strong>$1</strong>');
-  h = h.replace(/\*(.+?)\*/gs, '<em>$1</em>');
-  h = h.replace(/_([^_\n]+)_/gs, '<em>$1</em>');
-
-  // Strikethrough
-  h = h.replace(/~~(.+?)~~/g, '<del>$1</del>');
-
-  // Blockquote
-  h = h.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
-
-  // Horizontal rule
-  h = h.replace(/^[-*]{3,}$/gm, '<hr>');
-
-  // Links
-  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-
-  // Tables
-  h = h.replace(/((?:\|[^\n]*\|\n)+)/g, tableStr => {
-    const rows = tableStr.trim().split('\n');
-    let out = '<table>';
-    let isHeader = true;
-    rows.forEach(row => {
-      if (/^\|[-: |]+\|$/.test(row.trim())) { isHeader = false; return; }
-      const cells = row.split('|').filter((_, i, a) => i > 0 && i < a.length - 1);
-      const tag = isHeader ? 'th' : 'td';
-      out += '<tr>' + cells.map(c => `<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+  if (!G.hist.length) return;
+  showTyping(); G.busy = true;
+  document.getElementById('send').disabled = true;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json','x-api-key':G.key,'anthropic-version':'2023-06-01'},
+      body: JSON.stringify({ model:G.model, max_tokens:4096, system:SYS, messages:G.hist })
     });
-    return out + '</table>';
+    const data = await res.json(); hideTyping();
+    if (data.content?.[0]) { const r = data.content.map(c=>c.text||'').join(''); G.hist.push({role:'assistant',content:r}); renderAI(r); }
+  } catch(e) { hideTyping(); toast('Retry failed','err'); }
+  G.busy = false; document.getElementById('send').disabled = false;
+}
+
+function showTyping() {
+  hideTyping();
+  const body = document.getElementById('chat-body');
+  const d = document.createElement('div'); d.id = 'typing'; d.className = 'mb';
+  d.innerHTML = `<div class="mb-row"><div class="mb-av av-ai">✦</div><div class="t-dots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
+  body.appendChild(d); scrollBottom();
+}
+function hideTyping() { document.getElementById('typing')?.remove(); }
+function scrollBottom() { const sc = document.getElementById('chat-scroll'); if(sc) setTimeout(()=>sc.scrollTop=sc.scrollHeight,60); }
+
+// ─── MARKDOWN PARSER ───────────────────────────
+function parseMD(txt) {
+  const codeBlocks = [];
+  let h = esc(txt);
+
+  // Extract fenced code blocks
+  h = h.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+    const l = lang || 'code';
+    const hi = highlight(code.trim(), l);
+    const i = codeBlocks.length;
+    codeBlocks.push(`<div class="code-wrap"><div class="code-top"><span class="code-lang">${l}</span><button class="code-copy">📋 Copy</button></div><pre class="code-pre">${hi}</pre></div>`);
+    return `\x01CODE${i}\x01`;
   });
 
-  // Ordered lists
-  h = h.replace(/^(\d+)\. (.+)$/gm, '<li data-ol>$2</li>');
-
-  // Unordered lists
-  h = h.replace(/^[*\-+] (.+)$/gm, '<li>$1</li>');
-
-  // Wrap consecutive <li> in <ul> or <ol>
-  h = h.replace(/(<li[^>]*>[\s\S]+?<\/li>(?:\n<li[^>]*>[\s\S]+?<\/li>)*)/g, m => {
-    if (m.includes('data-ol')) return '<ol>' + m.replace(/ data-ol/g, '') + '</ol>';
-    return '<ul>' + m + '</ul>';
+  // Inline code
+  h = h.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  // Headings
+  h = h.replace(/^#### (.+)$/gm,'<h4>$1</h4>');
+  h = h.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  h = h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  h = h.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  // Bold+Italic
+  h = h.replace(/\*\*\*(.+?)\*\*\*/gs,'<strong><em>$1</em></strong>');
+  h = h.replace(/\*\*(.+?)\*\*/gs,'<strong>$1</strong>');
+  h = h.replace(/__(.+?)__/gs,'<strong>$1</strong>');
+  h = h.replace(/\*(.+?)\*/gs,'<em>$1</em>');
+  h = h.replace(/_([^_\n]+)_/gs,'<em>$1</em>');
+  // Strikethrough
+  h = h.replace(/~~(.+?)~~/g,'<del>$1</del>');
+  // Blockquote
+  h = h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  // HR
+  h = h.replace(/^[-*]{3,}$/gm,'<hr>');
+  // Links
+  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // Tables
+  h = h.replace(/((?:\|[^\n]+\|\n)+)/g, m => {
+    const rows = m.trim().split('\n');
+    let t = '<table>';
+    let head = true;
+    rows.forEach(row => {
+      if (/^\|[-: |]+\|$/.test(row.trim())) { head = false; return; }
+      const cells = row.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
+      const tag = head ? 'th' : 'td';
+      t += '<tr>' + cells.map(c=>`<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+    });
+    return t + '</table>';
   });
-  h = h.replace(/<\/ul>\n<ul>/g, '');
-  h = h.replace(/<\/ol>\n<ol>/g, '');
-
-  // Paragraphs — split on double newlines
-  const parts = h.split(/\n{2,}/);
-  h = parts.map(part => {
+  // Lists
+  h = h.replace(/^\d+\. (.+)$/gm,'<li data-ol>$1</li>');
+  h = h.replace(/^[*\-+] (.+)$/gm,'<li>$1</li>');
+  h = h.replace(/(<li[^>]*>[\s\S]+?<\/li>(?:\n<li[^>]*>[\s\S]+?<\/li>)*)/g, m =>
+    m.includes('data-ol') ? '<ol>' + m.replace(/ data-ol/g,'') + '</ol>' : '<ul>' + m + '</ul>');
+  h = h.replace(/<\/ul>\n<ul>/g,'');
+  h = h.replace(/<\/ol>\n<ol>/g,'');
+  // Paragraphs
+  h = h.split(/\n{2,}/).map(part => {
     part = part.trim();
     if (!part) return '';
-    // Don't wrap already-wrapped elements
-    if (/^<(h[1-6]|ul|ol|table|blockquote|hr|div|\x00CODE)/.test(part)) return part;
-    return '<p>' + part.replace(/\n/g, '<br>') + '</p>';
+    if (/^<(h[1-6]|ul|ol|table|blockquote|hr|\x01)/.test(part)) return part;
+    return '<p>' + part.replace(/\n/g,'<br>') + '</p>';
   }).join('');
-
   // Restore code blocks
-  codeBlocks.forEach((block, i) => {
-    h = h.replace(`\x00CODE${i}\x00`, block);
-    // Also handle wrapped versions
-    h = h.replace(`<p>\x00CODE${i}\x00</p>`, block);
+  codeBlocks.forEach((b,i) => {
+    h = h.replace(new RegExp(`(<p>)?\\x01CODE${i}\\x01(<\\/p>)?`,'g'), b);
   });
-
   return h;
 }
 
-// ─── SYNTAX HIGHLIGHTER ───────────────────
-function highlightSyntax(code, lang) {
-  let c = escapeHtml(code);
+// ─── SYNTAX HIGHLIGHTER ────────────────────────
+function highlight(code, lang) {
+  let c = esc(code);
+  const isHTML = ['html','xml','jsx','tsx','svg'].includes(lang);
+  const isPY = lang === 'python';
+  const isCSS = lang === 'css' || lang === 'scss';
+  const isSQL = lang === 'sql';
+  const isBash = ['bash','sh','shell','zsh'].includes(lang);
 
-  if (['html', 'xml', 'jsx', 'tsx', 'svg'].includes(lang)) {
-    c = c
-      .replace(/(&lt;\/?\w[\w.-]*)/g, '<span class="t-tag">$1</span>')
-      .replace(/(\s[\w-]+)(?==&quot;)/g, '<span class="t-at">$1</span>')
-      .replace(/(&amp;[a-z]+;)/g, '<span class="t-nm">$1</span>');
-    // Remove double spans
+  // Strings
+  c = c.replace(/((?:&quot;)[^]*?(?:&quot;)|(?:&#39;)[^]*?(?:&#39;))/g,'<span class="ss">$1</span>');
+  // Template literals (backtick handled specially)
+  // Comments
+  if (!isHTML) {
+    c = c.replace(/(\/\/[^\n]*)/g,'<span class="sc">$1</span>');
+    c = c.replace(/(\/\*[\s\S]*?\*\/)/g,'<span class="sc">$1</span>');
+  }
+  if (isPY || isBash) c = c.replace(/(#[^\n]*)/g,'<span class="sc">$1</span>');
+
+  if (isHTML) {
+    c = c.replace(/(&lt;\/?\w[\w.-]*)/g,'<span class="st">$1</span>');
+    c = c.replace(/(\s[\w-:]+)(?==&quot;)/g,'<span class="sa">$1</span>');
     return c;
   }
 
-  // Strings (before other replacements)
-  c = c.replace(/((?:&quot;|&#39;)[^]*?(?:&quot;|&#39;))/g, '<span class="t-str">$1</span>');
-  c = c.replace(/(`[^`]*`)/g, '<span class="t-str">$1</span>');
+  const KW = isPY
+    ? ['def','class','return','if','elif','else','for','while','import','from','as','with','pass','break','continue','try','except','finally','raise','yield','lambda','and','or','not','in','is','None','True','False','global','nonlocal','assert','del']
+    : isSQL
+      ? ['SELECT','FROM','WHERE','JOIN','ON','GROUP','ORDER','BY','HAVING','INSERT','INTO','UPDATE','SET','DELETE','CREATE','TABLE','DROP','ALTER','AND','OR','NOT','IN','IS','NULL','AS','DISTINCT','INNER','LEFT','RIGHT','OUTER','COUNT','SUM','AVG','MAX','MIN','LIKE','BETWEEN','EXISTS','UNION','INDEX','PRIMARY','KEY','FOREIGN','REFERENCES']
+      : ['const','let','var','function','return','if','else','for','while','do','switch','case','break','continue','class','extends','super','new','this','typeof','instanceof','null','undefined','true','false','try','catch','finally','throw','async','await','import','export','from','default','yield','static','get','set','of','in','delete','void'];
 
-  // Single-line comments
-  c = c.replace(/(\/\/[^\n]*)/g, '<span class="t-cm">$1</span>');
-  c = c.replace(/(#[^\n]*)/g, lang === 'python' || lang === 'bash' || lang === 'sh' || lang === 'yaml' ? '<span class="t-cm">$1</span>' : '$1');
-
-  // Multi-line comments
-  c = c.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="t-cm">$1</span>');
-
-  // Python/JS keywords
-  const keywords = {
-    js: ['const','let','var','function','return','if','else','for','while','do','switch','case','break','continue','class','extends','super','new','this','typeof','instanceof','null','undefined','true','false','try','catch','finally','throw','async','await','import','export','from','default','yield','static','get','set','of','in','delete','void','in'],
-    python: ['def','class','return','if','elif','else','for','while','import','from','as','with','pass','break','continue','try','except','finally','raise','yield','lambda','and','or','not','in','is','None','True','False','global','nonlocal','assert','del','print','len','range'],
-    ts: ['const','let','var','function','return','if','else','for','while','class','extends','new','this','typeof','null','undefined','true','false','try','catch','finally','throw','async','await','import','export','interface','type','enum','readonly','private','public','protected','implements','declare','abstract'],
-    css: ['@media','@keyframes','@import','@font-face','important'],
-    sql: ['SELECT','FROM','WHERE','JOIN','ON','GROUP','ORDER','BY','HAVING','INSERT','INTO','UPDATE','SET','DELETE','CREATE','TABLE','INDEX','DROP','ALTER','ADD','COLUMN','PRIMARY','KEY','FOREIGN','REFERENCES','INNER','LEFT','RIGHT','OUTER','AND','OR','NOT','IN','IS','NULL','LIKE','BETWEEN','AS','DISTINCT','COUNT','SUM','AVG','MAX','MIN'],
-  };
-
-  let kws = [];
-  if (['js','javascript','jsx','tsx','typescript','ts'].includes(lang)) kws = [...(keywords.js || []), ...(keywords.ts || [])];
-  else if (lang === 'python') kws = keywords.python;
-  else if (lang === 'sql') kws = keywords.sql;
-  else kws = keywords.js; // default to JS
-
-  kws.forEach(kw => {
-    c = c.replace(new RegExp(`(?<![a-zA-Z_$0-9])(${kw})(?![a-zA-Z_$0-9])`, 'g'), '<span class="t-kw">$1</span>');
+  KW.forEach(k => {
+    c = c.replace(new RegExp(`(?<![\\w$])(${k})(?![\\w$])`, 'g'), '<span class="sk">$1</span>');
   });
 
   // Numbers
-  c = c.replace(/(?<![a-zA-Z_$])\b(\d+\.?\d*)\b/g, '<span class="t-nm">$1</span>');
+  c = c.replace(/\b(\d+\.?\d*)\b/g,'<span class="sn">$1</span>');
 
-  // Function names
+  // Function calls
   c = c.replace(/\b([a-zA-Z_$][\w$]*)\s*(?=\()/g, (m, fn) => {
-    if (kws.includes(fn)) return m;
-    return `<span class="t-fn">${fn}</span>`;
+    if (KW.includes(fn)) return m;
+    return `<span class="sf">${fn}</span>`;
   });
 
   return c;
 }
 
-// ─── INPUT HANDLING ───────────────────────
-function onTAInput(el) {
+// ─── INPUT HANDLING ────────────────────────────
+function onTAIn(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 220) + 'px';
-  const len = el.value.length;
-  setEl('char-display', len.toString());
-  document.getElementById('send-btn').disabled = !el.value.trim() || !S.apiKey || S.loading;
+  el.style.height = Math.min(el.scrollHeight, 210) + 'px';
+  _set('chars', el.value.length);
+  document.getElementById('send').disabled = !el.value.trim() || !G.key || G.busy;
+}
+function onTAKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
 }
 
-function onTAKeydown(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-}
-
-// ─── NOTIFICATIONS ────────────────────────
-function showNotif(title, msg, icon, type) {
-  const container = document.getElementById('notif-wrap');
-  if (!container) return;
-  const el = document.createElement('div');
-  el.className = `notif ${type}`;
-  el.innerHTML = `
-    <div class="notif-icon">${icon}</div>
-    <div class="notif-body">
-      <div class="notif-title">${title}</div>
-      <div class="notif-msg">${msg}</div>
-    </div>
-    <div class="notif-x" onclick="this.parentElement.remove()">✕</div>`;
-  container.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }, 5000);
-  setTimeout(() => el.remove(), 5400);
+// ─── NOTIFICATIONS ─────────────────────────────
+function showNotif(title, msg, ico, type) {
+  const c = document.getElementById('notifs'); if (!c) return;
+  const d = document.createElement('div'); d.className = `notif ${type}`;
+  d.innerHTML = `<div class="n-ico">${ico}</div><div class="n-body"><div class="n-title">${title}</div><div class="n-msg">${msg}</div></div><div class="n-x" onclick="this.parentElement.remove()">✕</div>`;
+  c.appendChild(d);
+  setTimeout(() => { d.style.opacity='0'; d.style.transition='opacity .3s'; }, 5000);
+  setTimeout(() => d.remove(), 5400);
 }
 
 function toast(msg, type = 'info') {
-  const container = document.getElementById('toast-wrap');
-  if (!container) return;
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.textContent = msg;
-  container.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }, 2700);
-  setTimeout(() => el.remove(), 3100);
+  const c = document.getElementById('toasts'); if (!c) return;
+  const d = document.createElement('div'); d.className = `tst ${type}`;
+  d.textContent = msg; c.appendChild(d);
+  setTimeout(() => { d.style.opacity='0'; d.style.transition='opacity .3s'; }, 2700);
+  setTimeout(() => d.remove(), 3100);
 }
 
-// ─── CONFETTI ─────────────────────────────
+// ─── CONFETTI ──────────────────────────────────
 function confetti() {
-  const colors = ['#10a37f','#7c3aed','#06b6d4','#f59e0b','#ec4899','#f97316','#3b82f6'];
+  const cols = ['#10a37f','#7c3aed','#06b6d4','#f59e0b','#ec4899','#f97316','#3b82f6'];
   for (let i = 0; i < 60; i++) {
-    const el = document.createElement('div');
-    el.className = 'conf';
-    el.style.cssText = `
-      left:${Math.random() * 100}%;
-      top:${5 + Math.random() * 35}%;
-      background:${colors[Math.floor(Math.random() * colors.length)]};
-      animation-duration:${0.6 + Math.random() * 0.8}s;
-      animation-delay:${Math.random() * 0.4}s;
-      width:${5 + Math.random() * 8}px;
-      height:${5 + Math.random() * 8}px;
-      border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
-    `;
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 1600);
+    const p = document.createElement('div'); p.className = 'conf';
+    p.style.cssText = `left:${Math.random()*100}%;top:${5+Math.random()*35}%;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${.7+Math.random()*.7}s;animation-delay:${Math.random()*.4}s;width:${5+Math.random()*8}px;height:${5+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(), 1600);
   }
 }
 
-// ─── UTILITIES ────────────────────────────
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+// ─── UTILS ─────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ─── MOBILE INIT ──────────────────────────
-if (window.innerWidth <= 768) {
-  document.getElementById('app').classList.add('sb-closed');
-}
+// Mobile
+if (window.innerWidth <= 768) document.getElementById('sb').classList.remove('mobile-open');
 </script>
 </body>
 </html>
