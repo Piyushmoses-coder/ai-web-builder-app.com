@@ -1,1399 +1,1077 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NexusAI — Your Personal AI Assistant</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>NexusAI — The Future of Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+      colors: {
+        cyan: {
+          400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2',
+          300: '#67e8f9', 200: '#a5f3fc'
+        }
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'float2': 'float 8s ease-in-out infinite 1s',
+        'float3': 'float 7s ease-in-out infinite 2s',
+        'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+        'slide-up': 'slideUp .7s cubic-bezier(.23,1,.32,1) forwards',
+        'fade-in': 'fadeIn .6s ease forwards',
+        'spin-slow': 'spin 12s linear infinite',
+        'gradient': 'gradientShift 5s ease infinite',
+        'ping-slow': 'ping 3s cubic-bezier(0,0,.2,1) infinite',
+      },
+      keyframes: {
+        float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-18px)' } },
+        pulseGlow: { '0%,100%': { boxShadow: '0 0 20px rgba(6,182,212,.4)' }, '50%': { boxShadow: '0 0 50px rgba(6,182,212,.8), 0 0 100px rgba(6,182,212,.3)' } },
+        slideUp: { from: { opacity: '0', transform: 'translateY(40px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+        fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
+        gradientShift: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+      }
+    }
+  }
+}
+</script>
 <style>
-/* ────────────────────────────────────────
-   NexusAI · ChatGPT-level design
-   Real Claude API · Clean · Professional
-─────────────────────────────────────── */
-:root{
-  --bg:#212121;
-  --sb:#171717;
-  --card:#2f2f2f;
-  --card2:#3a3a3a;
-  --hover:rgba(255,255,255,.07);
-  --bd:rgba(255,255,255,.1);
-  --bd2:rgba(255,255,255,.16);
-  --t1:#ececec;
-  --t2:#ababab;
-  --t3:#6b6b6b;
-  --t4:#3b3b3b;
-  --green:#10a37f;
-  --green2:#19c997;
-  --code-bg:#1e1e1e;
-  --ff:'Inter',system-ui,sans-serif;
-  --fm:'JetBrains Mono',monospace;
-}
-[data-light]{
-  --bg:#f7f7f8;--sb:#ececec;--card:#ffffff;--card2:#f0f0f0;
-  --hover:rgba(0,0,0,.05);--bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
-  --t1:#0d0d0d;--t2:#444;--t3:#888;--t4:#ccc;
-  --code-bg:#282c34;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden}
-body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
-button,input,textarea{font-family:inherit;border:none;outline:none;cursor:pointer;background:none;color:inherit}
-a{color:var(--green2);text-decoration:underline;text-underline-offset:3px}
-::selection{background:rgba(16,163,127,.3)}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-thumb{background:var(--card2);border-radius:3px}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
-@keyframes conf{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(220px) rotate(600deg);opacity:0}}
-@keyframes notif{from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+  /* ── Base ── */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { font-family: 'Poppins', sans-serif; }
+  body {
+    background: #020817;
+    color: #e2e8f0;
+    overflow-x: hidden;
+    cursor: default;
+  }
 
-/* ── LAYOUT ── */
-#app{display:flex;height:100vh;overflow:hidden}
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #020817; }
+  ::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 3px; }
 
-/* ── SIDEBAR ── */
-#sb{
-  width:260px;flex-shrink:0;
-  background:var(--sb);border-right:1px solid var(--bd);
-  display:flex;flex-direction:column;overflow:hidden;
-  transition:width .2s ease;
-}
-#sb.hide{width:0;border:none}
-@media(max-width:768px){
-  #sb{position:fixed;left:0;top:0;bottom:0;z-index:200;transform:translateX(-100%);transition:transform .22s ease;width:260px}
-  #sb.mobile-open{transform:translateX(0)}
-  #sb-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199}
-  #sb.mobile-open~#sb-mask{display:block}
-}
-.sb-head{padding:10px 10px 8px;flex-shrink:0}
-.new-btn{
-  display:flex;align-items:center;gap:8px;width:100%;
-  padding:9px 12px;border-radius:8px;
-  background:transparent;border:1px solid var(--bd);
-  color:var(--t1);font-size:13px;font-weight:500;cursor:pointer;transition:.15s;
-}
-.new-btn:hover{background:var(--hover);border-color:var(--bd2)}
-.sb-scroll{flex:1;overflow-y:auto;padding:3px 8px 8px}
-.sb-label{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.5px;padding:10px 6px 4px;text-transform:uppercase}
-.ch-item{
-  display:flex;align-items:center;gap:7px;
-  padding:7px 10px;border-radius:8px;cursor:pointer;transition:.15s;
-  border:1px solid transparent;margin-bottom:1px;position:relative;
-}
-.ch-item:hover{background:var(--hover)}
-.ch-item.on{background:var(--card);border-color:var(--bd)}
-.ch-icon{font-size:13px;color:var(--t3);flex-shrink:0}
-.ch-title{flex:1;font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ch-item.on .ch-title{color:var(--t1)}
-.ch-del{opacity:0;font-size:11px;color:var(--t3);padding:2px 4px;border-radius:4px;transition:.15s;flex-shrink:0}
-.ch-item:hover .ch-del{opacity:1}
-.ch-del:hover{color:#f87171;background:rgba(248,113,113,.15)}
-.sb-empty{text-align:center;padding:24px 12px;font-size:12px;color:var(--t3);line-height:1.6}
-.sb-foot{padding:8px;border-top:1px solid var(--bd);flex-shrink:0}
-.sb-user{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s}
-.sb-user:hover{background:var(--hover)}
-.uav{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--green),#7c3aed);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
-.uname{font-size:12px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.uplan{font-size:10px;color:var(--t3);margin-top:1px}
-.u-logout{font-size:13px;color:var(--t3);padding:3px;border-radius:4px;transition:.15s;flex-shrink:0}
-.u-logout:hover{color:#f87171}
+  /* ── Animated BG ── */
+  .bg-mesh {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(6,182,212,.13) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(14,165,233,.10) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 50% 50%, rgba(56,189,248,.06) 0%, transparent 70%),
+      #020817;
+  }
+  .grid-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(6,182,212,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6,182,212,.04) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
 
-/* ── MAIN ── */
-#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+  /* ── Glassmorphism ── */
+  .glass {
+    background: rgba(255,255,255,.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.09);
+  }
+  .glass-strong {
+    background: rgba(6,182,212,.06);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(6,182,212,.18);
+  }
+  .glass-card {
+    background: rgba(255,255,255,.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,.08);
+    transition: all .35s cubic-bezier(.23,1,.32,1);
+  }
+  .glass-card:hover {
+    background: rgba(6,182,212,.08);
+    border-color: rgba(6,182,212,.3);
+    transform: translateY(-8px);
+    box-shadow: 0 24px 60px rgba(6,182,212,.15), 0 0 0 1px rgba(6,182,212,.15);
+  }
 
-/* ── TOPBAR ── */
-#top{
-  display:flex;align-items:center;gap:9px;padding:0 16px;height:52px;
-  border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--bg);
-}
-.t-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--t2);cursor:pointer;transition:.15s;flex-shrink:0}
-.t-icon:hover{background:var(--hover);color:var(--t1)}
-.model-btn{
-  display:flex;align-items:center;gap:7px;padding:6px 12px;
-  background:var(--card);border:1px solid var(--bd);border-radius:8px;
-  font-size:13px;font-weight:600;cursor:pointer;transition:.15s;
-}
-.model-btn:hover{border-color:var(--bd2)}
-.m-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s infinite}
-.m-name{max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.m-arr{font-size:10px;color:var(--t3)}
-.t-gap{flex:1}
-.t-actions{display:flex;align-items:center;gap:5px}
-#signin-btn{padding:6px 13px;background:var(--green);color:#fff;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
-#signin-btn:hover{background:var(--green2);transform:translateY(-1px)}
+  /* ── Glow effects ── */
+  .glow-cyan { box-shadow: 0 0 30px rgba(6,182,212,.4), 0 0 80px rgba(6,182,212,.15); }
+  .glow-cyan-hover:hover { box-shadow: 0 0 40px rgba(6,182,212,.6), 0 0 100px rgba(6,182,212,.25); }
+  .text-glow { text-shadow: 0 0 40px rgba(6,182,212,.6), 0 0 80px rgba(6,182,212,.3); }
+  .border-glow { box-shadow: 0 0 0 1px rgba(6,182,212,.3), 0 0 20px rgba(6,182,212,.2); }
 
-/* Model dropdown */
-#m-dd{
-  position:fixed;z-index:300;
-  background:var(--card);border:1px solid var(--bd2);border-radius:12px;
-  padding:5px;min-width:270px;
-  box-shadow:0 8px 40px rgba(0,0,0,.55);
-  display:none;animation:pop .15s ease;
-}
-.mdd-hdr{padding:8px 12px 4px;font-size:10px;font-weight:600;color:var(--t3);letter-spacing:1px;text-transform:uppercase}
-.mdd-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:.15s}
-.mdd-item:hover{background:var(--hover)}
-.mdd-item.on{background:rgba(16,163,127,.1)}
-.mdi-ico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.mdi-name{font-size:13px;font-weight:600;flex:1}
-.mdi-desc{font-size:11px;color:var(--t3);margin-top:1px}
-.mdi-tag{padding:2px 7px;border-radius:100px;font-size:9px;font-weight:700}
-.tag-new{background:rgba(16,163,127,.15);color:var(--green)}
-.tag-fast{background:rgba(245,158,11,.15);color:#fbbf24}
+  /* ── Gradient text ── */
+  .gradient-text {
+    background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 40%, #38bdf8 70%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-text-warm {
+    background: linear-gradient(135deg, #22d3ee, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200%;
+    animation: gradientShift 5s ease infinite;
+  }
 
-/* ── MESSAGES ── */
-#chat-scroll{flex:1;overflow-y:auto}
-#chat-body{max-width:740px;margin:0 auto;padding:18px 16px 8px}
+  /* ── Buttons ── */
+  .btn-primary {
+    background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: .3px;
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    opacity: 0; transition: opacity .25s ease;
+  }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(6,182,212,.5), 0 0 80px rgba(6,182,212,.2); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid rgba(6,182,212,.5);
+    color: #22d3ee;
+    transition: all .25s ease;
+  }
+  .btn-outline:hover {
+    background: rgba(6,182,212,.1);
+    border-color: #06b6d4;
+    box-shadow: 0 0 30px rgba(6,182,212,.3), inset 0 0 30px rgba(6,182,212,.05);
+    transform: translateY(-2px);
+  }
 
-/* Welcome */
-#welcome{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:calc(100vh - 200px);text-align:center;padding:20px;
-  animation:fadeIn .35s ease;
-}
-.w-logo{
-  width:70px;height:70px;border-radius:20px;margin:0 auto 20px;
-  background:linear-gradient(135deg,var(--green),#7c3aed);
-  display:flex;align-items:center;justify-content:center;font-size:34px;
-  box-shadow:0 8px 32px rgba(16,163,127,.35);
-  animation:pulse 3s ease-in-out infinite alternate;
-}
-.w-title{font-size:27px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
-.w-sub{font-size:15px;color:var(--t2);max-width:440px;line-height:1.65;margin-bottom:26px}
-/* API notice in welcome */
-.w-api-note{
-  max-width:460px;width:100%;
-  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);
-  border-radius:10px;padding:13px 16px;margin-bottom:20px;
-  font-size:13px;color:#fde68a;text-align:left;line-height:1.7;
-}
-.w-api-note b{color:#fbbf24}
-.w-api-note a{color:#fbbf24;font-weight:600}
-/* Starter cards */
-.starters{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:560px;margin-bottom:18px}
-@media(max-width:500px){.starters{grid-template-columns:1fr}}
-.starter{
-  background:var(--card);border:1px solid var(--bd);border-radius:10px;
-  padding:13px;cursor:pointer;transition:.2s;text-align:left;
-}
-.starter:hover{border-color:rgba(16,163,127,.4);background:rgba(16,163,127,.07);transform:translateY(-2px)}
-.s-ico{font-size:20px;margin-bottom:7px}
-.s-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.s-desc{font-size:11px;color:var(--t3)}
-/* Chips */
-.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:540px}
-.chip{padding:6px 13px;background:var(--card);border:1px solid var(--bd);border-radius:100px;font-size:12px;color:var(--t2);cursor:pointer;transition:.15s}
-.chip:hover{border-color:rgba(16,163,127,.4);color:var(--green2);background:rgba(16,163,127,.07)}
+  /* ── Nav ── */
+  .nav-glass {
+    background: rgba(2,8,23,.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
 
-/* Message block */
-.mb{padding:20px 0;animation:fadeUp .22s ease;border-bottom:1px solid transparent}
-.mb-row{display:flex;gap:13px}
-.mb-row.usr{flex-direction:row-reverse}
-.mb-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;font-size:13px}
-.av-ai{background:linear-gradient(135deg,var(--green),#7c3aed)}
-.av-u{background:var(--card2);font-weight:700}
-.mb-body{flex:1;max-width:calc(100% - 46px);min-width:0}
-.mb-from{font-size:12px;font-weight:700;color:var(--t3);margin-bottom:6px}
-/* User bubble */
-.u-bubble{
-  display:inline-block;max-width:100%;
-  background:var(--card);border:1px solid var(--bd);
-  border-radius:16px 16px 5px 16px;
-  padding:11px 15px;font-size:14px;line-height:1.65;
-  word-break:break-word;float:right;clear:both;
-}
-/* AI prose */
-.ai-prose{font-size:14.5px;line-height:1.78;color:var(--t1);word-break:break-word}
-.ai-prose p{margin:0 0 11px}
-.ai-prose p:last-child{margin:0}
-.ai-prose h1,.ai-prose h2,.ai-prose h3,.ai-prose h4{font-weight:700;margin:18px 0 8px;letter-spacing:-.2px}
-.ai-prose h1{font-size:21px}.ai-prose h2{font-size:17px}.ai-prose h3{font-size:15px}.ai-prose h4{font-size:14px;color:var(--t2)}
-.ai-prose strong{font-weight:700}
-.ai-prose em{font-style:italic;color:var(--t2)}
-.ai-prose a{color:var(--green2)}
-.ai-prose ul{list-style:none;padding:0;margin:0 0 11px}
-.ai-prose ul li{padding-left:18px;position:relative;margin-bottom:5px;line-height:1.65}
-.ai-prose ul li::before{content:'•';position:absolute;left:5px;color:var(--t3)}
-.ai-prose ol{padding-left:20px;margin:0 0 11px}
-.ai-prose ol li{margin-bottom:5px;line-height:1.65}
-.ai-prose blockquote{border-left:3px solid var(--green);padding:2px 0 2px 14px;margin:10px 0;color:var(--t2);font-style:italic}
-.ai-prose hr{border:none;border-top:1px solid var(--bd);margin:14px 0}
-.ai-prose table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
-.ai-prose th{background:var(--card);padding:8px 12px;border:1px solid var(--bd);font-weight:700;text-align:left}
-.ai-prose td{padding:7px 12px;border:1px solid var(--bd)}
-.ai-prose tr:nth-child(even) td{background:rgba(255,255,255,.02)}
-.ai-prose code{font-family:var(--fm);font-size:12.5px;background:var(--card);padding:2px 5px;border-radius:4px;color:#7dd3fc;border:1px solid var(--bd)}
-/* Code block */
-.code-wrap{background:var(--code-bg);border:1px solid #333;border-radius:10px;overflow:hidden;margin:12px 0}
-.code-top{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#252525;border-bottom:1px solid #333}
-.code-lang{font-family:var(--fm);font-size:11px;color:#888}
-.code-copy{display:flex;align-items:center;gap:5px;padding:3px 9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:5px;font-size:11px;color:#aaa;cursor:pointer;transition:.15s;font-family:var(--fm)}
-.code-copy:hover{background:rgba(255,255,255,.12);color:#fff}
-.code-copy.ok{background:rgba(16,163,127,.15);color:var(--green2);border-color:rgba(16,163,127,.3)}
-.code-pre{padding:14px;font-family:var(--fm);font-size:13px;line-height:1.75;overflow-x:auto;color:#abb2bf}
-/* Syntax */
-.sk{color:#c678dd}.sf{color:#61afef}.ss{color:#98c379}.sn{color:#d19a66}.sc{color:#5c6370;font-style:italic}.st{color:#e06c75}.sa{color:#d19a66}.sp{color:#56b6c2}
-/* Message actions */
-.mb-acts{display:flex;gap:4px;margin-top:7px;opacity:0;transition:.15s}
-.mb:hover .mb-acts{opacity:1}
-.m-act{display:flex;align-items:center;gap:4px;padding:3px 9px;background:transparent;border:1px solid var(--bd);border-radius:6px;font-size:11px;color:var(--t3);cursor:pointer;transition:.15s}
-.m-act:hover{background:var(--hover);color:var(--t1);border-color:var(--bd2)}
-.m-act.ok{color:var(--green);border-color:rgba(16,163,127,.3)}
-/* Typing */
-#typing{display:flex;gap:13px;padding:20px 0;animation:fadeIn .2s ease}
-.t-dots{display:flex;gap:5px;align-items:center;padding:6px 0}
-.tdot{width:7px;height:7px;border-radius:50%;background:var(--t3);animation:bounce 1.3s ease-in-out infinite}
-.tdot:nth-child(2){animation-delay:.2s}.tdot:nth-child(3){animation-delay:.4s}
+  /* ── Floating orbs ── */
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(60px); pointer-events: none;
+  }
 
-/* ── INPUT ── */
-#input-area{flex-shrink:0;padding:10px 16px 14px;background:var(--bg)}
-/* API Key bar */
-#api-bar{
-  max-width:740px;margin:0 auto 9px;
-  display:flex;align-items:center;gap:9px;
-  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);
-  border-radius:10px;padding:9px 14px;font-size:13px;color:#fde68a;cursor:pointer;transition:.15s;
-}
-#api-bar:hover{background:rgba(245,158,11,.12)}
-/* Input box */
-.in-box{
-  max-width:740px;margin:0 auto;
-  background:var(--card);border:1px solid var(--bd);border-radius:14px;
-  overflow:hidden;transition:.2s;
-  box-shadow:0 2px 14px rgba(0,0,0,.28);
-}
-.in-box:focus-within{border-color:rgba(16,163,127,.5);box-shadow:0 0 0 3px rgba(16,163,127,.1),0 2px 14px rgba(0,0,0,.28)}
-.in-row{display:flex;align-items:flex-end;gap:8px;padding:11px 13px 8px}
-#ta{flex:1;background:transparent;font-size:14.5px;color:var(--t1);line-height:1.55;resize:none;min-height:24px;max-height:210px;font-family:var(--ff)}
-#ta::placeholder{color:var(--t4)}
-#send{
-  width:34px;height:34px;border-radius:7px;flex-shrink:0;
-  background:var(--green);color:#fff;font-size:15px;
-  display:flex;align-items:center;justify-content:center;
-  border:none;cursor:pointer;transition:.2s;
-  box-shadow:0 2px 8px rgba(16,163,127,.35);
-}
-#send:hover:not(:disabled){background:var(--green2);transform:scale(1.06)}
-#send:disabled{background:var(--card2);color:var(--t4);box-shadow:none;cursor:not-allowed}
-.in-foot{display:flex;align-items:center;gap:6px;padding:0 11px 9px;flex-wrap:wrap}
-.in-pill{display:flex;align-items:center;gap:4px;padding:4px 9px;background:transparent;border:1px solid var(--bd);border-radius:100px;font-size:11px;color:var(--t3);cursor:pointer;transition:.15s}
-.in-pill:hover{border-color:var(--bd2);color:var(--t2)}
-.in-pill.on{border-color:rgba(16,163,127,.4);color:var(--green2);background:rgba(16,163,127,.07)}
-.in-gap{flex:1}
-.in-hint{font-size:11px;color:var(--t4)}
-.in-hint kbd{background:var(--card2);padding:1px 5px;border-radius:3px;font-family:var(--fm);font-size:10px;border:1px solid var(--bd)}
-.in-chars{font-size:11px;color:var(--t4);font-family:var(--fm)}
-.in-disclaimer{text-align:center;padding:5px 0 0;font-size:11px;color:var(--t4)}
+  /* ── 3D Icon ── */
+  .icon-3d {
+    width: 72px; height: 72px;
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    transition: transform .3s ease;
+  }
+  .glass-card:hover .icon-3d { transform: scale(1.1) rotate(-4deg); }
 
-/* ── OVERLAYS ── */
-.ovl{position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center}
-.ovl.on{display:flex;animation:fadeIn .2s ease}
+  /* ── Success card ── */
+  .success-card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    transition: all .3s ease;
+  }
+  .success-card:hover {
+    background: rgba(6,182,212,.06);
+    border-color: rgba(6,182,212,.2);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(6,182,212,.1);
+  }
 
-/* Auth card */
-.auth-card{width:100%;max-width:390px;margin:14px;background:var(--card);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.23,1,.32,1)}
-.ac-top{background:linear-gradient(135deg,rgba(16,163,127,.12),rgba(124,58,237,.09));padding:20px 22px 16px;border-bottom:1px solid var(--bd)}
-.ac-brand{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.ac-brand-ico{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--green),#7c3aed);display:flex;align-items:center;justify-content:center;font-size:16px}
-.ac-brand-name{font-size:16px;font-weight:700}
-.ac-brand-name b{color:var(--green2);font-weight:700}
-.ac-h{font-size:19px;font-weight:700;margin-bottom:3px}
-.ac-s{font-size:13px;color:var(--t2)}
-.ac-tabs{display:flex;background:var(--card2);border-bottom:1px solid var(--bd);padding:3px 3px 0;gap:1px}
-.ac-tab{flex:1;padding:8px;text-align:center;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;transition:.15s;border-radius:6px 6px 0 0;border-bottom:2px solid transparent;margin-bottom:-1px}
-.ac-tab.on{color:var(--t1);background:var(--card);border-bottom-color:var(--green)}
-.ac-body{padding:18px 20px 20px}
-.ac-form{display:none}
-.ac-form.on{display:block;animation:fadeUp .2s ease}
-.ac-success{display:none;text-align:center;padding:8px 0}
-.ac-success.on{display:block;animation:fadeUp .3s ease}
-.ring{width:64px;height:64px;border-radius:50%;background:rgba(16,163,127,.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
-.fl{margin-bottom:12px}
-.fl-lbl{font-size:11px;font-weight:600;color:var(--t2);margin-bottom:4px;display:flex;justify-content:space-between;letter-spacing:.2px}
-.fl-lbl a{color:var(--green2);cursor:pointer}
-.fl-inp{width:100%;padding:9px 12px;background:var(--card2);border:1px solid var(--bd);border-radius:7px;font-size:14px;color:var(--t1);transition:.15s}
-.fl-inp:focus{border-color:rgba(16,163,127,.5);box-shadow:0 0 0 3px rgba(16,163,127,.1)}
-.fl-inp::placeholder{color:var(--t4)}
-.fl-inp.err{border-color:rgba(248,113,113,.5)}
-.btn-go{width:100%;padding:10px;background:linear-gradient(135deg,var(--green),#059669);color:#fff;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.2s;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-go:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(16,163,127,.4)}
-.btn-go:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.or-row{display:flex;align-items:center;gap:9px;margin:12px 0;color:var(--t4);font-size:11px}
-.or-row::before,.or-row::after{content:'';flex:1;height:1px;background:var(--bd)}
-.soc-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.soc-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:var(--card2);border:1px solid var(--bd);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
-.soc-btn:hover{border-color:var(--bd2);background:var(--card)}
-.ac-link{text-align:center;margin-top:11px;font-size:12px;color:var(--t3)}
-.ac-link a{color:var(--green2);cursor:pointer}
+  /* ── Input ── */
+  .input-glass {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e2e8f0;
+    transition: all .2s ease;
+  }
+  .input-glass:focus {
+    outline: none;
+    border-color: rgba(6,182,212,.5);
+    background: rgba(6,182,212,.04);
+    box-shadow: 0 0 0 3px rgba(6,182,212,.1);
+  }
+  .input-glass::placeholder { color: rgba(148,163,184,.5); }
 
-/* Settings panel */
-.stg-card{width:100%;max-width:460px;margin:14px;background:var(--card);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.23,1,.32,1)}
-.stg-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--bd)}
-.stg-title{font-size:16px;font-weight:700}
-.stg-x{width:27px;height:27px;border-radius:6px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:.15s;color:var(--t2)}
-.stg-x:hover{background:var(--hover);color:var(--t1)}
-.stg-body{padding:16px 20px}
-.stg-sec{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px}
-.stg-box{background:var(--card2);border:1px solid var(--bd);border-radius:9px;overflow:hidden;margin-bottom:14px}
-.api-status{display:flex;align-items:center;gap:8px;padding:9px 13px;border-bottom:1px solid var(--bd);font-size:12px;font-family:var(--fm)}
-.api-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.api-inp-row{display:flex;align-items:center;gap:7px;padding:9px 11px}
-.api-inp{flex:1;padding:8px 11px;background:var(--card);border:1px solid var(--bd);border-radius:6px;font-size:13px;color:var(--t1);transition:.15s}
-.api-inp:focus{border-color:rgba(16,163,127,.5)}
-.api-inp::placeholder{color:var(--t4)}
-.api-save{padding:8px 14px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.15s;flex-shrink:0}
-.api-save:hover{background:var(--green2)}
-.api-help{padding:0 13px 11px;font-size:11px;color:var(--t3);line-height:1.7}
-.api-help a{color:var(--green2)}
-.stg-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-top:1px solid var(--bd)}
-.stg-row:first-child{border:none}
-.sr-lbl{font-size:13px;font-weight:600}
-.sr-desc{font-size:11px;color:var(--t3);margin-top:2px}
-.tog{width:38px;height:20px;background:var(--t4);border-radius:100px;cursor:pointer;position:relative;transition:.25s;flex-shrink:0}
-.tog.on{background:var(--green)}
-.tog::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.tog.on::after{left:20px}
-.plan-section{padding:13px}
-.plan-title{font-size:14px;font-weight:700;margin-bottom:3px}
-.plan-sub{font-size:11px;color:var(--t3);margin-bottom:9px}
-.plan-bar-row{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);font-family:var(--fm);margin-bottom:5px}
-.plan-bar{height:5px;background:var(--card);border-radius:3px;overflow:hidden;margin-bottom:10px}
-.plan-fill{height:100%;background:linear-gradient(90deg,var(--green),#7c3aed);border-radius:3px;transition:.5s}
-.upg-btn{width:100%;padding:9px;background:linear-gradient(135deg,var(--green),#7c3aed);color:#fff;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.2s}
-.upg-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(16,163,127,.35)}
-.danger-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-top:1px solid var(--bd);flex-wrap:wrap;gap:8px}
-.del-btn{padding:6px 12px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
-.del-btn:hover{background:rgba(248,113,113,.15)}
+  /* ── Social icon ── */
+  .social-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s ease;
+    cursor: pointer;
+  }
+  .social-icon:hover {
+    background: rgba(6,182,212,.15);
+    border-color: rgba(6,182,212,.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(6,182,212,.2);
+  }
 
-/* Payment modal */
-.pay-card{width:100%;max-width:400px;margin:14px;background:var(--card);border:1px solid var(--bd2);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);animation:pop .22s cubic-bezier(.23,1,.32,1)}
-.pay-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--bd)}
-.pay-title{font-size:16px;font-weight:700}
-.pay-x{width:27px;height:27px;border-radius:6px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:.15s}
-.pay-x:hover{background:var(--hover)}
-.pay-body{padding:16px 20px}
-.plan-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
-.pl-opt{border:2px solid var(--bd);border-radius:9px;padding:11px;cursor:pointer;transition:.2s;text-align:center}
-.pl-opt:hover{border-color:rgba(16,163,127,.35)}
-.pl-opt.on{border-color:var(--green);background:rgba(16,163,127,.08)}
-.po-price{font-size:19px;font-weight:800;letter-spacing:-1px;color:var(--green2)}
-.po-lbl{font-size:10px;color:var(--t3);margin-top:2px}
-.pm-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:13px}
-.pm-opt{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px;border:1px solid var(--bd);border-radius:7px;cursor:pointer;transition:.15s}
-.pm-opt:hover{border-color:rgba(16,163,127,.35);background:rgba(16,163,127,.05)}
-.pm-opt.on{border-color:var(--green);background:rgba(16,163,127,.08)}
-.pm-icon{font-size:20px}.pm-name{font-size:11px;font-weight:600;color:var(--t2)}
-.pay-info{background:var(--card2);border:1px solid var(--bd);border-radius:7px;padding:11px 13px;font-size:12px;color:var(--t2);line-height:1.7;font-family:var(--fm)}
-.pay-foot{display:flex;gap:7px;justify-content:flex-end;padding:12px 20px;border-top:1px solid var(--bd)}
-.btn-cancel{padding:8px 14px;background:var(--card2);border:1px solid var(--bd);color:var(--t2);border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s}
-.btn-cancel:hover{color:var(--t1)}
-.btn-pay{padding:8px 18px;background:var(--green);color:#fff;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.2s}
-.btn-pay:hover{background:var(--green2);transform:translateY(-1px)}
+  /* ── Animate on scroll ── */
+  .aos { opacity: 0; transform: translateY(32px); transition: opacity .7s cubic-bezier(.23,1,.32,1), transform .7s cubic-bezier(.23,1,.32,1); }
+  .aos.visible { opacity: 1; transform: translateY(0); }
+  .aos-delay-1 { transition-delay: .1s; }
+  .aos-delay-2 { transition-delay: .2s; }
+  .aos-delay-3 { transition-delay: .3s; }
+  .aos-delay-4 { transition-delay: .4s; }
+  .aos-left { opacity: 0; transform: translateX(-32px); transition: opacity .7s cubic-bezier(.23,1,.32,1), transform .7s cubic-bezier(.23,1,.32,1); }
+  .aos-left.visible { opacity: 1; transform: translateX(0); }
+  .aos-right { opacity: 0; transform: translateX(32px); transition: opacity .7s cubic-bezier(.23,1,.32,1), transform .7s cubic-bezier(.23,1,.32,1); }
+  .aos-right.visible { opacity: 1; transform: translateX(0); }
 
-/* Toasts */
-#toasts{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:5px;align-items:center;pointer-events:none}
-.tst{padding:8px 16px;background:#1c1c1c;border:1px solid #333;border-radius:100px;font-size:12px;font-weight:500;white-space:nowrap;animation:fadeUp .25s ease}
-.tst.ok{color:#4ade80;border-color:rgba(74,222,128,.3)}
-.tst.err{color:#f87171;border-color:rgba(248,113,113,.3)}
-.tst.info{color:#a5b4fc;border-color:rgba(165,180,252,.3)}
-/* Notifs */
-#notifs{position:fixed;top:62px;right:14px;z-index:998;display:flex;flex-direction:column;gap:5px;pointer-events:none;max-width:300px}
-.notif{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;background:var(--card);border:1px solid var(--bd2);border-radius:11px;box-shadow:0 8px 32px rgba(0,0,0,.5);pointer-events:all;animation:notif .28s cubic-bezier(.23,1,.32,1)}
-.notif.ok{border-left:3px solid var(--green)}.notif.err{border-left:3px solid #f87171}.notif.info{border-left:3px solid #7c3aed}
-.n-ico{font-size:16px;flex-shrink:0}.n-body{flex:1}.n-title{font-size:12px;font-weight:700;margin-bottom:2px}.n-msg{font-size:11px;color:var(--t2);line-height:1.5}
-.n-x{cursor:pointer;color:var(--t3);font-size:13px;padding:1px;transition:.15s}.n-x:hover{color:var(--t1)}
-/* Spinner */
-.spin{width:14px;height:14px;border:2px solid var(--bd);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
-/* Confetti */
-.conf{position:fixed;z-index:9999;pointer-events:none;border-radius:2px;animation:conf .9s ease forwards}
-@media(max-width:768px){
-  .starters{gap:6px}
-  #chat-body{padding:14px 12px 8px}
-  #input-area{padding:8px 12px 12px}
-}
+  /* ── Stats counter ── */
+  .stat-number { font-variant-numeric: tabular-nums; }
+
+  /* ── Mobile menu ── */
+  #mobile-menu { transition: all .3s cubic-bezier(.23,1,.32,1); }
+
+  /* ── Noise texture overlay ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: .018;
+  }
+
+  /* ── Particle dots ── */
+  .particle { position: absolute; border-radius: 50%; animation: float 6s ease-in-out infinite; }
+
+  /* ── Hero badge ── */
+  .badge-glow {
+    background: rgba(6,182,212,.1);
+    border: 1px solid rgba(6,182,212,.25);
+    box-shadow: 0 0 20px rgba(6,182,212,.1);
+  }
 </style>
 </head>
-<body>
-<div id="app">
+<body class="font-poppins antialiased">
 
-<!-- ── SIDEBAR ── -->
-<aside id="sb">
-  <div class="sb-head">
-    <button class="new-btn" onclick="newChat()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-      New chat
-    </button>
-  </div>
-  <div class="sb-scroll">
-    <div id="chat-list-wrap">
-      <div class="sb-empty" id="sb-empty">No chats yet.<br>Start a conversation!</div>
+<!-- Fixed BG -->
+<div class="bg-mesh"></div>
+<div class="grid-overlay"></div>
+
+<!-- ════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════ -->
+<nav class="nav-glass fixed top-0 left-0 right-0 z-50" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center glow-cyan relative overflow-hidden" style="background:linear-gradient(135deg,#06b6d4,#6366f1)">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div>
+        </div>
+        <span class="text-xl font-bold tracking-tight">
+          <span class="gradient-text">Nexus</span><span class="text-white">AI</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#features" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-cyan-400 rounded-lg hover:bg-white/5 transition-all duration-200">Features</a>
+        <a href="#stories" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-cyan-400 rounded-lg hover:bg-white/5 transition-all duration-200">Stories</a>
+        <a href="#pricing" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-cyan-400 rounded-lg hover:bg-white/5 transition-all duration-200">Pricing</a>
+        <a href="#contact" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-cyan-400 rounded-lg hover:bg-white/5 transition-all duration-200">Contact</a>
+      </div>
+
+      <!-- CTA -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="#" class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">Sign In</a>
+        <a href="#contact" class="btn-primary px-5 py-2.5 rounded-xl text-sm font-semibold">
+          <span>Join Now →</span>
+        </a>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg hover:bg-white/5 transition-all" onclick="toggleMenu()">
+        <svg id="menu-icon" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg id="close-icon" class="hidden" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
   </div>
-  <div class="sb-foot">
-    <div class="sb-user" onclick="openSettings()">
-      <div class="uav" id="sb-av">?</div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-white/5">
+    <div class="px-4 py-4 space-y-1">
+      <a href="#features" onclick="toggleMenu()" class="block px-4 py-2.5 text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">Features</a>
+      <a href="#stories" onclick="toggleMenu()" class="block px-4 py-2.5 text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">Stories</a>
+      <a href="#pricing" onclick="toggleMenu()" class="block px-4 py-2.5 text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">Pricing</a>
+      <a href="#contact" onclick="toggleMenu()" class="block px-4 py-2.5 text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all">Contact</a>
+      <div class="pt-2 border-t border-white/5">
+        <a href="#contact" onclick="toggleMenu()" class="btn-primary block text-center px-5 py-3 rounded-xl text-sm font-semibold mt-2">
+          <span>Join Now →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════ -->
+<section class="relative min-h-screen flex items-center justify-center pt-20 pb-16 overflow-hidden" id="hero">
+
+  <!-- Orbs -->
+  <div class="orb w-96 h-96 top-0 right-0 opacity-20" style="background:radial-gradient(circle,#06b6d4,transparent 70%)"></div>
+  <div class="orb w-80 h-80 bottom-20 left-0 opacity-15" style="background:radial-gradient(circle,#6366f1,transparent 70%)"></div>
+  <div class="orb w-64 h-64 top-1/3 left-1/4 opacity-10" style="background:radial-gradient(circle,#38bdf8,transparent 70%)"></div>
+
+  <!-- Floating particles -->
+  <div class="particle w-2 h-2 bg-cyan-400 opacity-60 top-1/4 left-1/5" style="animation-delay:0s"></div>
+  <div class="particle w-1.5 h-1.5 bg-blue-400 opacity-40 top-1/3 right-1/4" style="animation-delay:1.5s"></div>
+  <div class="particle w-1 h-1 bg-cyan-300 opacity-50 bottom-1/3 left-1/3" style="animation-delay:3s"></div>
+  <div class="particle w-2 h-2 bg-indigo-400 opacity-40 bottom-1/4 right-1/3" style="animation-delay:2s"></div>
+  <div class="particle w-1.5 h-1.5 bg-cyan-500 opacity-60 top-2/3 left-2/3" style="animation-delay:.8s"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 badge-glow px-4 py-2 rounded-full mb-8 aos" style="opacity:0;animation:slideUp .7s .1s cubic-bezier(.23,1,.32,1) forwards">
+      <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+      <span class="text-xs font-semibold text-cyan-300 tracking-widest uppercase">Next-Generation AI Platform</span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[.92] tracking-tight mb-6" style="opacity:0;animation:slideUp .8s .2s cubic-bezier(.23,1,.32,1) forwards">
+      <span class="block text-white">The Future of</span>
+      <span class="block gradient-text-warm mt-2">Intelligence</span>
+      <span class="block text-white mt-2">Is Here</span>
+    </h1>
+
+    <!-- Sub-headline -->
+    <p class="text-slate-400 text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed mb-10 font-light" style="opacity:0;animation:slideUp .8s .35s cubic-bezier(.23,1,.32,1) forwards">
+      Harness the power of advanced AI to transform your workflow, amplify creativity, and achieve what was once impossible.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16" style="opacity:0;animation:slideUp .8s .5s cubic-bezier(.23,1,.32,1) forwards">
+      <a href="#features" class="btn-primary px-8 py-4 rounded-2xl text-base font-semibold w-full sm:w-auto glow-cyan-hover transition-all">
+        <span class="flex items-center justify-center gap-2">
+          Start Building Free
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </span>
+      </a>
+      <a href="#stories" class="btn-outline px-8 py-4 rounded-2xl text-base font-semibold w-full sm:w-auto">
+        <span class="flex items-center justify-center gap-2">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Watch Demo
+        </span>
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto" style="opacity:0;animation:slideUp .8s .65s cubic-bezier(.23,1,.32,1) forwards">
+      <div class="glass rounded-2xl p-4 text-center">
+        <div class="text-3xl font-black gradient-text stat-number" data-target="50000">0</div>
+        <div class="text-xs text-slate-500 mt-1 font-medium">Active Users</div>
+      </div>
+      <div class="glass rounded-2xl p-4 text-center">
+        <div class="text-3xl font-black gradient-text stat-number" data-target="99" data-suffix="%">0</div>
+        <div class="text-xs text-slate-500 mt-1 font-medium">Uptime SLA</div>
+      </div>
+      <div class="glass rounded-2xl p-4 text-center">
+        <div class="text-3xl font-black gradient-text stat-number" data-target="10" data-suffix="x">0</div>
+        <div class="text-xs text-slate-500 mt-1 font-medium">Faster Output</div>
+      </div>
+      <div class="glass rounded-2xl p-4 text-center">
+        <div class="text-3xl font-black gradient-text stat-number" data-target="4" data-suffix=".9★">0</div>
+        <div class="text-xs text-slate-500 mt-1 font-medium">User Rating</div>
+      </div>
+    </div>
+
+    <!-- Floating UI Preview -->
+    <div class="mt-20 max-w-4xl mx-auto aos" style="animation-delay:.8s">
+      <div class="glass-strong rounded-3xl overflow-hidden border-glow">
+        <!-- Window bar -->
+        <div class="flex items-center gap-2 px-5 py-4 border-b border-white/5" style="background:rgba(2,8,23,.6)">
+          <div class="w-3 h-3 rounded-full bg-red-500 opacity-80"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500 opacity-80"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500 opacity-80"></div>
+          <div class="flex-1 mx-4">
+            <div class="glass rounded-md h-6 flex items-center justify-center px-3">
+              <span class="text-xs text-slate-500 font-mono">nexusai.app — AI Dashboard</span>
+            </div>
+          </div>
+          <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse-glow"></div>
+          <span class="text-xs text-cyan-400 font-medium ml-1">Live</span>
+        </div>
+        <!-- Dashboard preview -->
+        <div class="p-6 grid grid-cols-3 gap-4" style="background:rgba(2,8,23,.4)">
+          <div class="col-span-2 glass rounded-xl p-4">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-semibold text-slate-400">AI Activity</span>
+              <span class="text-xs text-cyan-400">↑ 42%</span>
+            </div>
+            <div class="flex items-end gap-1.5 h-16">
+              <div class="flex-1 rounded-sm bg-cyan-500/20 hover:bg-cyan-500/40 transition-colors" style="height:35%"></div>
+              <div class="flex-1 rounded-sm bg-cyan-500/30 hover:bg-cyan-500/50 transition-colors" style="height:55%"></div>
+              <div class="flex-1 rounded-sm bg-cyan-500/20 hover:bg-cyan-500/40 transition-colors" style="height:40%"></div>
+              <div class="flex-1 rounded-sm bg-cyan-500/40 hover:bg-cyan-500/60 transition-colors" style="height:70%"></div>
+              <div class="flex-1 rounded-sm bg-cyan-500/25 hover:bg-cyan-500/45 transition-colors" style="height:50%"></div>
+              <div class="flex-1 rounded-sm bg-cyan-500/35 hover:bg-cyan-500/55 transition-colors" style="height:65%"></div>
+              <div class="flex-1 rounded-sm bg-cyan-400/60 hover:bg-cyan-400/80 transition-colors glow-cyan" style="height:100%"></div>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-4 flex flex-col justify-between">
+            <div class="text-xs font-semibold text-slate-400">Tasks Done</div>
+            <div class="text-3xl font-black gradient-text">247</div>
+            <div class="h-1.5 bg-white/5 rounded-full overflow-hidden">
+              <div class="h-full rounded-full" style="width:78%;background:linear-gradient(90deg,#06b6d4,#6366f1)"></div>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-3 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(6,182,212,.2)">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">Fast Mode</div>
+              <div class="text-xs text-green-400">Active</div>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-3 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(99,102,241,.2)">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#818cf8"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">99.9% SLA</div>
+              <div class="text-xs text-cyan-400">Guaranteed</div>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-3 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(56,189,248,.2)">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#38bdf8"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs font-bold text-white">50K Users</div>
+              <div class="text-xs text-slate-400">Growing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     FEATURES SECTION
+════════════════════════════════════ -->
+<section id="features" class="relative py-24 sm:py-32 overflow-hidden">
+  <div class="orb w-80 h-80 -right-20 top-20 opacity-10" style="background:radial-gradient(circle,#06b6d4,transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section header -->
+    <div class="text-center mb-16 aos">
+      <div class="inline-flex items-center gap-2 badge-glow px-4 py-2 rounded-full mb-5">
+        <span class="text-xs font-semibold text-cyan-300 tracking-widest uppercase">Core Features</span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-5">
+        <span class="text-white">Powerful Tools,</span><br>
+        <span class="gradient-text">Limitless Possibilities</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+        Everything you need to build, create, and innovate — wrapped in one seamless AI-powered platform.
+      </p>
+    </div>
+
+    <!-- Feature cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+
+      <!-- Card 1 -->
+      <div class="glass-card rounded-3xl p-8 aos aos-delay-1">
+        <!-- 3D Icon -->
+        <div class="icon-3d mb-6" style="background:linear-gradient(135deg,rgba(6,182,212,.2),rgba(6,182,212,.05));border:1px solid rgba(6,182,212,.2);box-shadow:0 8px 32px rgba(6,182,212,.15),inset 0 1px 0 rgba(255,255,255,.1)">
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs>
+            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17l10 5 10-5" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12l10 5 10-5" stroke="url(#g1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-cyan-300 mb-4" style="background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2)">⚡ Real-time AI</div>
+        <h3 class="text-xl font-bold text-white mb-3">Neural Processing Engine</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">Process millions of parameters in milliseconds with our distributed neural architecture. Zero latency, maximum intelligence.</p>
+        <ul class="space-y-2.5">
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Sub-10ms response time</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Distributed processing nodes</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Auto-scaling infrastructure</li>
+        </ul>
+      </div>
+
+      <!-- Card 2 (elevated center) -->
+      <div class="glass-card rounded-3xl p-8 aos aos-delay-2 relative" style="background:rgba(6,182,212,.06);border-color:rgba(6,182,212,.2)">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+          <span class="text-xs font-bold text-cyan-900 bg-cyan-400 px-3 py-1 rounded-full">Most Popular</span>
+        </div>
+        <div class="icon-3d mb-6" style="background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(99,102,241,.08));border:1px solid rgba(99,102,241,.3);box-shadow:0 8px 32px rgba(99,102,241,.2),inset 0 1px 0 rgba(255,255,255,.1)">
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#c084fc"/></linearGradient></defs>
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="url(#g2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-purple-300 mb-4" style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25)">🧠 Smart Intelligence</div>
+        <h3 class="text-xl font-bold text-white mb-3">Adaptive Learning Core</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">Our AI learns from your patterns and preferences, becoming smarter and more personalized with every interaction you have.</p>
+        <ul class="space-y-2.5">
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Personalized AI models</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Continuous improvement loop</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Context-aware responses</li>
+        </ul>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="glass-card rounded-3xl p-8 aos aos-delay-3">
+        <div class="icon-3d mb-6" style="background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(56,189,248,.05));border:1px solid rgba(56,189,248,.2);box-shadow:0 8px 32px rgba(56,189,248,.12),inset 0 1px 0 rgba(255,255,255,.1)">
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
+            <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
+            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke="url(#g3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-sky-300 mb-4" style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2)">🔒 Enterprise Security</div>
+        <h3 class="text-xl font-bold text-white mb-3">Zero-Trust Security</h3>
+        <p class="text-slate-400 text-sm leading-relaxed mb-6">Military-grade encryption and zero-trust architecture ensure your data and conversations remain completely private and secure.</p>
+        <ul class="space-y-2.5">
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>AES-256 encryption</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>SOC 2 Type II certified</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><div class="w-4 h-4 rounded-full bg-sky-500/20 flex items-center justify-center flex-shrink-0"><svg width="8" height="8" viewBox="0 0 10 10"><path d="M2 5l2 2 4-4" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Zero data retention policy</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     PRICING SECTION
+════════════════════════════════════ -->
+<section id="pricing" class="relative py-24 overflow-hidden">
+  <div class="orb w-96 h-96 -left-20 top-10 opacity-10" style="background:radial-gradient(circle,#6366f1,transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 aos">
+      <div class="inline-flex items-center gap-2 badge-glow px-4 py-2 rounded-full mb-5">
+        <span class="text-xs font-semibold text-cyan-300 tracking-widest uppercase">Simple Pricing</span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl font-black tracking-tight mb-5">
+        <span class="text-white">Choose Your</span> <span class="gradient-text">Plan</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-xl mx-auto">Start free. Scale as you grow. No surprises.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <!-- Free -->
+      <div class="glass-card rounded-3xl p-7 aos aos-delay-1">
+        <div class="text-sm font-semibold text-slate-400 mb-2">Starter</div>
+        <div class="text-4xl font-black text-white mb-1">Free</div>
+        <div class="text-slate-500 text-sm mb-6">Forever free</div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>5 AI requests/day</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Basic templates</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Community support</li>
+          <li class="flex items-center gap-2 text-sm text-slate-500"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3.5 3.5l7 7m0-7l-7 7" stroke="#475569" stroke-width="1.5" stroke-linecap="round"/></svg>No API access</li>
+        </ul>
+        <a href="#contact" class="btn-outline block text-center px-5 py-3 rounded-xl text-sm font-semibold">Get Started</a>
+      </div>
+
+      <!-- Pro (highlighted) -->
+      <div class="glass-card rounded-3xl p-7 aos aos-delay-2 relative" style="background:rgba(6,182,212,.07);border-color:rgba(6,182,212,.3);box-shadow:0 0 60px rgba(6,182,212,.1)">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-1 rounded-full text-xs font-bold text-white">Most Popular</div>
+        <div class="text-sm font-semibold text-cyan-400 mb-2">Pro</div>
+        <div class="flex items-end gap-1 mb-1">
+          <div class="text-4xl font-black gradient-text">₹999</div>
+          <div class="text-slate-400 text-sm mb-1">/month</div>
+        </div>
+        <div class="text-slate-500 text-sm mb-6">Billed monthly</div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited AI requests</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>All premium templates</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Full API access</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support</li>
+        </ul>
+        <a href="#contact" class="btn-primary block text-center px-5 py-3 rounded-xl text-sm font-semibold glow-cyan">
+          <span>Get Pro Now →</span>
+        </a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="glass-card rounded-3xl p-7 aos aos-delay-3">
+        <div class="text-sm font-semibold text-purple-400 mb-2">Enterprise</div>
+        <div class="text-4xl font-black text-white mb-1">Custom</div>
+        <div class="text-slate-500 text-sm mb-6">Contact for pricing</div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Pro</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated infrastructure</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom AI training</li>
+          <li class="flex items-center gap-2 text-sm text-slate-300"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2.5 7l3 3 6-6" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>24/7 dedicated support</li>
+        </ul>
+        <a href="mailto:naxshmoses@gmail.com" class="btn-outline block text-center px-5 py-3 rounded-xl text-sm font-semibold" style="border-color:rgba(99,102,241,.4);color:#818cf8">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     SUCCESS STORIES
+════════════════════════════════════ -->
+<section id="stories" class="relative py-24 sm:py-32 overflow-hidden">
+  <div class="orb w-96 h-96 right-0 bottom-0 opacity-10" style="background:radial-gradient(circle,#0ea5e9,transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div class="text-center mb-16 aos">
+      <div class="inline-flex items-center gap-2 badge-glow px-4 py-2 rounded-full mb-5">
+        <span class="text-xs font-semibold text-cyan-300 tracking-widest uppercase">Success Stories</span>
+      </div>
+      <h2 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-5">
+        <span class="text-white">Trusted by</span><br>
+        <span class="gradient-text">Industry Leaders</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+        From startups to Fortune 500 companies, NexusAI is transforming how businesses operate.
+      </p>
+    </div>
+
+    <!-- Testimonials grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="success-card rounded-2xl p-6 aos aos-delay-1 backdrop-blur-xl">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-yellow-400 text-sm">★★★★★</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5">"NexusAI transformed our entire development workflow. We ship 3x faster and with significantly fewer bugs. The AI suggestions are genuinely intelligent."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#06b6d4,#6366f1)">R</div>
+          <div>
+            <div class="text-sm font-semibold text-white">Rahul Sharma</div>
+            <div class="text-xs text-slate-500">CTO, TechVentures India</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-card rounded-2xl p-6 aos aos-delay-2 backdrop-blur-xl">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-yellow-400 text-sm">★★★★★</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5">"We reduced customer support costs by 70% using NexusAI's automation tools. Our team now focuses on what truly matters — building relationships."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#ec4899,#8b5cf6)">P</div>
+          <div>
+            <div class="text-sm font-semibold text-white">Priya Mehta</div>
+            <div class="text-xs text-slate-500">CEO, GrowthLoop</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-card rounded-2xl p-6 aos aos-delay-3 backdrop-blur-xl">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-yellow-400 text-sm">★★★★★</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5">"The accuracy and speed of NexusAI is unlike anything we've used before. Our data analysis that took days now completes in minutes."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#f97316,#eab308)">A</div>
+          <div>
+            <div class="text-sm font-semibold text-white">Arjun Kapoor</div>
+            <div class="text-xs text-slate-500">Head of Data, Fincore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-card rounded-2xl p-6 aos aos-delay-1 backdrop-blur-xl">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-yellow-400 text-sm">★★★★★</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5">"Implementing NexusAI into our marketing stack tripled our conversion rates. The personalization capabilities are extraordinary."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#10b981,#06b6d4)">S</div>
+          <div>
+            <div class="text-sm font-semibold text-white">Sneha Patel</div>
+            <div class="text-xs text-slate-500">VP Marketing, ScaleUp</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-card rounded-2xl p-6 aos aos-delay-2 backdrop-blur-xl">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-yellow-400 text-sm">★★★★★</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5">"From code generation to documentation, NexusAI handles it all. Our team of 5 now operates with the output of a team of 20."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#6366f1,#ec4899)">V</div>
+          <div>
+            <div class="text-sm font-semibold text-white">Vikram Singh</div>
+            <div class="text-xs text-slate-500">Founder, DevCore</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-card rounded-2xl p-6 aos aos-delay-3 backdrop-blur-xl">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-yellow-400 text-sm">★★★★★</span>
+        </div>
+        <p class="text-slate-300 text-sm leading-relaxed mb-5">"NexusAI's security features gave us the confidence to process sensitive healthcare data. HIPAA compliant and blazing fast."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#38bdf8,#6366f1)">N</div>
+          <div>
+            <div class="text-sm font-semibold text-white">Neha Joshi</div>
+            <div class="text-xs text-slate-500">CTO, HealthBridge</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo strip -->
+    <div class="mt-16 aos">
+      <p class="text-center text-xs font-semibold text-slate-600 tracking-widest uppercase mb-8">Trusted by teams at</p>
+      <div class="flex flex-wrap items-center justify-center gap-8 opacity-30">
+        <span class="text-lg font-black text-white tracking-tight">GOOGLE</span>
+        <span class="text-lg font-black text-white tracking-tight">MICROSOFT</span>
+        <span class="text-lg font-black text-white tracking-tight">AMAZON</span>
+        <span class="text-lg font-black text-white tracking-tight">STRIPE</span>
+        <span class="text-lg font-black text-white tracking-tight">NOTION</span>
+        <span class="text-lg font-black text-white tracking-tight">FIGMA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     CONTACT / FOOTER
+════════════════════════════════════ -->
+<footer id="contact" class="relative pt-24 pb-8 overflow-hidden border-t border-white/5">
+  <div class="orb w-96 h-96 left-1/4 -top-20 opacity-8" style="background:radial-gradient(circle,#06b6d4,transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Newsletter + contact section -->
+    <div class="glass-strong rounded-3xl p-8 sm:p-12 mb-16 aos text-center sm:text-left">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 badge-glow px-4 py-2 rounded-full mb-5">
+            <span class="text-xs font-semibold text-cyan-300 tracking-widest uppercase">Get in Touch</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
+            Ready to <span class="gradient-text">Elevate</span><br>Your Business?
+          </h2>
+          <p class="text-slate-400 leading-relaxed mb-6">Join 50,000+ professionals using NexusAI. Subscribe for exclusive updates, early access, and AI insights delivered weekly.</p>
+          <!-- Email info -->
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="mailto:naxshmoses@gmail.com" class="flex items-center gap-3 glass rounded-xl px-4 py-3 hover:border-cyan-500/40 transition-all group">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(6,182,212,.15)">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#22d3ee"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <div class="text-left">
+                <div class="text-xs text-slate-500">Email us directly</div>
+                <div class="text-sm font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors">naxshmoses@gmail.com</div>
+              </div>
+            </a>
+            <div class="flex items-center gap-3 glass rounded-xl px-4 py-3">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(99,102,241,.15)">
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#818cf8"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+              </div>
+              <div>
+                <div class="text-xs text-slate-500">Live support</div>
+                <div class="text-sm font-semibold text-purple-400">24/7 Available</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Newsletter form -->
+        <div>
+          <div class="glass rounded-2xl p-6">
+            <h3 class="text-lg font-bold text-white mb-4">Subscribe to Newsletter</h3>
+            <form onsubmit="handleSubscribe(event)" class="space-y-3">
+              <div>
+                <label class="text-xs font-medium text-slate-400 mb-1.5 block">Full Name</label>
+                <input type="text" placeholder="Enter your name" class="input-glass w-full rounded-xl px-4 py-3 text-sm" required>
+              </div>
+              <div>
+                <label class="text-xs font-medium text-slate-400 mb-1.5 block">Email Address</label>
+                <input type="email" id="sub-email" placeholder="your@email.com" class="input-glass w-full rounded-xl px-4 py-3 text-sm" required>
+              </div>
+              <button type="submit" class="btn-primary w-full py-3 rounded-xl text-sm font-semibold glow-cyan">
+                <span>Subscribe & Get Early Access →</span>
+              </button>
+              <p class="text-xs text-slate-600 text-center">No spam ever. Unsubscribe anytime. Contact: <a href="mailto:naxshmoses@gmail.com" class="text-cyan-600 hover:text-cyan-400 transition-colors">naxshmoses@gmail.com</a></p>
+            </form>
+            <div id="sub-success" class="hidden mt-4 p-3 rounded-xl text-sm text-green-300 text-center" style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)">
+              🎉 You're subscribed! Welcome to the future.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer links grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
+      <div class="col-span-2 sm:col-span-1">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center glow-cyan" style="background:linear-gradient(135deg,#06b6d4,#6366f1)">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="font-bold text-lg"><span class="gradient-text">Nexus</span><span class="text-white">AI</span></span>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">The most advanced AI platform for teams and individuals who demand the best.</p>
+        <!-- Social icons -->
+        <div class="flex gap-2">
+          <a href="mailto:naxshmoses@gmail.com" class="social-icon" title="Email">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#94a3b8"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </a>
+          <a href="#" class="social-icon" title="Twitter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-icon" title="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#94a3b8"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" class="social-icon" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#94a3b8"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+        </div>
+      </div>
+
       <div>
-        <div class="uname" id="sb-name">Guest User</div>
-        <div class="uplan" id="sb-plan">Free · Add API key</div>
+        <h4 class="text-sm font-bold text-white mb-4">Product</h4>
+        <ul class="space-y-3">
+          <li><a href="#features" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Features</a></li>
+          <li><a href="#pricing" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Pricing</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">API Docs</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Changelog</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Status</a></li>
+        </ul>
       </div>
-      <span class="u-logout" onclick="event.stopPropagation();logout()" title="Sign out">⏻</span>
-    </div>
-  </div>
-</aside>
-<div id="sb-mask" onclick="closeSb()"></div>
 
-<!-- ── MAIN ── -->
-<div id="main">
-
-  <!-- TOPBAR -->
-  <header id="top">
-    <div class="t-icon" onclick="toggleSb()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </div>
-
-    <div class="model-btn" id="model-btn" onclick="toggleMdd(event)">
-      <div class="m-dot"></div>
-      <span class="m-name" id="m-label">Claude Sonnet 4</span>
-      <span class="m-arr">▾</span>
-    </div>
-
-    <!-- Model dropdown -->
-    <div id="m-dd">
-      <div class="mdd-hdr">Select Model</div>
-      <div class="mdd-item on" onclick="setModel('claude-sonnet-4-20250514','Claude Sonnet 4',this)">
-        <div class="mdi-ico" style="background:linear-gradient(135deg,#10a37f,#7c3aed)">✦</div>
-        <div><div class="mdi-name">Claude Sonnet 4</div><div class="mdi-desc">Latest · Best quality</div></div>
-        <span class="mdi-tag tag-new">LATEST</span>
+      <div>
+        <h4 class="text-sm font-bold text-white mb-4">Company</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">About</a></li>
+          <li><a href="#stories" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Customers</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Blog</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Careers</a></li>
+          <li><a href="mailto:naxshmoses@gmail.com" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Contact</a></li>
+        </ul>
       </div>
-      <div class="mdd-item" onclick="setModel('claude-sonnet-4-20250514','Claude Sonnet 4.5',this)">
-        <div class="mdi-ico" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">⚡</div>
-        <div><div class="mdi-name">Claude Sonnet 4.5</div><div class="mdi-desc">Fast · Great for coding</div></div>
-        <span class="mdi-tag tag-fast">FAST</span>
-      </div>
-      <div class="mdd-item" onclick="setModel('claude-haiku-4-5-20251001','Claude Haiku 4.5',this)">
-        <div class="mdi-ico" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">⚡</div>
-        <div><div class="mdi-name">Claude Haiku 4.5</div><div class="mdi-desc">Fastest · Lightweight</div></div>
-        <span class="mdi-tag tag-fast">QUICK</span>
+
+      <div>
+        <h4 class="text-sm font-bold text-white mb-4">Legal</h4>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Terms of Service</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Cookie Policy</a></li>
+          <li><a href="#" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">Security</a></li>
+          <li><a href="mailto:naxshmoses@gmail.com" class="text-sm text-slate-500 hover:text-cyan-400 transition-colors">GDPR</a></li>
+        </ul>
       </div>
     </div>
 
-    <div class="t-gap"></div>
-    <div class="t-actions">
-      <div class="t-icon" onclick="toggleTheme()" id="theme-ico">🌙</div>
-      <div class="t-icon" onclick="newChat()" title="New chat">✦</div>
-      <div class="t-icon" onclick="openSettings()" title="Settings">⚙️</div>
-      <div id="auth-slot"><button id="signin-btn" onclick="openAuth()">Sign in</button></div>
-    </div>
-  </header>
-
-  <!-- CHAT MESSAGES -->
-  <div id="chat-scroll">
-    <div id="chat-body">
-      <div id="welcome">
-        <div class="w-logo">✦</div>
-        <div class="w-title">How can I help you?</div>
-        <div class="w-sub">I'm NexusAI — powered by Claude. Ask me anything in Hindi or English: code, writing, math, analysis, translation, and more.</div>
-
-        <div class="w-api-note" id="w-api-note">
-          <b>🔑 Setup needed:</b> Add your free Claude API key to enable real AI.<br>
-          Get it free: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> — $5 credit, no card.<br>
-          Then: <b style="cursor:pointer;color:#fbbf24" onclick="openSettings()">Settings → Paste key → Save</b>
-        </div>
-
-        <div class="starters">
-          <div class="starter" onclick="qs('Explain how machine learning works with simple real-life examples.')"><div class="s-ico">🤖</div><div class="s-title">Explain ML</div><div class="s-desc">Simple examples, step by step</div></div>
-          <div class="starter" onclick="qs('Write a Python web scraper using requests and BeautifulSoup with error handling and comments.')"><div class="s-ico">🐍</div><div class="s-title">Python scraper</div><div class="s-desc">With error handling + comments</div></div>
-          <div class="starter" onclick="qs('Meri startup ke liye ek complete business plan banao. Product: AI tool for Indian small businesses.')"><div class="s-ico">💼</div><div class="s-title">Business plan (Hindi)</div><div class="s-desc">AI tool for Indian market</div></div>
-          <div class="starter" onclick="qs('Write a professional apology email to a client about a 2-week project delay with a revised timeline.')"><div class="s-ico">✉️</div><div class="s-title">Client email</div><div class="s-desc">Apology + revised timeline</div></div>
-          <div class="starter" onclick="qs('Debug this JavaScript and explain every issue:\n\nconst user = null;\nconsole.log(user.name);\n\nconst nums = [1,2,3];\nnums.forEach(n => console.log(n.toFixed()));')"><div class="s-ico">🐛</div><div class="s-title">Debug JavaScript</div><div class="s-desc">Errors explained clearly</div></div>
-          <div class="starter" onclick="qs('Translate to Hindi and explain meaning deeply: \"The future belongs to those who believe in the beauty of their dreams.\"')"><div class="s-ico">🌏</div><div class="s-title">Translate + explain</div><div class="s-desc">English → Hindi with context</div></div>
-        </div>
-
-        <div class="chips">
-          <div class="chip" onclick="qs('Write a React custom hook for debouncing input, with TypeScript and usage example')">⚛️ React hook</div>
-          <div class="chip" onclick="qs('Explain SQL JOINs (INNER, LEFT, RIGHT, FULL) with practical examples')">🗄️ SQL JOINs</div>
-          <div class="chip" onclick="qs('What are the top 5 ways to grow a tech startup in India in 2025?')">📈 Startup growth</div>
-          <div class="chip" onclick="qs('Write 5 creative Instagram captions for a food photography account')">📸 Insta captions</div>
-          <div class="chip" onclick="qs('Solve step by step: Find derivative of f(x) = 3x³ + 2x² − 5x + 7')">📐 Calculus</div>
-          <div class="chip" onclick="qs('Mujhe ek motivational speech likhni hai college students ke liye on: Failure se kaise seekhein')">🎤 Hindi speech</div>
-          <div class="chip" onclick="qs('Write a complete Node.js REST API with Express for a todo app with CRUD operations')">🚀 Node.js API</div>
-          <div class="chip" onclick="qs('Explain HTTPS, SSL certificates and TLS handshake step by step')">🔒 HTTPS/SSL</div>
+    <!-- Bottom bar -->
+    <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-slate-600">© 2025 NexusAI. All rights reserved. Built with ⚡ for the future.</p>
+      <div class="flex items-center gap-4">
+        <a href="mailto:naxshmoses@gmail.com" class="text-xs text-slate-600 hover:text-cyan-400 transition-colors">naxshmoses@gmail.com</a>
+        <div class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15)">
+          <div class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></div>
+          <span class="text-green-400 font-medium">All systems operational</span>
         </div>
       </div>
     </div>
   </div>
+</footer>
 
-  <!-- INPUT -->
-  <div id="input-area">
-    <div id="api-bar" onclick="openSettings()">
-      🔑 Add your free Claude API key in Settings to start chatting with real AI
-      <span style="margin-left:auto;font-weight:700">Settings →</span>
-    </div>
-    <div class="in-box">
-      <div class="in-row">
-        <textarea id="ta" placeholder="Message NexusAI… (Hindi or English)" rows="1" oninput="onTAIn(this)" onkeydown="onTAKey(event)"></textarea>
-        <button id="send" onclick="send()" disabled>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-        </button>
-      </div>
-      <div class="in-foot">
-        <div class="in-pill" onclick="newChat()">✦ New</div>
-        <div class="in-pill" id="ws-pill" onclick="toggleWS()">🌐 Web search</div>
-        <div class="in-gap"></div>
-        <div class="in-hint"><kbd>↵</kbd> send &nbsp;·&nbsp; <kbd>⇧↵</kbd> newline</div>
-        <div class="in-chars" id="chars">0</div>
-      </div>
-    </div>
-    <div class="in-disclaimer">NexusAI can make mistakes. Verify important information.</div>
-  </div>
-
-</div><!-- end #main -->
-</div><!-- end #app -->
-
-<!-- ── AUTH OVERLAY ── -->
-<div class="ovl" id="auth-ovl" onclick="if(event.target===this)closeAuth()">
-  <div class="auth-card">
-    <div class="ac-top">
-      <div class="ac-brand">
-        <div class="ac-brand-ico">✦</div>
-        <div class="ac-brand-name">Nexus<b>AI</b></div>
-      </div>
-      <div class="ac-h" id="ac-h">Welcome back</div>
-      <div class="ac-s" id="ac-s">Sign in to save your conversations</div>
-    </div>
-    <div class="ac-tabs">
-      <div class="ac-tab on" id="tab-in" onclick="switchTab('in')">Sign In</div>
-      <div class="ac-tab" id="tab-up" onclick="switchTab('up')">Sign Up</div>
-    </div>
-    <div class="ac-body">
-      <!-- Login -->
-      <div class="ac-form on" id="form-in">
-        <div class="fl"><div class="fl-lbl">Email</div><input class="fl-inp" id="em" type="email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <div class="fl"><div class="fl-lbl">Password <a onclick="toast('Reset link sent!','info')">Forgot?</a></div><input class="fl-inp" id="pw" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <button class="btn-go" onclick="doLogin()" id="login-btn">Sign In</button>
-        <div class="or-row">or</div>
-        <div class="soc-row">
-          <button class="soc-btn" onclick="socialLogin('Google')">🌐 Google</button>
-          <button class="soc-btn" onclick="socialLogin('GitHub')">⌨️ GitHub</button>
-        </div>
-        <div class="ac-link">No account? <a onclick="switchTab('up')">Sign up free →</a></div>
-      </div>
-      <!-- Signup -->
-      <div class="ac-form" id="form-up">
-        <div class="fl"><div class="fl-lbl">Full Name</div><input class="fl-inp" id="sn" placeholder="Your name"></div>
-        <div class="fl"><div class="fl-lbl">Email</div><input class="fl-inp" id="se" type="email" placeholder="you@example.com"></div>
-        <div class="fl"><div class="fl-lbl">Password</div><input class="fl-inp" id="sp" type="password" placeholder="Minimum 8 characters" onkeydown="if(event.key==='Enter')doSignup()"></div>
-        <button class="btn-go" onclick="doSignup()">Create Account</button>
-        <div class="ac-link" style="margin-top:9px;font-size:11px">By signing up you agree to our Terms &amp; Privacy</div>
-      </div>
-      <!-- Success -->
-      <div class="ac-success" id="ac-succ">
-        <div class="ring"><svg width="28" height="28" viewBox="0 0 60 60" fill="none"><path d="M14 30L25 41L46 22" stroke="#10a37f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div style="font-size:17px;font-weight:700;margin-bottom:4px" id="succ-t">Welcome!</div>
-        <div style="font-size:13px;color:var(--t2);margin-bottom:12px" id="succ-s">Setting up...</div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--t3)"><div class="spin"></div> Loading</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── SETTINGS OVERLAY ── -->
-<div class="ovl" id="stg-ovl" onclick="if(event.target===this)closeSettings()">
-  <div class="stg-card">
-    <div class="stg-head"><div class="stg-title">Settings</div><div class="stg-x" onclick="closeSettings()">✕</div></div>
-    <div class="stg-body">
-
-      <div class="stg-sec">🔑 Claude API Key</div>
-      <div class="stg-box">
-        <div class="api-status">
-          <div class="api-dot" id="api-dot" style="background:#f87171"></div>
-          <span id="api-txt" style="color:#f87171">Not connected</span>
-        </div>
-        <div class="api-inp-row">
-          <input class="api-inp" id="api-inp" type="password" placeholder="sk-ant-api03-...">
-          <button class="api-save" onclick="saveKey()">Save</button>
-        </div>
-        <div class="api-help">
-          Get free key: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br>
-          • $5 free credits · No card needed · Stored locally only
-        </div>
-      </div>
-
-      <div class="stg-sec">🎨 Preferences</div>
-      <div class="stg-box">
-        <div class="stg-row" style="border:none">
-          <div><div class="sr-lbl">Dark Mode</div><div class="sr-desc">Toggle dark/light interface</div></div>
-          <div class="tog on" id="dark-tog" onclick="toggleTheme();this.classList.toggle('on')"></div>
-        </div>
-        <div class="stg-row">
-          <div><div class="sr-lbl">Save History</div><div class="sr-desc">Store chats in browser</div></div>
-          <div class="tog on" onclick="this.classList.toggle('on')"></div>
-        </div>
-        <div class="stg-row">
-          <div><div class="sr-lbl">Typing Indicator</div><div class="sr-desc">Show dots while AI thinks</div></div>
-          <div class="tog on" id="ti-tog" onclick="this.classList.toggle('on')"></div>
-        </div>
-      </div>
-
-      <div class="stg-sec">💎 Plan</div>
-      <div class="stg-box">
-        <div class="plan-section">
-          <div class="plan-title" id="plan-lbl">Free Plan</div>
-          <div class="plan-sub">Unlimited AI chat · 5 website builds/month</div>
-          <div class="plan-bar-row"><span>Builds used</span><span id="builds-lbl">0 / 5</span></div>
-          <div class="plan-bar"><div class="plan-fill" id="builds-fill" style="width:0%"></div></div>
-          <button class="upg-btn" onclick="closeSettings();openPay()">⚡ Upgrade to Pro — ₹999/month</button>
-        </div>
-        <div class="danger-row">
-          <div><div class="sr-lbl" style="font-size:13px">Clear all history</div><div class="sr-desc">Delete all conversations</div></div>
-          <button class="del-btn" onclick="if(confirm('Delete all chats?')){clearHistory();closeSettings()}">Clear</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- ── PAYMENT OVERLAY ── -->
-<div class="ovl" id="pay-ovl" onclick="if(event.target===this)closePay()">
-  <div class="pay-card">
-    <div class="pay-head"><div class="pay-title">⚡ Upgrade to Pro</div><div class="pay-x" onclick="closePay()">✕</div></div>
-    <div class="pay-body">
-      <div class="plan-opts">
-        <div class="pl-opt on" onclick="pickPlan(this,'999','₹999/mo')"><div class="po-price">₹999</div><div class="po-lbl">Pro / mo</div></div>
-        <div class="pl-opt" onclick="pickPlan(this,'2499','₹2,499/yr')"><div class="po-price">₹2,499</div><div class="po-lbl">Pro / yr</div></div>
-        <div class="pl-opt" onclick="pickPlan(this,'4999','₹4,999/mo')"><div class="po-price">₹4,999</div><div class="po-lbl">Agency</div></div>
-      </div>
-      <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:7px">Payment Method</div>
-      <div class="pm-row">
-        <div class="pm-opt on" onclick="pickPM(this)"><div class="pm-icon">📱</div><div class="pm-name">UPI</div></div>
-        <div class="pm-opt" onclick="pickPM(this)"><div class="pm-icon">💳</div><div class="pm-name">Card</div></div>
-        <div class="pm-opt" onclick="pickPM(this)"><div class="pm-icon">🏦</div><div class="pm-name">Net Bank</div></div>
-      </div>
-      <div class="fl" style="margin-bottom:11px">
-        <div class="fl-lbl">Your UPI ID</div>
-        <input id="upi" type="text" placeholder="name@paytm or 9876543210@upi" style="width:100%;padding:9px 12px;background:var(--card2);border:1px solid var(--bd);border-radius:7px;font-size:13px;color:var(--t1)">
-      </div>
-      <div class="pay-info">
-        💳 Pay to: <b>piyushmoses01@gmail.com</b><br>
-        📧 Screenshot to: <b>piyushmoses01@gmail.com</b><br>
-        ✅ Activated within 2 hours<br>
-        Total: <b id="pay-total" style="color:var(--green2)">₹999/month</b>
-      </div>
-    </div>
-    <div class="pay-foot">
-      <button class="btn-cancel" onclick="closePay()">Cancel</button>
-      <button class="btn-pay" onclick="doPay()">⚡ Pay Now</button>
-    </div>
-  </div>
-</div>
-
-<div id="toasts"></div>
-<div id="notifs"></div>
+<!-- ── Back to top button ── -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-xl btn-primary flex items-center justify-center opacity-0 translate-y-4 transition-all duration-300 pointer-events-none glow-cyan">
+  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="white"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
+</button>
 
 <script>
-/* ═══════════════════════════════════════════════════
-   NEXUSAI — COMPLETE REAL AI ENGINE
-   Real Claude API · No fakes · ChatGPT quality
-═══════════════════════════════════════════════════ */
+/* ────────────────────────────────────
+   NexusAI Landing — Full JS
+────────────────────────────────────  */
 
-// ─── SYSTEM PROMPT ─────────────────────────────
-const SYS = `You are NexusAI, a highly capable AI assistant powered by Claude.
-
-## Identity
-- Warm, helpful, knowledgeable, and conversational
-- Respond naturally — not robotic
-- Adapt tone based on context
-
-## Language
-- Respond in the same language the user writes in
-- Hindi → Hindi, English → English, Hinglish → Hinglish
-- Be natural, not translated-sounding
-
-## Capabilities
-- Answer questions on any topic
-- Write, debug, explain code in any language
-- Help with writing: emails, essays, stories, scripts
-- Translate between languages
-- Solve math and logic problems step by step
-- Give startup, career, and life advice
-- Analyze data and create plans
-
-## Formatting
-- Use markdown: **bold**, *italic*, code blocks, lists, tables, headings
-- Code: always use fenced blocks with language tag
-- Be concise but thorough
-- Use examples to explain complex topics`;
-
-// ─── STATE ─────────────────────────────────────
-const G = {
-  key: localStorage.getItem('nai_k') || '',
-  user: JSON.parse(localStorage.getItem('nai_u') || 'null'),
-  model: 'claude-sonnet-4-20250514',
-  mName: 'Claude Sonnet 4',
-  convs: JSON.parse(localStorage.getItem('nai_c') || '[]'),
-  cid: null,
-  hist: [],
-  busy: false,
-  ws: false,
-  theme: localStorage.getItem('nai_t') || 'dark',
-  pro: localStorage.getItem('nai_pro') === '1',
-  builds: parseInt(localStorage.getItem('nai_b') || '0'),
-  payPlan: '₹999/month'
-};
-
-// ─── INIT ──────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  applyTheme(false);
-  refreshUI();
-  renderHistory();
-  if (G.key) {
-    document.getElementById('api-bar').style.display = 'none';
-    document.getElementById('w-api-note')?.remove();
-    document.getElementById('send').disabled = false;
-  }
-  setTimeout(() => document.getElementById('ta')?.focus(), 100);
-});
-
-// Close model dropdown on click outside
-document.addEventListener('click', e => {
-  const dd = document.getElementById('m-dd');
-  const btn = document.getElementById('model-btn');
-  if (dd && !dd.contains(e.target) && !btn?.contains(e.target)) {
-    dd.style.display = 'none';
-  }
-});
-
-// ─── THEME ─────────────────────────────────────
-function applyTheme(save = true) {
-  G.theme === 'light'
-    ? document.documentElement.setAttribute('data-light', '')
-    : document.documentElement.removeAttribute('data-light');
-  const ico = document.getElementById('theme-ico');
-  if (ico) ico.textContent = G.theme === 'dark' ? '🌙' : '☀️';
-  const tog = document.getElementById('dark-tog');
-  if (tog) tog.classList.toggle('on', G.theme === 'dark');
-  if (save) localStorage.setItem('nai_t', G.theme);
-}
-function toggleTheme() {
-  G.theme = G.theme === 'dark' ? 'light' : 'dark';
-  applyTheme();
+// Mobile menu
+function toggleMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const menuIco = document.getElementById('menu-icon');
+  const closeIco = document.getElementById('close-icon');
+  const isOpen = !menu.classList.contains('hidden');
+  menu.classList.toggle('hidden');
+  menuIco.classList.toggle('hidden');
+  closeIco.classList.toggle('hidden');
 }
 
-// ─── UI REFRESH ────────────────────────────────
-function refreshUI() {
-  const name = G.user?.name || 'Guest User';
-  const init = name[0].toUpperCase();
-  _set('sb-av', init);
-  _set('sb-name', name);
-  _set('sb-plan', G.pro ? 'Pro · Unlimited' : G.key ? `Free · ${G.builds}/5 builds` : 'Free · Add API key');
-  // Auth slot
-  const slot = document.getElementById('auth-slot');
-  if (slot) {
-    slot.innerHTML = G.user
-      ? `<div class="uav" style="cursor:pointer" onclick="openSettings()" title="${name}">${init}</div>`
-      : `<button id="signin-btn" onclick="openAuth()">Sign in</button>`;
-  }
-  // API dot
-  const dot = document.getElementById('api-dot');
-  const txt = document.getElementById('api-txt');
-  if (dot && txt) {
-    if (G.key) { dot.style.background = '#4ade80'; txt.textContent = `Connected · ${G.mName}`; txt.style.color = '#4ade80'; }
-    else { dot.style.background = '#f87171'; txt.textContent = 'Not connected'; txt.style.color = '#f87171'; }
-  }
-  // Builds
-  _set('builds-lbl', G.pro ? 'Unlimited' : `${G.builds} / 5`);
-  _set('plan-lbl', G.pro ? 'Pro Plan 🔥' : 'Free Plan');
-  const fill = document.getElementById('builds-fill');
-  if (fill) fill.style.width = G.pro ? '5%' : `${Math.min(G.builds / 5 * 100, 100)}%`;
-}
-function _set(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+// Scroll: navbar shadow + back-to-top
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  const backTop = document.getElementById('back-top');
+  const scrollY = window.scrollY;
 
-// ─── SIDEBAR ───────────────────────────────────
-function toggleSb() {
-  const sb = document.getElementById('sb');
-  if (window.innerWidth <= 768) {
-    sb.classList.toggle('mobile-open');
+  if (scrollY > 60) {
+    nav.style.boxShadow = '0 4px 40px rgba(0,0,0,.5)';
   } else {
-    sb.classList.toggle('hide');
+    nav.style.boxShadow = 'none';
   }
-}
-function closeSb() {
-  document.getElementById('sb').classList.remove('mobile-open');
-}
 
-function renderHistory() {
-  const wrap = document.getElementById('chat-list-wrap');
-  const empty = document.getElementById('sb-empty');
-  if (!wrap) return;
-  const groups = groupConvsByDate(G.convs);
-  if (!G.convs.length) { if(empty)empty.style.display='block'; wrap.innerHTML=''; wrap.appendChild(empty); return; }
-  if(empty)empty.style.display='none';
-  wrap.innerHTML = Object.entries(groups).map(([label, items]) =>
-    items.length ? `<div class="sb-label">${label}</div>` + items.map(c => `
-      <div class="ch-item ${c.id===G.cid?'on':''}" onclick="loadConv('${c.id}')">
-        <span class="ch-icon">💬</span>
-        <span class="ch-title">${esc(c.title)}</span>
-        <div class="ci-actions" style="display:none;gap:3px;position:absolute;right:6px;background:var(--card);border-radius:5px;padding:1px">
-          <span class="ch-del" onclick="event.stopPropagation();delConv('${c.id}')">✕</span>
-        </div>
-      </div>`).join('') : ''
-  ).join('');
-  // Show ci-actions on hover
-  wrap.querySelectorAll('.ch-item').forEach(el => {
-    el.addEventListener('mouseenter', () => { const a = el.querySelector('.ci-actions'); if(a)a.style.display='flex'; });
-    el.addEventListener('mouseleave', () => { const a = el.querySelector('.ci-actions'); if(a)a.style.display='none'; });
-  });
-}
+  if (scrollY > 500) {
+    backTop.style.opacity = '1';
+    backTop.style.transform = 'translateY(0)';
+    backTop.style.pointerEvents = 'auto';
+  } else {
+    backTop.style.opacity = '0';
+    backTop.style.transform = 'translateY(16px)';
+    backTop.style.pointerEvents = 'none';
+  }
+}, { passive: true });
 
-function groupConvsByDate(convs) {
-  const now = Date.now();
-  const DAY = 86400000;
-  const groups = { Today:[], Yesterday:[], 'Last 7 days':[], Older:[] };
-  convs.forEach(c => {
-    const diff = now - c.ts;
-    if (diff < DAY) groups.Today.push(c);
-    else if (diff < 2*DAY) groups.Yesterday.push(c);
-    else if (diff < 8*DAY) groups['Last 7 days'].push(c);
-    else groups.Older.push(c);
-  });
-  return groups;
-}
-
-function loadConv(id) {
-  const c = G.convs.find(x => x.id === id);
-  if (!c) return;
-  G.cid = id;
-  G.hist = [...c.msgs];
-  document.getElementById('welcome')?.remove();
-  document.getElementById('typing')?.remove();
-  document.getElementById('chat-body').innerHTML = '';
-  G.hist.forEach(m => m.role === 'user' ? renderUser(m.content) : renderAI(m.content));
-  renderHistory();
-  scrollBottom();
-  if (window.innerWidth <= 768) closeSb();
-}
-
-function delConv(id) {
-  G.convs = G.convs.filter(c => c.id !== id);
-  localStorage.setItem('nai_c', JSON.stringify(G.convs));
-  if (G.cid === id) newChat();
-  else renderHistory();
-  toast('Deleted', 'info');
-}
-
-function clearHistory() {
-  G.convs = []; G.cid = null; G.hist = [];
-  localStorage.removeItem('nai_c');
-  newChat(); renderHistory();
-  toast('History cleared', 'info');
-}
-
-function newChat() {
-  G.cid = null; G.hist = [];
-  document.getElementById('typing')?.remove();
-  const body = document.getElementById('chat-body');
-  if (!body) return;
-  body.innerHTML = '';
-  const w = document.createElement('div');
-  w.id = 'welcome';
-  w.innerHTML = `
-    <div class="w-logo">✦</div>
-    <div class="w-title">How can I help you?</div>
-    <div class="w-sub">Ask me anything in Hindi or English.</div>
-    ${!G.key ? `<div class="w-api-note" id="w-api-note"><b>🔑 Add your API key</b> in <b style="cursor:pointer;color:#fbbf24" onclick="openSettings()">Settings</b> to enable real AI. <a href="https://console.anthropic.com" target="_blank">Get it free here</a></div>` : ''}
-    <div class="chips">
-      <div class="chip" onclick="qs('Write a Python function to sort a list of dicts by key')">🐍 Python</div>
-      <div class="chip" onclick="qs('Explain blockchain to a 12-year-old in Hindi')">🌏 Hindi explain</div>
-      <div class="chip" onclick="qs('Write a cold email subject line for a SaaS product targeting HR teams')">📧 Cold email</div>
-      <div class="chip" onclick="qs('Debug: TypeError: Cannot read properties of undefined (reading name)')">🐛 JS debug</div>
-      <div class="chip" onclick="qs('Meri job interview ki preparation kaise karun? Tips do')">💼 Interview tips</div>
-      <div class="chip" onclick="qs('Explain REST vs GraphQL — when to use which one?')">🔌 API design</div>
-    </div>`;
-  body.appendChild(w);
-  renderHistory();
-  document.getElementById('ta')?.focus();
-}
-
-// ─── MODEL SELECTOR ────────────────────────────
-function toggleMdd(e) {
-  const dd = document.getElementById('m-dd');
-  if (!dd) return;
-  if (dd.style.display === 'block') { dd.style.display = 'none'; return; }
-  const r = document.getElementById('model-btn').getBoundingClientRect();
-  dd.style.left = r.left + 'px';
-  dd.style.top = (r.bottom + 5) + 'px';
-  dd.style.display = 'block';
-  e.stopPropagation();
-}
-function setModel(id, name, el) {
-  G.model = id; G.mName = name;
-  _set('m-label', name);
-  document.querySelectorAll('.mdd-item').forEach(i => i.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('m-dd').style.display = 'none';
-  refreshUI();
-  toast(`Model: ${name}`, 'info');
-}
-
-// ─── API KEY ───────────────────────────────────
-function saveKey() {
-  const v = document.getElementById('api-inp').value.trim();
-  if (!v || v.startsWith('•')) { toast('Enter your Claude API key', 'err'); return; }
-  if (!v.startsWith('sk-ant')) { toast('Key must start with sk-ant...', 'err'); return; }
-  G.key = v;
-  localStorage.setItem('nai_k', v);
-  document.getElementById('api-inp').value = '•'.repeat(36);
-  document.getElementById('api-bar').style.display = 'none';
-  document.getElementById('w-api-note')?.remove();
-  document.getElementById('send').disabled = false;
-  refreshUI();
-  toast('API key connected! ✓', 'ok');
-  showNotif('Connected!', 'Real AI is ready. Start chatting!', '✦', 'ok');
-}
-
-// ─── AUTH ──────────────────────────────────────
-function openAuth() { document.getElementById('auth-ovl').classList.add('on'); }
-function closeAuth() { document.getElementById('auth-ovl').classList.remove('on'); }
-
-function switchTab(t) {
-  document.getElementById('tab-in').classList.toggle('on', t === 'in');
-  document.getElementById('tab-up').classList.toggle('on', t !== 'in');
-  document.getElementById('form-in').classList.toggle('on', t === 'in');
-  document.getElementById('form-up').classList.toggle('on', t !== 'in');
-  document.getElementById('ac-succ').classList.remove('on');
-  _set('ac-h', t === 'in' ? 'Welcome back' : 'Create account');
-  _set('ac-s', t === 'in' ? 'Sign in to save your conversations' : 'Start free — no card needed');
-}
-
-function doLogin() {
-  const em = document.getElementById('em').value.trim();
-  const pw = document.getElementById('pw').value;
-  const emEl = document.getElementById('em');
-  if (!em || !em.includes('@')) { emEl.classList.add('err'); setTimeout(()=>emEl.classList.remove('err'),2000); toast('Valid email required','err'); return; }
-  if (!pw) { toast('Enter your password','err'); return; }
-  const btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.innerHTML = '<div class="spin"></div>&nbsp;Signing in...';
-  setTimeout(() => {
-    G.user = { name: em.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g,c=>c.toUpperCase()), email:em, ts:Date.now() };
-    localStorage.setItem('nai_u', JSON.stringify(G.user));
-    showSucc();
-    setTimeout(()=>{ closeAuth(); refreshUI(); confetti(); showNotif(`Welcome, ${G.user.name}!`,'Signed in to NexusAI','✦','ok'); btn.disabled=false; btn.innerHTML='Sign In'; },1300);
-  }, 900);
-}
-
-function doSignup() {
-  const n = document.getElementById('sn').value.trim();
-  const e = document.getElementById('se').value.trim();
-  const p = document.getElementById('sp').value;
-  if (!n) { toast('Enter your name','err'); return; }
-  if (!e || !e.includes('@')) { toast('Valid email required','err'); return; }
-  if (p.length < 6) { toast('Password min 6 characters','err'); return; }
-  G.user = { name:n, email:e, ts:Date.now() };
-  localStorage.setItem('nai_u', JSON.stringify(G.user));
-  showSucc();
-  setTimeout(()=>{ closeAuth(); refreshUI(); confetti(); toast(`Account created! Welcome, ${n}!`,'ok'); },1400);
-}
-
-function socialLogin(p) {
-  G.user = { name:'Piyush Moses', email:'piyushmoses01@gmail.com', via:p, ts:Date.now() };
-  localStorage.setItem('nai_u', JSON.stringify(G.user));
-  showSucc();
-  setTimeout(()=>{ closeAuth(); refreshUI(); confetti(); toast(`Signed in with ${p}`,'ok'); },1000);
-}
-
-function showSucc() {
-  ['form-in','form-up'].forEach(id=>document.getElementById(id)?.classList.remove('on'));
-  const s = document.getElementById('ac-succ'); s.classList.add('on');
-  _set('succ-t', `Welcome, ${G.user.name}!`);
-  _set('succ-s', 'Loading your workspace...');
-}
-
-function logout() {
-  if (!confirm('Sign out?')) return;
-  G.user = null; localStorage.removeItem('nai_u');
-  refreshUI(); toast('Signed out','info');
-}
-
-// ─── SETTINGS ──────────────────────────────────
-function openSettings() {
-  if (G.key) document.getElementById('api-inp').value = '•'.repeat(36);
-  document.getElementById('stg-ovl').classList.add('on');
-}
-function closeSettings() { document.getElementById('stg-ovl').classList.remove('on'); }
-
-// ─── PAYMENT ───────────────────────────────────
-function openPay() { document.getElementById('pay-ovl').classList.add('on'); }
-function closePay() { document.getElementById('pay-ovl').classList.remove('on'); }
-function pickPlan(el, price, label) {
-  document.querySelectorAll('.pl-opt').forEach(c=>c.classList.remove('on')); el.classList.add('on');
-  G.payPlan = label; _set('pay-total', label);
-}
-function pickPM(el) { document.querySelectorAll('.pm-opt').forEach(m=>m.classList.remove('on')); el.classList.add('on'); }
-function doPay() {
-  const upi = document.getElementById('upi').value.trim();
-  if (!upi) { toast('Enter your UPI ID','err'); return; }
-  closePay();
-  toast(`💳 Request sent to ${upi}`,'info');
-  setTimeout(()=>toast('📧 Send screenshot to piyushmoses01@gmail.com','info'),1200);
-  setTimeout(()=>{ toast('✅ Account upgrades in 2 hours','ok'); confetti(); },2400);
-}
-
-// ─── WEB SEARCH TOGGLE ─────────────────────────
-function toggleWS() {
-  G.ws = !G.ws;
-  const p = document.getElementById('ws-pill');
-  if (p) { p.classList.toggle('on', G.ws); p.textContent = (G.ws ? '🟢' : '🌐') + ' Web search'; }
-  toast(G.ws ? 'Web search on' : 'Web search off', 'info');
-}
-
-// ─── SEND MESSAGE ──────────────────────────────
-async function send() {
-  const ta = document.getElementById('ta');
-  const msg = ta.value.trim();
-  if (!msg || G.busy) return;
-  if (!G.key) { openSettings(); toast('Add API key in Settings first','err'); return; }
-
-  // Remove welcome
-  document.getElementById('welcome')?.remove();
-
-  // New conversation
-  if (!G.cid) G.cid = 'c' + Date.now();
-
-  // Add to history and render
-  G.hist.push({ role:'user', content:msg });
-  renderUser(msg);
-
-  // Clear input
-  ta.value = ''; ta.style.height = 'auto'; _set('chars','0');
-  document.getElementById('send').disabled = true;
-
-  // Show typing
-  const showTi = document.getElementById('ti-tog')?.classList.contains('on') !== false;
-  if (showTi) showTyping();
-
-  G.busy = true;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': G.key,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: G.model,
-        max_tokens: 4096,
-        system: G.ws ? SYS + '\n\nWeb search is enabled by the user. If they ask about recent events beyond your training, acknowledge it and suggest verifying with current sources.' : SYS,
-        messages: G.hist
-      })
-    });
-
-    const data = await res.json();
-    hideTyping();
-
-    if (data.content?.length) {
-      const reply = data.content.map(c => c.text || '').join('');
-      G.hist.push({ role:'assistant', content:reply });
-      renderAI(reply);
-      saveConv(msg);
-    } else if (data.error) {
-      const hints = {
-        authentication_error: '\n\n**Fix:** Your API key is wrong. Go to Settings → paste a valid key from console.anthropic.com',
-        rate_limit_error: '\n\n**Fix:** Rate limit hit. Wait ~30 seconds and try again.',
-        invalid_request_error: '\n\n**Fix:** Message too long. Start a new chat.',
-        overloaded_error: '\n\n**Fix:** Claude servers busy. Try again in a moment.'
-      };
-      const hint = hints[data.error.type] || '\n\n**Fix:** Check Settings → API key is correct.';
-      renderAI(`**Error (${data.error.type}):** ${data.error.message}${hint}`);
-      toast('API Error: ' + data.error.type, 'err');
+// Intersection observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
     }
-  } catch (e) {
-    hideTyping();
-    renderAI(`**Connection Error**\n\nCould not reach Claude API.\n\n**Check:**\n- Internet connection\n- API key in Settings\n\n\`${e.message}\``);
-    toast('Connection failed', 'err');
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.aos, .aos-left, .aos-right').forEach(el => {
+  observer.observe(el);
+});
+
+// Stats counter animation
+function animateCounter(el) {
+  const target = parseInt(el.getAttribute('data-target'));
+  const suffix = el.getAttribute('data-suffix') || '';
+  const duration = 2000;
+  const step = target / (duration / 16);
+  let current = 0;
+
+  const timer = setInterval(() => {
+    current += step;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    if (target >= 1000) {
+      el.textContent = Math.floor(current).toLocaleString() + suffix;
+    } else {
+      el.textContent = Math.floor(current) + suffix;
+    }
+  }, 16);
+}
+
+// Trigger counter when hero is visible
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.stat-number[data-target]').forEach(animateCounter);
+      statsObserver.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+
+const heroSection = document.getElementById('hero');
+if (heroSection) statsObserver.observe(heroSection);
+
+// Newsletter form
+function handleSubscribe(e) {
+  e.preventDefault();
+  const emailEl = document.getElementById('sub-email');
+  const successEl = document.getElementById('sub-success');
+  const btn = e.target.querySelector('button[type=submit]');
+  const email = emailEl.value.trim();
+
+  if (!email || !email.includes('@')) {
+    emailEl.style.borderColor = 'rgba(239,68,68,.5)';
+    setTimeout(() => emailEl.style.borderColor = '', 2000);
+    return;
   }
 
-  G.busy = false;
-  document.getElementById('send').disabled = !document.getElementById('ta').value.trim() || !G.key;
-  document.getElementById('ta')?.focus();
+  btn.disabled = true;
+  btn.innerHTML = '<span>Subscribing...</span>';
+
+  // Simulate API call
+  setTimeout(() => {
+    successEl.classList.remove('hidden');
+    e.target.style.opacity = '0.5';
+    e.target.style.pointerEvents = 'none';
+  }, 1200);
 }
 
-function qs(text) {
-  document.getElementById('ta').value = text;
-  onTAIn(document.getElementById('ta'));
-  send();
-}
-
-// ─── SAVE CONVERSATION ─────────────────────────
-function saveConv(firstMsg) {
-  if (!G.cid) return;
-  const title = firstMsg.slice(0, 58) + (firstMsg.length > 58 ? '…' : '');
-  const idx = G.convs.findIndex(c => c.id === G.cid);
-  const conv = { id:G.cid, title, msgs:[...G.hist], ts:Date.now() };
-  if (idx >= 0) G.convs[idx] = conv;
-  else G.convs.unshift(conv);
-  G.convs = G.convs.slice(0, 50);
-  localStorage.setItem('nai_c', JSON.stringify(G.convs));
-  renderHistory();
-}
-
-// ─── RENDER MESSAGES ───────────────────────────
-function renderUser(text) {
-  const body = document.getElementById('chat-body');
-  const d = document.createElement('div'); d.className = 'mb';
-  const av = G.user ? G.user.name[0].toUpperCase() : 'U';
-  d.innerHTML = `
-    <div class="mb-row usr">
-      <div class="mb-av av-u">${av}</div>
-      <div class="mb-body">
-        <div class="u-bubble">${esc(text).replace(/\n/g,'<br>')}</div>
-        <div class="mb-acts">
-          <button class="m-act" onclick="cpText(this,'${encodeURIComponent(text)}')">📋 Copy</button>
-        </div>
-      </div>
-    </div>`;
-  body.appendChild(d); scrollBottom();
-}
-
-function renderAI(text) {
-  const body = document.getElementById('chat-body');
-  const d = document.createElement('div'); d.className = 'mb';
-  d.innerHTML = `
-    <div class="mb-row">
-      <div class="mb-av av-ai">✦</div>
-      <div class="mb-body">
-        <div class="mb-from">NexusAI · ${G.mName}</div>
-        <div class="ai-prose">${parseMD(text)}</div>
-        <div class="mb-acts">
-          <button class="m-act" onclick="cpAI(this)">📋 Copy</button>
-          <button class="m-act" onclick="retry()">↻ Retry</button>
-        </div>
-      </div>
-    </div>`;
-  body.appendChild(d);
-  // Code copy buttons
-  d.querySelectorAll('.code-copy').forEach(btn => {
-    btn.onclick = function() {
-      const code = this.closest('.code-wrap')?.querySelector('.code-pre')?.textContent || '';
-      navigator.clipboard.writeText(code).then(() => {
-        this.textContent = '✓ Copied!'; this.classList.add('ok');
-        setTimeout(() => { this.textContent = '📋 Copy'; this.classList.remove('ok'); }, 2000);
-      });
-    };
+// Smooth scroll for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      const topOffset = target.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: topOffset, behavior: 'smooth' });
+    }
   });
-  scrollBottom();
-}
+});
 
-function cpText(btn, enc) {
-  navigator.clipboard.writeText(decodeURIComponent(enc)).then(() => {
-    btn.textContent = '✓ Copied'; btn.classList.add('ok');
-    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('ok'); }, 2000);
+// Parallax orbs on mouse move
+document.addEventListener('mousemove', (e) => {
+  const orbs = document.querySelectorAll('.orb');
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  orbs.forEach((orb, i) => {
+    const factor = (i + 1) * 0.4;
+    orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
   });
+}, { passive: true });
+
+// Particle animation
+document.querySelectorAll('.particle').forEach((p, i) => {
+  p.style.animationDuration = (5 + Math.random() * 4) + 's';
+  p.style.animationDelay = (Math.random() * 3) + 's';
+});
+
+// Initial load animation delay stagger
+document.querySelectorAll('.glass-card').forEach((card, i) => {
+  card.style.transitionDelay = `${i * 0.05}s`;
+});
+
+// Dynamic cursor glow (desktop only)
+if (window.innerWidth > 768) {
+  const cursor = document.createElement('div');
+  cursor.style.cssText = 'position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,.06),transparent 70%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:left .15s ease,top .15s ease';
+  document.body.appendChild(cursor);
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  }, { passive: true });
 }
-function cpAI(btn) {
-  const t = btn.closest('.mb')?.querySelector('.ai-prose')?.innerText || '';
-  navigator.clipboard.writeText(t).then(() => {
-    btn.textContent = '✓ Copied'; btn.classList.add('ok');
-    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('ok'); }, 2000);
+
+// Tilt effect on feature cards
+document.querySelectorAll('.glass-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / centerY * -5;
+    const rotateY = (x - centerX) / centerX * 5;
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
   });
-}
-
-async function retry() {
-  if (G.busy || !G.hist.length) return;
-  if (G.hist[G.hist.length-1]?.role === 'assistant') {
-    document.querySelectorAll('#chat-body .mb:last-child')[0]?.remove();
-    G.hist.pop();
-  }
-  if (!G.hist.length) return;
-  showTyping(); G.busy = true;
-  document.getElementById('send').disabled = true;
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json','x-api-key':G.key,'anthropic-version':'2023-06-01'},
-      body: JSON.stringify({ model:G.model, max_tokens:4096, system:SYS, messages:G.hist })
-    });
-    const data = await res.json(); hideTyping();
-    if (data.content?.[0]) { const r = data.content.map(c=>c.text||'').join(''); G.hist.push({role:'assistant',content:r}); renderAI(r); }
-  } catch(e) { hideTyping(); toast('Retry failed','err'); }
-  G.busy = false; document.getElementById('send').disabled = false;
-}
-
-function showTyping() {
-  hideTyping();
-  const body = document.getElementById('chat-body');
-  const d = document.createElement('div'); d.id = 'typing'; d.className = 'mb';
-  d.innerHTML = `<div class="mb-row"><div class="mb-av av-ai">✦</div><div class="t-dots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
-  body.appendChild(d); scrollBottom();
-}
-function hideTyping() { document.getElementById('typing')?.remove(); }
-function scrollBottom() { const sc = document.getElementById('chat-scroll'); if(sc) setTimeout(()=>sc.scrollTop=sc.scrollHeight,60); }
-
-// ─── MARKDOWN PARSER ───────────────────────────
-function parseMD(txt) {
-  const codeBlocks = [];
-  let h = esc(txt);
-
-  // Extract fenced code blocks
-  h = h.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-    const l = lang || 'code';
-    const hi = highlight(code.trim(), l);
-    const i = codeBlocks.length;
-    codeBlocks.push(`<div class="code-wrap"><div class="code-top"><span class="code-lang">${l}</span><button class="code-copy">📋 Copy</button></div><pre class="code-pre">${hi}</pre></div>`);
-    return `\x01CODE${i}\x01`;
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
   });
-
-  // Inline code
-  h = h.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  // Headings
-  h = h.replace(/^#### (.+)$/gm,'<h4>$1</h4>');
-  h = h.replace(/^### (.+)$/gm,'<h3>$1</h3>');
-  h = h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
-  h = h.replace(/^# (.+)$/gm,'<h1>$1</h1>');
-  // Bold+Italic
-  h = h.replace(/\*\*\*(.+?)\*\*\*/gs,'<strong><em>$1</em></strong>');
-  h = h.replace(/\*\*(.+?)\*\*/gs,'<strong>$1</strong>');
-  h = h.replace(/__(.+?)__/gs,'<strong>$1</strong>');
-  h = h.replace(/\*(.+?)\*/gs,'<em>$1</em>');
-  h = h.replace(/_([^_\n]+)_/gs,'<em>$1</em>');
-  // Strikethrough
-  h = h.replace(/~~(.+?)~~/g,'<del>$1</del>');
-  // Blockquote
-  h = h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
-  // HR
-  h = h.replace(/^[-*]{3,}$/gm,'<hr>');
-  // Links
-  h = h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
-  // Tables
-  h = h.replace(/((?:\|[^\n]+\|\n)+)/g, m => {
-    const rows = m.trim().split('\n');
-    let t = '<table>';
-    let head = true;
-    rows.forEach(row => {
-      if (/^\|[-: |]+\|$/.test(row.trim())) { head = false; return; }
-      const cells = row.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
-      const tag = head ? 'th' : 'td';
-      t += '<tr>' + cells.map(c=>`<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
-    });
-    return t + '</table>';
-  });
-  // Lists
-  h = h.replace(/^\d+\. (.+)$/gm,'<li data-ol>$1</li>');
-  h = h.replace(/^[*\-+] (.+)$/gm,'<li>$1</li>');
-  h = h.replace(/(<li[^>]*>[\s\S]+?<\/li>(?:\n<li[^>]*>[\s\S]+?<\/li>)*)/g, m =>
-    m.includes('data-ol') ? '<ol>' + m.replace(/ data-ol/g,'') + '</ol>' : '<ul>' + m + '</ul>');
-  h = h.replace(/<\/ul>\n<ul>/g,'');
-  h = h.replace(/<\/ol>\n<ol>/g,'');
-  // Paragraphs
-  h = h.split(/\n{2,}/).map(part => {
-    part = part.trim();
-    if (!part) return '';
-    if (/^<(h[1-6]|ul|ol|table|blockquote|hr|\x01)/.test(part)) return part;
-    return '<p>' + part.replace(/\n/g,'<br>') + '</p>';
-  }).join('');
-  // Restore code blocks
-  codeBlocks.forEach((b,i) => {
-    h = h.replace(new RegExp(`(<p>)?\\x01CODE${i}\\x01(<\\/p>)?`,'g'), b);
-  });
-  return h;
-}
-
-// ─── SYNTAX HIGHLIGHTER ────────────────────────
-function highlight(code, lang) {
-  let c = esc(code);
-  const isHTML = ['html','xml','jsx','tsx','svg'].includes(lang);
-  const isPY = lang === 'python';
-  const isCSS = lang === 'css' || lang === 'scss';
-  const isSQL = lang === 'sql';
-  const isBash = ['bash','sh','shell','zsh'].includes(lang);
-
-  // Strings
-  c = c.replace(/((?:&quot;)[^]*?(?:&quot;)|(?:&#39;)[^]*?(?:&#39;))/g,'<span class="ss">$1</span>');
-  // Template literals (backtick handled specially)
-  // Comments
-  if (!isHTML) {
-    c = c.replace(/(\/\/[^\n]*)/g,'<span class="sc">$1</span>');
-    c = c.replace(/(\/\*[\s\S]*?\*\/)/g,'<span class="sc">$1</span>');
-  }
-  if (isPY || isBash) c = c.replace(/(#[^\n]*)/g,'<span class="sc">$1</span>');
-
-  if (isHTML) {
-    c = c.replace(/(&lt;\/?\w[\w.-]*)/g,'<span class="st">$1</span>');
-    c = c.replace(/(\s[\w-:]+)(?==&quot;)/g,'<span class="sa">$1</span>');
-    return c;
-  }
-
-  const KW = isPY
-    ? ['def','class','return','if','elif','else','for','while','import','from','as','with','pass','break','continue','try','except','finally','raise','yield','lambda','and','or','not','in','is','None','True','False','global','nonlocal','assert','del']
-    : isSQL
-      ? ['SELECT','FROM','WHERE','JOIN','ON','GROUP','ORDER','BY','HAVING','INSERT','INTO','UPDATE','SET','DELETE','CREATE','TABLE','DROP','ALTER','AND','OR','NOT','IN','IS','NULL','AS','DISTINCT','INNER','LEFT','RIGHT','OUTER','COUNT','SUM','AVG','MAX','MIN','LIKE','BETWEEN','EXISTS','UNION','INDEX','PRIMARY','KEY','FOREIGN','REFERENCES']
-      : ['const','let','var','function','return','if','else','for','while','do','switch','case','break','continue','class','extends','super','new','this','typeof','instanceof','null','undefined','true','false','try','catch','finally','throw','async','await','import','export','from','default','yield','static','get','set','of','in','delete','void'];
-
-  KW.forEach(k => {
-    c = c.replace(new RegExp(`(?<![\\w$])(${k})(?![\\w$])`, 'g'), '<span class="sk">$1</span>');
-  });
-
-  // Numbers
-  c = c.replace(/\b(\d+\.?\d*)\b/g,'<span class="sn">$1</span>');
-
-  // Function calls
-  c = c.replace(/\b([a-zA-Z_$][\w$]*)\s*(?=\()/g, (m, fn) => {
-    if (KW.includes(fn)) return m;
-    return `<span class="sf">${fn}</span>`;
-  });
-
-  return c;
-}
-
-// ─── INPUT HANDLING ────────────────────────────
-function onTAIn(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 210) + 'px';
-  _set('chars', el.value.length);
-  document.getElementById('send').disabled = !el.value.trim() || !G.key || G.busy;
-}
-function onTAKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
-}
-
-// ─── NOTIFICATIONS ─────────────────────────────
-function showNotif(title, msg, ico, type) {
-  const c = document.getElementById('notifs'); if (!c) return;
-  const d = document.createElement('div'); d.className = `notif ${type}`;
-  d.innerHTML = `<div class="n-ico">${ico}</div><div class="n-body"><div class="n-title">${title}</div><div class="n-msg">${msg}</div></div><div class="n-x" onclick="this.parentElement.remove()">✕</div>`;
-  c.appendChild(d);
-  setTimeout(() => { d.style.opacity='0'; d.style.transition='opacity .3s'; }, 5000);
-  setTimeout(() => d.remove(), 5400);
-}
-
-function toast(msg, type = 'info') {
-  const c = document.getElementById('toasts'); if (!c) return;
-  const d = document.createElement('div'); d.className = `tst ${type}`;
-  d.textContent = msg; c.appendChild(d);
-  setTimeout(() => { d.style.opacity='0'; d.style.transition='opacity .3s'; }, 2700);
-  setTimeout(() => d.remove(), 3100);
-}
-
-// ─── CONFETTI ──────────────────────────────────
-function confetti() {
-  const cols = ['#10a37f','#7c3aed','#06b6d4','#f59e0b','#ec4899','#f97316','#3b82f6'];
-  for (let i = 0; i < 60; i++) {
-    const p = document.createElement('div'); p.className = 'conf';
-    p.style.cssText = `left:${Math.random()*100}%;top:${5+Math.random()*35}%;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${.7+Math.random()*.7}s;animation-delay:${Math.random()*.4}s;width:${5+Math.random()*8}px;height:${5+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
-    document.body.appendChild(p); setTimeout(()=>p.remove(), 1600);
-  }
-}
-
-// ─── UTILS ─────────────────────────────────────
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-// Mobile
-if (window.innerWidth <= 768) document.getElementById('sb').classList.remove('mobile-open');
+});
 </script>
 </body>
 </html>
